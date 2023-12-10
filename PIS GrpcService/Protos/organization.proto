@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "PIS_GrpcService";
+
+//package organization;
+
+service Organizationer {
+  rpc Get (Empty) returns (OrganizationArray);
+}
+
+message Empty {}
+
+message Organization {
+   int32 Id = 1;
+   string OrgName = 2;
+   string INN = 3;
+   string KPP = 4;
+   string OrgAddress = 5;
+   string OrgType = 6;
+   string OrgAttribute = 7;
+}
+
+message OrganizationArray {
+	repeated Organization list = 1;
+}

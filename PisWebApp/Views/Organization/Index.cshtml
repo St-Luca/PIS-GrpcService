@@ -1,0 +1,76 @@
+﻿@model PIS_GrpcService.OrganizationArray
+
+@{
+    ViewData["Title"] = "Реестр организаций";
+}
+
+<h1>Организации</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].OrgName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].INN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].KPP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].OrgAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].OrgType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].OrgAttribute)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.List)
+        {
+            <tr>
+                <td>
+                    <a asp-action="DetailsFull" asp-route-id="@item.Id" style="text-decoration: none;" title="Полная информация о билете">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </a>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.OrgName)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.INN)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.KPP)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.OrgAddress)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.OrgType)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.OrgAttribute)
+                </td>
+                <td style="text-align: center;">
+                    <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;" title="Редактировать">
+                    </a>
+                    <a asp-action="Details" asp-controller="Organization" asp-route-id="@item.Id" style="text-decoration: none;" title="Просмотреть карточку организации">
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;" title="Удалить">
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
