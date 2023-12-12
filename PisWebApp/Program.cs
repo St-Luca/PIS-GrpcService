@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton(provider =>
 {
-    var channel = GrpcChannel.ForAddress("http://localhost:5114"); // Укажите адрес вашего gRPC-сервиса
+    var channel = GrpcChannel.ForAddress("http://localhost:5114"); 
     return new OrganizationerClient(channel);
 });
 
