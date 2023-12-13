@@ -1,5 +1,7 @@
+using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.Services;
 using PisWebApp.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace PIS_GrpcService
 {
@@ -8,6 +10,10 @@ namespace PIS_GrpcService
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+            // добавляем контекст ApplicationContext в качестве сервиса в приложение
+            builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 
             // Additional configuration is required to successfully run gRPC on macOS.
             // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682

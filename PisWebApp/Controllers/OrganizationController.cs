@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PIS_GrpcService;
-using static PIS_GrpcService.Organizationer;
+using PIS_GrpcService.PIS_GrpcService;
+using static PIS_GrpcService.PIS_GrpcService.Organizationer;
+//using PIS_GrpcService.PisWebApp;
+//using static PIS_GrpcService.Organizationer;
+//using static PIS_GrpcService.PisWebApp.Organizationer;
 
 namespace PisWebApp.Controllers
 {
@@ -11,22 +15,25 @@ namespace PisWebApp.Controllers
         {
             _grpcClient = grpcClient;
         }
+
         // GET: OrganizationController
         public async Task<IActionResult> Index()
         {
-            var organizations = await _grpcClient.GetAsync(new Empty());
+            var organizations = await _grpcClient.GetAllAsync(new Empty());
 
             return View(organizations);
         }
 
         // GET: OrganizationController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var organization = await _grpcClient.GetAsync(new IdRequest { Id = id});
+
+            return View(organization);
         }
 
         // GET: OrganizationController/Create
-        public ActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
@@ -34,7 +41,7 @@ namespace PisWebApp.Controllers
         // POST: OrganizationController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(IFormCollection collection)
         {
             try
             {
@@ -47,7 +54,7 @@ namespace PisWebApp.Controllers
         }
 
         // GET: OrganizationController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             return View();
         }
@@ -55,7 +62,7 @@ namespace PisWebApp.Controllers
         // POST: OrganizationController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -68,7 +75,7 @@ namespace PisWebApp.Controllers
         }
 
         // GET: OrganizationController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             return View();
         }
@@ -76,7 +83,7 @@ namespace PisWebApp.Controllers
         // POST: OrganizationController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {

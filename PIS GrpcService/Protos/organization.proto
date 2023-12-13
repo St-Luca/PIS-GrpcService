@@ -1,16 +1,24 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "PIS_GrpcService";
+option csharp_namespace = "PIS_GrpcService.PIS_GrpcService";
 
 //package organization;
 
 service Organizationer {
-  rpc Get (Empty) returns (OrganizationArray);
+  rpc GetAll(Empty) returns (OrganizationArray);
+  rpc Add(GrpcOrganization) returns (Empty);
+  rpc Get(IdRequest) returns (GrpcOrganization);
+  rpc Edit(GrpcOrganization) returns (Empty);
+  rpc Delete(IdRequest) returns (Empty);
 }
 
 message Empty {}
 
-message Organization {
+message IdRequest {
+   int32 Id = 1;
+}
+
+message GrpcOrganization {
    int32 Id = 1;
    string OrgName = 2;
    string INN = 3;
@@ -21,5 +29,5 @@ message Organization {
 }
 
 message OrganizationArray {
-	repeated Organization list = 1;
+	repeated GrpcOrganization list = 1;
 }

@@ -1,5 +1,6 @@
 using Grpc.Net.Client;
-using static PIS_GrpcService.Organizationer;
+using static PIS_GrpcService.PIS_GrpcService.Organizationer;
+//using static PIS_GrpcService.PisWebApp.Organizationer;
 
 var builder = WebApplication.CreateBuilder(args);
 
