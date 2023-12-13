@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PIS_GrpcService;
-using static PIS_GrpcService.PisWebApp.Organizationer;
+using static PIS_GrpcService.Organizationer;
 
 namespace PisWebApp.Controllers
 {

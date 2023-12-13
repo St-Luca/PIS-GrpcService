@@ -1,4 +1,5 @@
 using PIS_GrpcService.Services;
+using PisWebApp.Services;
 
 namespace PIS_GrpcService
 {

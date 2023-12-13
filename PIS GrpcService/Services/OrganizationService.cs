@@ -1,7 +1,8 @@
 ﻿using Grpc.Core;
+using PIS_GrpcService;
 using System.Net;
 
-namespace PIS_GrpcService.Services;
+namespace PisWebApp.Services;
 
 public class OrganizationService : Organizationer.OrganizationerBase
 {
