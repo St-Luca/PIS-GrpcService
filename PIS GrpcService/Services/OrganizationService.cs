@@ -2,13 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService;
 using PIS_GrpcService.DataAccess;
+using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.Services.Mappers;
 using System.Net;
+using System.Reflection.Metadata;
 
 namespace PisWebApp.Services;
 
-public class OrganizationService : Organizationer.OrganizationerBase
+public class OrganizationService : GrpcOrganizationService.GrpcOrganizationServiceBase
 {
     private readonly ApplicationContext _dbContext;
     private readonly ILogger<OrganizationService> _logger;
@@ -33,5 +35,50 @@ public class OrganizationService : Organizationer.OrganizationerBase
         var response = _dbContext.Organizations.FirstOrDefault(o => o.Id == id.Id)?.Map();
 
         return Task.FromResult(response);
+    }
+
+    public override Task<Empty> Edit(GrpcOrganization organization, ServerCallContext context)
+    {
+        try
+        {
+            _dbContext.Update(organization.Map());
+            _dbContext.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            //_logger.Log();
+        }
+
+        return Task.FromResult(new Empty());
+    }
+
+    public async override Task<Empty> Delete(IdRequest id, ServerCallContext context)
+    {
+        try
+        {
+            var organization = await _dbContext.Organizations.FindAsync(id.Id);
+
+            if (organization != null)
+            {
+                _dbContext.Organizations.Remove(organization);
+                await _dbContext.SaveChangesAsync();
+            }
+
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            //_logger.Log();
+        }
+
+        return new Empty();
+    }
+
+    public async override Task<Empty> Add(GrpcOrganization organization, ServerCallContext context)
+    {
+        var entityOrganization = organization?.Map();
+        _dbContext.Organizations.Add(entityOrganization);
+        await _dbContext.SaveChangesAsync();
+
+        return new Empty();
     }
 }

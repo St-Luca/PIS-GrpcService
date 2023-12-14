@@ -1,5 +1,5 @@
 using Grpc.Net.Client;
-using static PIS_GrpcService.PIS_GrpcService.Organizationer;
+using static PIS_GrpcService.PIS_GrpcService.GrpcOrganizationService;
 //using static PIS_GrpcService.PisWebApp.Organizationer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton(provider =>
 {
     var channel = GrpcChannel.ForAddress("http://localhost:5114"); 
-    return new OrganizationerClient(channel);
+    return new GrpcOrganizationServiceClient(channel);
 });
 
 var app = builder.Build();

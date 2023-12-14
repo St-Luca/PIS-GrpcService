@@ -4,7 +4,7 @@ option csharp_namespace = "PIS_GrpcService.PIS_GrpcService";
 
 //package organization;
 
-service Organizationer {
+service GrpcOrganizationService {
   rpc GetAll(Empty) returns (OrganizationArray);
   rpc Add(GrpcOrganization) returns (Empty);
   rpc Get(IdRequest) returns (GrpcOrganization);
