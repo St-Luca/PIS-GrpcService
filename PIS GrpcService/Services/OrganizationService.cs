@@ -1,14 +1,9 @@
 ﻿using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
-using PIS_GrpcService;
 using PIS_GrpcService.DataAccess;
-using PIS_GrpcService.Models;
-using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.Services.Mappers;
-using System.Net;
-using System.Reflection.Metadata;
 
-namespace PisWebApp.Services;
+namespace PIS_GrpcService.PIS_GrpcService.Services;
 
 public class OrganizationService : GrpcOrganizationService.GrpcOrganizationServiceBase
 {

@@ -15,7 +15,7 @@ public class ApplicationContext : DbContext
     public DbSet<Organization> Organizations { get; set; } = default!;
     //public DbSet<Animal> Animals { get; set; } = default!;
     //public DbSet<CaptureAct> Acts { get; set; } = default!;
-    //public DbSet<CatchingApplication> CatchingApplications { get; set; } = default!;
+    public DbSet<Application> Applications { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,6 +23,9 @@ public class ApplicationContext : DbContext
         Organization o2 = new Organization { Id = 2, OrgName = "TumGU", INN = "222", KPP = "wtf" };
 
         modelBuilder.Entity<Organization>().HasData(o1, o2);
+
+        Application App1 = new Application { Id = 1, Date = DateTime.Now, ApplicantCategory = "Категория заявителя", AnimalDescription = "Коричневая овцарка", Urgency = "14", Locality = "1", Organization = "1" };
+        modelBuilder.Entity<Application>().HasData(App1);
 
         //здесь прописываем связи сущностей и первоначальные данные
         //подключеине к бд через файл эппсеттингс
