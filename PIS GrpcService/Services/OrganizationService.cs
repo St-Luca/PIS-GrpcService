@@ -30,9 +30,9 @@ public class OrganizationService : GrpcOrganizationService.GrpcOrganizationServi
         return Task.FromResult(result);
     }
 
-    public override Task<GrpcOrganization?> Get(IdRequest id, ServerCallContext context)
+    public override Task<GrpcOrganization?> Get(IdRequest request, ServerCallContext context)
     {
-        var response = _dbContext.Organizations.FirstOrDefault(o => o.Id == id.Id)?.Map();
+        var response = _dbContext.Organizations.FirstOrDefault(o => o.Id == request.Id)?.Map();
 
         return Task.FromResult(response);
     }
