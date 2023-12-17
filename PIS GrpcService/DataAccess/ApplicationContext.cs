@@ -10,7 +10,7 @@ public class ApplicationContext : DbContext
     {
         Database.EnsureCreated();
     }
-    public DbSet<Locality> Localities { get; set; } = default!;
+    //public DbSet<Locality> Localities { get; set; } = default!;
     //public DbSet<LocalityCost> LocalityCosts { get; set; } = default!;
     public DbSet<Organization> Organizations { get; set; } = default!;
     //public DbSet<Animal> Animals { get; set; } = default!;
@@ -26,10 +26,6 @@ public class ApplicationContext : DbContext
 
         Application App1 = new Application { Id = 1, Date = DateTime.Now, ApplicantCategory = "Категория заявителя", AnimalDescription = "Коричневая овцарка", Urgency = "14", Locality = "1", Organization = "1" };
         modelBuilder.Entity<Application>().HasData(App1);
-
-        Locality loc1 = new Locality { Id=1, Name = "Тюмень" };
-        Locality loc2 = new Locality { Id=2, Name = "Ялуторовск" };
-        modelBuilder.Entity<Application>().HasData(loc1, loc2);
 
         //здесь прописываем связи сущностей и первоначальные данные
         //подключеине к бд через файл эппсеттингс
