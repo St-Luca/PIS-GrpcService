@@ -8,10 +8,14 @@
 
   <ItemGroup>
     <None Remove="Protos\application.proto" />
+    <None Remove="Protos\locality.proto" />
+    <None Remove="Protos\LocalityCost.proto" />
   </ItemGroup>
 
   <ItemGroup>
     <Protobuf Include="Protos\application.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\locality.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\LocalityCost.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\organization.proto" GrpcServices="Server" />
   </ItemGroup>
 

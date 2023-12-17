@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "PIS_GrpcService";
+
+message LocalityCost {
+   string Cost = 1;
+}
+
+message LocalityCostArray {
+	repeated LocalityCost list = 1;
+}
