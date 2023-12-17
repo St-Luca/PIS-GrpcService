@@ -14,9 +14,9 @@ public static class LocalityCostMapper
     {
         return new GrpcLocalityCost
         {
-            //Id_Cost = dbLocalityCost.Id_Cost,
-            //Id_Contract = dbLocalityCost.Id_Contract,
-            //Id_Locality = dbLocalityCost.Id_Locality,
+            IdCost = dbLocalityCost.IdCost,
+            IdContract = dbLocalityCost.IdContract,
+            IdLocality = dbLocalityCost.IdLocality,
             Cost = dbLocalityCost.Cost
 
         };
@@ -26,9 +26,9 @@ public static class LocalityCostMapper
     {
         return new LocalityCost
         {
-            //Id_Cost = dbLocalityCost.Id_Cost,
-            //Id_Contract = dbLocalityCost.Id_Contract,
-            //Id_Locality = dbLocalityCost.Id_Locality,
+            IdCost = dbLocalityCost.IdCost,
+            IdContract = dbLocalityCost.IdContract,
+            IdLocality = dbLocalityCost.IdLocality,
             Cost = dbLocalityCost.Cost
         };
     }

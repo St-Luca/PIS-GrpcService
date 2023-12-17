@@ -31,7 +31,7 @@ public class LocalityCostService : GrpcLocalityCostService.GrpcLocalityCostServi
 
     public override Task<GrpcLocalityCost?> Get(IdRequest id, ServerCallContext context)
     {
-        var response = _dbContext.LocalityCosts.FirstOrDefault(o => o.Id_Cost == id.Id)?.Map();
+        var response = _dbContext.LocalityCosts.FirstOrDefault(o => o.IdCost == id.Id)?.Map();
 
         return Task.FromResult(response);
     }

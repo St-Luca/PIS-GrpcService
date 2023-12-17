@@ -31,7 +31,7 @@ public class ApplicationContext : DbContext
         Locality loc1 = new Locality { Id = 1, Name = "Тюмень"};
         modelBuilder.Entity<Application>().HasData(loc1);
 
-        LocalityCost locCost1 = new LocalityCost { Id_Cost = 1, Id_Contract = "1", Id_Locality = "1", Cost = "15000" };
+        LocalityCost locCost1 = new LocalityCost { IdCost = 1, IdContract = "1", IdLocality = "1", Cost = "15000" };
         modelBuilder.Entity<Application>().HasData(locCost1);
 
         Animal animal1 = new Animal { Id = 1, Category = "Собака", Sex = "Кобель", Breed = "Овчарка", Size = "Большая", Coat = "Густая", Color = "Коричневая", Ears = "Коричневая", Tail = "Короткий", CapturedAct = "1", Mark = "134", IdentChip = "192" };

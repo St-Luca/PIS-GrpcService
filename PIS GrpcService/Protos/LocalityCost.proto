@@ -15,9 +15,9 @@ service GrpcLocalityCostService {
 
 
 message GrpcLocalityCost {
-	 int32 Id_Cost = 1;
-	 string Id_Contract = 2;
-	 string Id_Locality = 3;
+	 int32 IdCost = 1;
+	 string IdContract = 2;
+	 string IdLocality = 3;
 	 string Cost = 4;
 }
 
