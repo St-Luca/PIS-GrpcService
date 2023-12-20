@@ -24,9 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\PIS GrpcService\Protos\application.proto" GrpcServices="Client">
-      <Link>Protos\application.proto</Link>
-    </Protobuf>
     <Protobuf Include="..\PIS GrpcService\Protos\organization.proto" GrpcServices="Client">
       <Link>Protos\organization.proto</Link>
     </Protobuf>

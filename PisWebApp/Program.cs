@@ -13,11 +13,7 @@ builder.Services.AddSingleton(provider =>
     var channel = GrpcChannel.ForAddress("http://localhost:5114"); 
     return new GrpcOrganizationServiceClient(channel);
 });
-builder.Services.AddSingleton(provider =>
-{
-    var channel = GrpcChannel.ForAddress("http://localhost:5114");
-    return new GrpcApplicationServiceClient(channel);
-});
+
 //builder.Services.AddSingleton(provider =>
 //{
 //    var channel = GrpcChannel.ForAddress("http://localhost:5114");

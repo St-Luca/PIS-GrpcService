@@ -1,4 +1,6 @@
-﻿namespace PIS_GrpcService.Models;
+﻿using System;
+
+namespace PIS_GrpcService.Models;
 
 public class Locality
 {
