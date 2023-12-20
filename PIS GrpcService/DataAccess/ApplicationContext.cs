@@ -14,7 +14,8 @@ public class ApplicationContext : DbContext
     public DbSet<LocalityCost> LocalityCosts { get; set; } = default!;
     public DbSet<Organization> Organizations { get; set; } = default!;
     public DbSet<Animal> Animals { get; set; } = default!;
-    //public DbSet<CaptureAct> Acts { get; set; } = default!;
+    public DbSet<CaptureAct> Acts { get; set; } = default!;
+    public DbSet<Contract> Contracts { get; set; } = default!;
     public DbSet<Application> Applications { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,9 +26,9 @@ public class ApplicationContext : DbContext
                        .WithOne(p => p.Locality)
                        .HasForeignKey(p => p.IdLocality);
 
-        //modelBuilder.Entity<Locality>()
-        //               .HasMany(a => a.MunicipalContracts)
-        //               .WithOne(p => p.Locality)
+        //modelBuilder.Entity<Contract>()
+        //               .HasMany(a => a.Localities)
+        //               .WithOne(p => p.Contract)
         //               .HasForeignKey(p => p.IdLocality);
 
         modelBuilder.Entity<Organization>()
@@ -36,7 +37,7 @@ public class ApplicationContext : DbContext
                     .HasForeignKey(d => d.IdOrganization);
 
         modelBuilder.Entity<LocalityCost>()
-                       .HasKey(p => p.IdLocality); //new { p.IdLocality, p.IdContract }
+                       .HasKey(p => new { p.IdLocality, p.IdContract });
 
         Organization o1 = new Organization { Id = 1, OrgName = "Smartway", INN = "111", KPP = "ss" };
         Organization o2 = new Organization { Id = 2, OrgName = "TumGU", INN = "222", KPP = "wtf" };

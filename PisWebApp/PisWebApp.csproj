@@ -35,6 +35,8 @@
     <Protobuf Include="Protos\LocalityCost.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\locality.proto" GrpcServices="Client" />
   <Protobuf Include="Protos\organization.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\CaptureAct.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\Contract.proto" GrpcServices="Client" />
   <Protobuf Include="Protos\report.proto" GrpcServices="Client" />
   </ItemGroup>
 

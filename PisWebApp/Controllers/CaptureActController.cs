@@ -4,9 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
-using static PIS_GrpcService.PIS_GrpcService.GrpcCaptureActService;
 
-namespace PisWebApp.Controllers
+/*namespace PisWebApp.Controllers
 {
     public class CaptureActController : Controller
     {
@@ -106,4 +105,4 @@ namespace PisWebApp.Controllers
             }
         }
     }
-}
+}*/

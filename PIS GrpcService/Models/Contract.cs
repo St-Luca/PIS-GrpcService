@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PIS_GrpcService.Models
 {
@@ -8,8 +9,12 @@ namespace PIS_GrpcService.Models
         public DateTime ConcDate { get; set; }
         public DateTime EffDate { get; set; }
         public int Amount { get; set; }
-        public string Performer { get; set; } = string.Empty;
-        public string Customer { get; set; } = string.Empty;
-        public string Localities { get; set; } = string.Empty;
+        public int IdOrganization { get; set; }
+
+        [ForeignKey("IdOrganization")]
+        public Organization Performer { get; set; } 
+
+        [ForeignKey("IdLocality")]
+        public List<Locality> Localities { get; set; } 
     }
 }

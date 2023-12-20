@@ -1,10 +1,8 @@
 ﻿using PIS_GrpcService.Models;
-using PIS_GrpcService.PIS_GrpcService;
-using System.Diagnostics.Acts;
 
 namespace PIS_GrpcService.Services.Mappers;
 
-public static class CaptureActMapper
+/*public static class CaptureActMapper
 {
     public static List<GrpcContract> Map(this List<CaptureAct> acts)
     {
@@ -38,4 +36,4 @@ public static class CaptureActMapper
             Localities = dbCaptureAct.Localities
         };
     }
-}
+}*/

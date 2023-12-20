@@ -6,7 +6,7 @@ using PIS_GrpcService.Services.Mappers;
 
 namespace PIS_GrpcService.PIS_GrpcService.Services;
 
-public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
+/*public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
 {
     private readonly ApplicationContext _dbContext;
     private readonly ILogger<CaptureActService> _logger;
@@ -77,4 +77,4 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
 
         return new Empty();
     }
-}
+}*/

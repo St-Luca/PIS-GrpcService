@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 namespace PIS_GrpcService.Services.Mappers;
 
-public static class ContractMapper
+/*public static class ContractMapper
 {
     public static List<GrpcContract> Map(this List<Contract> contracts)
     {
@@ -38,4 +38,4 @@ public static class ContractMapper
             Localities = dbContract.Localities
         };
     }
-}
+}*/

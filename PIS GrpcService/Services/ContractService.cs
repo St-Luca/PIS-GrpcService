@@ -6,7 +6,7 @@ using PIS_GrpcService.Services.Mappers;
 
 namespace PIS_GrpcService.PIS_GrpcService.Services;
 
-public class ContractService : GrpcContractService.GrpcContractServiceBase
+/*public class ContractService : GrpcContractService.GrpcContractServiceBase
 {
     private readonly ApplicationContext _dbContext;
     private readonly ILogger<ContractService> _logger;
@@ -77,4 +77,4 @@ public class ContractService : GrpcContractService.GrpcContractServiceBase
 
         return new Empty();
     }
-}
+}*/

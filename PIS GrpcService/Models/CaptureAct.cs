@@ -6,10 +6,10 @@ namespace PIS_GrpcService.Models
     {
         public int Id { get; set; }
         public DateTime ActDate { get; set; }
-        public string CapturedAnimal { get; set; } = string.Empty;
+        public Animal CapturedAnimal { get; set; } 
         public int Amount { get; set; }
-        public string Performer { get; set; } = string.Empty;
-        public string Customer { get; set; } = string.Empty;
-        public string Localities { get; set; } = string.Empty;
+        public Organization Performer { get; set; } 
+        public Organization Customer { get; set; } 
+        public List<Locality> Localities { get; set; } 
     }
 }

@@ -4,8 +4,6 @@ using static PIS_GrpcService.PIS_GrpcService.GrpcApplicationService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcLocalityCostService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcLocalityService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcOrganizationService;
-using static PIS_GrpcService.PIS_GrpcService.GrpcReportService;
-//using static PIS_GrpcService.PIS_GrpcService.GrpcReportService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,11 +52,11 @@ builder.Services.AddSingleton(provider =>
 //    return new GrpcCaptureActServiceClient(channel);
 //});
 
-builder.Services.AddSingleton(provider =>
-{
-    var channel = GrpcChannel.ForAddress("http://localhost:5114");
-    return new GrpcReportServiceClient(channel);
-});
+//builder.Services.AddSingleton(provider =>
+//{
+//    var channel = GrpcChannel.ForAddress("http://localhost:5114");
+//    return new GrpcReportServiceClient(channel);
+//});
 
 var app = builder.Build();
 
