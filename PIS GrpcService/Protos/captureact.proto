@@ -1,0 +1,31 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "PIS_GrpcService.PIS_GrpcService";
+
+service GrpcCaptureActService {
+  rpc GetAll(Empty) returns (CaptureActArray);
+  rpc Add(GrpcCaptureAct) returns (Empty);
+  rpc Get(IdRequest) returns (GrpcCaptureAct);
+  rpc Edit(GrpcCaptureAct) returns (Empty);
+  rpc Delete(IdRequest) returns (Empty);
+}
+
+message Empty{}
+
+message IdRequest {
+   int32 Id = 1;
+}
+
+message CaptureAct {
+	int32 Id = 1;
+	google.protobuf.Timestamp ActDate = 2;
+	string CapturedAnimal = 3;
+	int32 Amount = 4;
+	string Performer = 5;
+	organization Customer = 6;
+	CaptureActArray Localities = 7;
+}
+
+message CaptureActArray {
+	repeated GrpcContract list = 1;
+}

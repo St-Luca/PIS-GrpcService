@@ -1,0 +1,42 @@
+﻿@model PIS_GrpcService.PIS_GrpcService.GrpcContract
+
+@{
+    ViewData["Title"] = "Редактировать контракт";
+}
+
+<h1>Организация</h1>
+
+<form asp-action="Edit">
+    <div class="form-group">
+        <label asp-for="Id"></label>
+        <input asp-for="Id" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="ConcDate"></label>
+        <input asp-for="ConcDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="EffDate"></label>
+        <input asp-for="EffDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Amount"></label>
+        <input asp-for="Amount" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Performer"></label>
+        <input asp-for="Performer" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Customer"></label>
+        <input asp-for="Customer" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Localities"></label>
+        <input asp-for="Localities" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Сохранить" class="btn btn-primary" />
+    </div>
+</form>
+
