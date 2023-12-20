@@ -6,4 +6,5 @@ public class Locality
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
+    public List<LocalityCost> LocalityCosts { get; set; }
 }

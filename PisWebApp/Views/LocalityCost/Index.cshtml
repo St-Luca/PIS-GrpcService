@@ -10,9 +10,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.List[0].IdCost)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.List[0].IdContract)
             </th>
             <th>
@@ -28,9 +25,6 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IdCost)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.IdContract)
                 </td>
                 <td>
@@ -38,11 +32,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Cost)
-                </td>
-                <td style="text-align: center;">
-                    <a asp-action="Add" style="text-decoration: none;" title="Создать">Создать</a> |
-                    <a asp-action="Edit" asp-route-id="@item.IdCost" style="text-decoration: none;" title="Редактировать">Редактировать</a> |
-                    <a asp-action="Delete" asp-route-id="@item.IdCost" style="text-decoration: none;" title="Удалить">Удалить</a>
                 </td>
             </tr>
         }

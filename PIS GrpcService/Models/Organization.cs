@@ -11,4 +11,5 @@ public class Organization
     public string OrgAddress { get; set; } = string.Empty;
     public string OrgType { get; set; } = string.Empty;
     public string OrgAttribute { get; set; } = string.Empty;
+    public List<Application> Applications { get; set; }
 }

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Реестр городов";
 }
 
-<h1>Города</h1>
+<h1>Стоимость</h1>
 
 <table class="table">
     <thead>
@@ -15,7 +15,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.List[0].Name)
             </th>
-
         </tr>
     </thead>
     <tbody>
@@ -27,13 +26,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
-                </td>
-
-                <td style="text-align: center;">
-                    <a asp-action="Add" style="text-decoration: none;" title="Создать">Создать</a> |
-                    <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;" title="Редактировать">Редактировать</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;" title="Просмотреть карточку города">Просмотреть</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;" title="Удалить">Удалить</a>
                 </td>
             </tr>
         }

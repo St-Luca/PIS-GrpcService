@@ -10,17 +10,12 @@ public static class LocalityMapper
         return localities.Select(x => x.Map()).ToList();
     }
 
-    public static GrpcLocality Map(this Locality dbLocality)
+    public static GrpcLocality Map(this Locality dbOrganization)
     {
         return new GrpcLocality
         {
-            Id = dbLocality.Id,
-           // Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime((DateTime)dbLocality.Date),
-            ApplicantCategory = dbLocality.ApplicantCategory,
-            AnimalDescription = dbLocality.AnimalDescription,
-            Urgency = dbLocality.Urgency,
-            Locality = dbLocality.Locality,
-            Organization = dbLocality.Organization
+            Id = dbOrganization.Id,
+            Name = dbOrganization.Name
         };
     }
 
@@ -29,12 +24,7 @@ public static class LocalityMapper
         return new Locality
         {
             Id = dbLocality.Id,
-            Date = dbLocality.Date.ToDateTime(),
-            ApplicantCategory = dbLocality.ApplicantCategory,
-            AnimalDescription = dbLocality.AnimalDescription,
-            Urgency = dbLocality.Urgency,
-            Locality = dbLocality.Locality,
-            Organization = dbLocality.Organization
+            Name = dbLocality.Name
         };
     }
 }

@@ -23,6 +23,7 @@
     <Protobuf Include="Protos\application.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\CaptureAct.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\organization.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\report.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>
