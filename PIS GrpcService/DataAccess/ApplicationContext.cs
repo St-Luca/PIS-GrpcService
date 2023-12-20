@@ -10,25 +10,19 @@ public class ApplicationContext : DbContext
     {
         Database.EnsureCreated();
     }
-    public DbSet<Locality> Localities { get; set; } = default!;
-    public DbSet<LocalityCost> LocalityCosts { get; set; } = default!;
+    //public DbSet<Locality> Localities { get; set; } = default!;
+    //public DbSet<LocalityCost> LocalityCosts { get; set; } = default!;
     public DbSet<Organization> Organizations { get; set; } = default!;
-    public DbSet<Animal> Animals { get; set; } = default!;
+    //public DbSet<Animal> Animals { get; set; } = default!;
     //public DbSet<CaptureAct> Acts { get; set; } = default!;
     public DbSet<Application> Applications { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<LocalityCost>()
-                       .HasKey(p => p.IdLocality);
-        modelBuilder.Entity<Application>()
-                       .HasKey(p => p.Id);
-
         Organization o1 = new Organization { Id = 1, OrgName = "Smartway", INN = "111", KPP = "ss" };
         Organization o2 = new Organization { Id = 2, OrgName = "TumGU", INN = "222", KPP = "wtf" };
 
         modelBuilder.Entity<Organization>().HasData(o1, o2);
-
 
         Locality loc1 = new Locality { Id = 1, Name = "Тюмень"};
         modelBuilder.Entity<Locality>().HasData(loc1);
