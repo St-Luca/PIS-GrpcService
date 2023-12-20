@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\Animal.proto" />
+    <None Remove="Protos\application.proto" />
+    <None Remove="Protos\LocalityCost.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.25.1" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.59.0" />
@@ -24,9 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\PIS GrpcService\Protos\organization.proto" GrpcServices="Client">
-      <Link>Protos\organization.proto</Link>
-    </Protobuf>
+    <Protobuf Include="Protos\Animal.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\application.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\LocalityCost.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\locality.proto" GrpcServices="Client" />
+  <Protobuf Include="Protos\organization.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>
