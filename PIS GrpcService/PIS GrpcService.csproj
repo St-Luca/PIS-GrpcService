@@ -7,30 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\Animal.proto" />
     <None Remove="Protos\application.proto" />
-
-    
-    
-    
-    <None Remove="Protos\captureAct.proto" />
-    <None Remove="Protos\contract.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="Protos\contract.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\captureact.proto" GrpcServices="Server" />
-    
     <None Remove="Protos\LocalityCost.proto" />
   </ItemGroup>
 
   <ItemGroup>
     <Protobuf Include="Protos\Animal.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\LocalityCost.proto" GrpcServices="Server" />
-
-    
-    
-    
-    
     <Protobuf Include="Protos\application.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\organization.proto" GrpcServices="Server" />
   </ItemGroup>
