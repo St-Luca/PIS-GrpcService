@@ -26,10 +26,15 @@ namespace PIS_GrpcService
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+            app.MapGrpcService<LocalityService>();
             app.MapGrpcService<OrganizationService>();
             app.MapGrpcService<LocalityCostService>();
+            // app.MapGrpcService<MunicipalContractService>();
+            //app.MapGrpcService<CaptureActService>();
             app.MapGrpcService<AnimalService>();
-            //app.MapGrpcService<ApplicationService>();
+            //app.MapGrpcService<AnimalCardService>();
+            app.MapGrpcService<ApplicationService>();
+            app.MapGrpcService<ReportService>();
 
             app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 

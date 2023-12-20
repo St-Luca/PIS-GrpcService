@@ -4,6 +4,7 @@ using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.PIS_GrpcService.Services;
 using PIS_GrpcService.Services.Mappers;
+using System.Net.Sockets;
 
 namespace PIS_GrpcService.Services;
 
@@ -18,15 +19,27 @@ public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceB
         _dbContext = dbContext;
     }
 
-    public override Task<ApplicationArray> GetAll(Empty e, ServerCallContext context)
+    public async override Task<ApplicationArray> GetAll(Empty e, ServerCallContext context)
     {
-        var response = _dbContext.Applications.Select(o => o.Map()).ToList();
+        var applications = await _dbContext.Applications.ToListAsync();
+        var localityIds = applications.Select(app => app.IdLocality).ToList();
+        var organizationIds = applications.Select(app => app.IdOrganization).ToList();
+
+        var localities = await _dbContext.Localities.Where(loc => localityIds.Contains(loc.Id)).ToListAsync();
+        var organizations = await _dbContext.Organizations.Where(org => organizationIds.Contains(org.Id)).ToListAsync();
 
         var result = new ApplicationArray();
-        result.List.AddRange(response);
 
-        return Task.FromResult(result);
+        foreach (var app in applications)
+        {
+            app.Locality = localities.FirstOrDefault(d => d.Id == app.IdLocality);
+            app.Organization = organizations.FirstOrDefault(d => d.Id == app.IdOrganization);
+            result.List.Add(app.Map());
+        }
+
+        return result;
     }
+
 
     public override Task<GrpcApplication?> Get(IdRequest id, ServerCallContext context)
     {

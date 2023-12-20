@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "PIS_GrpcService.PIS_GrpcService";
+
+service GrpcReportService {
+  rpc GenerateAppsPercentReport(ReportRequest) returns (GrpcReport);
+  rpc GenerateClosedAppsReport(ReportRequest) returns (GrpcReport);
+  rpc GenerateClosedContractsSumReport(ReportRequest) returns (GrpcReport);
+}
+
+message GrpcReport {
+   int32 Number = 1;
+   string Name = 2;
+   string Description = 3;
+}
+
+message ReportRequest{
+	google.protobuf.Timestamp StartDate = 1;
+	google.protobuf.Timestamp EndDate = 2;
+	string TypeName = 3;
+}
+

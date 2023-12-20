@@ -14,9 +14,11 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\Animal.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\locality.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\LocalityCost.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\application.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\organization.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\report.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>

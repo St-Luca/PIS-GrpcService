@@ -15,12 +15,12 @@ public static class ApplicationMapper
         return new GrpcApplication
         {
             Id = dbApplication.Id,
-           // Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime((DateTime)dbApplication.Date),
+            Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime((DateTime)dbApplication.Date),
             ApplicantCategory = dbApplication.ApplicantCategory,
             AnimalDescription = dbApplication.AnimalDescription,
             Urgency = dbApplication.Urgency,
-            Locality = dbApplication.Locality,
-            Organization = dbApplication.Organization
+            Locality = dbApplication.Locality.Map(),
+            Organization = dbApplication.Organization.Map()
         };
     }
 
@@ -33,8 +33,8 @@ public static class ApplicationMapper
             ApplicantCategory = dbApplication.ApplicantCategory,
             AnimalDescription = dbApplication.AnimalDescription,
             Urgency = dbApplication.Urgency,
-            Locality = dbApplication.Locality,
-            Organization = dbApplication.Organization
+            Locality = dbApplication.Locality.Map(),
+            Organization = dbApplication.Organization.Map()
         };
     }
 }

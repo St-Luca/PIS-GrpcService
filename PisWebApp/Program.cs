@@ -1,8 +1,11 @@
 using Grpc.Net.Client;
 using static PIS_GrpcService.PIS_GrpcService.GrpcAnimalService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcApplicationService;
+using static PIS_GrpcService.PIS_GrpcService.GrpcLocalityCostService;
+using static PIS_GrpcService.PIS_GrpcService.GrpcLocalityService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcOrganizationService;
-//using static PIS_GrpcService.PisWebApp.Organizationer;
+using static PIS_GrpcService.PIS_GrpcService.GrpcReportService;
+//using static PIS_GrpcService.PIS_GrpcService.GrpcReportService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,42 @@ builder.Services.AddSingleton(provider =>
 {
     var channel = GrpcChannel.ForAddress("http://localhost:5114");
     return new GrpcAnimalServiceClient(channel);
+});
+
+builder.Services.AddSingleton(provider =>
+{
+    var channel = GrpcChannel.ForAddress("http://localhost:5114");
+    return new GrpcLocalityServiceClient(channel);
+});
+
+builder.Services.AddSingleton(provider =>
+{
+    var channel = GrpcChannel.ForAddress("http://localhost:5114");
+    return new GrpcLocalityCostServiceClient(channel);
+});
+
+builder.Services.AddSingleton(provider =>
+{
+    var channel = GrpcChannel.ForAddress("http://localhost:5114");
+    return new GrpcApplicationServiceClient(channel);
+});
+
+//builder.Services.AddSingleton(provider =>
+//{
+//    var channel = GrpcChannel.ForAddress("http://localhost:5114");
+//    return new GrpcMunicipalContractServiceClient(channel);
+//});
+
+//builder.Services.AddSingleton(provider =>
+//{
+//    var channel = GrpcChannel.ForAddress("http://localhost:5114");
+//    return new GrpcCaptureActServiceClient(channel);
+//});
+
+builder.Services.AddSingleton(provider =>
+{
+    var channel = GrpcChannel.ForAddress("http://localhost:5114");
+    return new GrpcReportServiceClient(channel);
 });
 
 var app = builder.Build();

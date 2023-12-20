@@ -14,7 +14,6 @@ public static class LocalityCostMapper
     {
         return new GrpcLocalityCost
         {
-            IdCost = dbLocalityCost.IdCost,
             IdContract = dbLocalityCost.IdContract,
             IdLocality = dbLocalityCost.IdLocality,
             Cost = dbLocalityCost.Cost
@@ -26,7 +25,6 @@ public static class LocalityCostMapper
     {
         return new LocalityCost
         {
-            IdCost = dbLocalityCost.IdCost,
             IdContract = dbLocalityCost.IdContract,
             IdLocality = dbLocalityCost.IdLocality,
             Cost = dbLocalityCost.Cost
