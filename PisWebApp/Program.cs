@@ -1,4 +1,5 @@
 using Grpc.Net.Client;
+using static PIS_GrpcService.PIS_GrpcService.GrpcAnimalService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcApplicationService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcOrganizationService;
 //using static PIS_GrpcService.PisWebApp.Organizationer;
@@ -14,11 +15,11 @@ builder.Services.AddSingleton(provider =>
     return new GrpcOrganizationServiceClient(channel);
 });
 
-//builder.Services.AddSingleton(provider =>
-//{
-//    var channel = GrpcChannel.ForAddress("http://localhost:5114");
-//    return new GrpcApplicationServiceClient(channel);
-//});
+builder.Services.AddSingleton(provider =>
+{
+    var channel = GrpcChannel.ForAddress("http://localhost:5114");
+    return new GrpcAnimalServiceClient(channel);
+});
 
 var app = builder.Build();
 
@@ -39,6 +40,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Organization}/{action=Index}/{id?}");
+    pattern: "{controller=Animal}/{action=Index}/{id?}");
 
 app.Run();

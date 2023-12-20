@@ -1,0 +1,26 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "Protos/organization.proto";
+
+option csharp_namespace = "PIS_GrpcService.PIS_GrpcService";
+
+service GrpcLocalityCostService {
+  rpc GetAll(Empty) returns (LocalityCostArray);
+  rpc Add(GrpcLocalityCost) returns (Empty);
+  rpc Get(IdRequest) returns (GrpcLocalityCost);
+  rpc Edit(GrpcLocalityCost) returns (Empty);
+  rpc Delete(IdRequest) returns (Empty);
+}
+
+
+message GrpcLocalityCost {
+	 int32 IdCost = 1;
+	 string IdContract = 2;
+	 string IdLocality = 3;
+	 string Cost = 4;
+}
+
+message LocalityCostArray {
+	repeated GrpcLocalityCost list = 1;
+}

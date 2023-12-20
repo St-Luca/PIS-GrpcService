@@ -3,6 +3,7 @@ using PIS_GrpcService.Services;
 //using PisWebApp.Services;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.PIS_GrpcService.Services;
+using PIS_GrpcService.Models;
 
 namespace PIS_GrpcService
 {
@@ -26,7 +27,9 @@ namespace PIS_GrpcService
 
             // Configure the HTTP request pipeline.
             app.MapGrpcService<OrganizationService>();
-            app.MapGrpcService<ApplicationService>();
+            app.MapGrpcService<LocalityCostService>();
+            app.MapGrpcService<AnimalService>();
+            //app.MapGrpcService<ApplicationService>();
 
             app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 

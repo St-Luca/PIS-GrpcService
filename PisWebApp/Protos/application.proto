@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "Protos/organization.proto";
+
+option csharp_namespace = "PIS_GrpcService.PIS_GrpcService";
+
+service GrpcApplicationService {
+  rpc GetAll(Empty) returns (ApplicationArray);
+  rpc Add(GrpcApplication) returns (Empty);
+  rpc Get(IdRequest) returns (GrpcApplication);
+  rpc Edit(GrpcApplication) returns (Empty);
+  rpc Delete(IdRequest) returns (Empty);
+}
+
+
+message GrpcApplication {
+	 int32 Id = 1;
+	 google.protobuf.Timestamp Date = 2;
+	 string ApplicantCategory = 3;
+	 string AnimalDescription = 4;
+	 string Urgency = 5;
+	 string Locality = 6;
+	 string Organization = 7;
+}
+
+message ApplicationArray {
+	repeated GrpcApplication list = 1;
+}

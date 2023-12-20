@@ -1,0 +1,41 @@
+﻿@model PIS_GrpcService.PIS_GrpcService.GrpcApplication
+
+@{
+    ViewData["Title"] = "Создать заявку";
+}
+
+<h4>Создать новую заявку:</h4>
+</hr>
+
+<form asp-action="Add">
+    <div class="form-group">
+        <label asp-for="Id"></label>
+        <input asp-for="Id" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Date"></label>
+        <input asp-for="Date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ApplicantCategory"></label>
+        <input asp-for="ApplicantCategory" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="AnimalDescription"></label>
+        <input asp-for="AnimalDescription" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Urgency"></label>
+        <input asp-for="Urgency" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Locality"></label>
+        <input asp-for="Locality" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Organization"></label>
+        <input asp-for="Organization" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Создать</button>
+</form>
+

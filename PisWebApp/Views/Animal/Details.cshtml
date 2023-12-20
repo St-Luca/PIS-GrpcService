@@ -1,0 +1,90 @@
+﻿@model PIS_GrpcService.PIS_GrpcService.GrpcAnimal
+
+@{
+    ViewData["Title"] = "Просмотр карточки животного";
+}
+
+<div>
+    <h4>Карточка животного</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sex)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sex)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Breed)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Breed)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Coat)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Coat)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ears)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ears)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Tail)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Tail)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CapturedAct)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CapturedAct)
+        </dd>
+         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mark)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mark)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdentChip)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdentChip)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Вернуться к реестру животных</a>
+</div>
+
+
