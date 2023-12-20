@@ -1,0 +1,75 @@
+﻿@model PIS_GrpcService.PIS_GrpcService.ContractArray
+
+@{
+    ViewData["Title"] = "Реестр контрактов";
+}
+
+<h1>Организации</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].ConcDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].EffDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].Performer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].Localities)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.List)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConcDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EffDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Performer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Localities)
+                </td>
+                <td style="text-align: center;">
+                    @*<a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;" title="Редактировать">
+                </a>
+                <a asp-action="Details" asp-controller="Organization" asp-route-id="@item.Id" style="text-decoration: none;" title="Просмотреть карточку организации">
+                </a>
+                <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;" title="Удалить">
+                </a>*@
+                    <a asp-action="Add" style="text-decoration: none;" title="Создать">Создать</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;" title="Редактировать">Редактировать</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;" title="Просмотреть карточку контракта">Просмотреть</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;" title="Удалить">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

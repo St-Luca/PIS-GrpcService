@@ -9,13 +9,19 @@
   <ItemGroup>
     <None Remove="Protos\Animal.proto" />
     <None Remove="Protos\application.proto" />
+    <None Remove="Protos\CaptureAct.proto" />
+    <None Remove="Protos\Contract.proto" />
+    <None Remove="Protos\locality.proto" />
     <None Remove="Protos\LocalityCost.proto" />
   </ItemGroup>
 
   <ItemGroup>
     <Protobuf Include="Protos\Animal.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\Contract.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\locality.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\LocalityCost.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\application.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\CaptureAct.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\organization.proto" GrpcServices="Server" />
   </ItemGroup>
 

@@ -1,0 +1,41 @@
+﻿@model PIS_GrpcService.PIS_GrpcService.LocalityArray
+
+@{
+    ViewData["Title"] = "Реестр городов";
+}
+
+<h1>Города</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.List[0].Name)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.List)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+
+                <td style="text-align: center;">
+                    <a asp-action="Add" style="text-decoration: none;" title="Создать">Создать</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;" title="Редактировать">Редактировать</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;" title="Просмотреть карточку города">Просмотреть</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;" title="Удалить">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
