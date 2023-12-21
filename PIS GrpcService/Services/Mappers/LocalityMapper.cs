@@ -5,9 +5,18 @@ namespace PIS_GrpcService.Services.Mappers;
 
 public static class LocalityMapper
 {
-    public static List<GrpcLocality> Map(this List<Locality> localities)
+    public static LocalityArray Map(this List<Locality> localities)
     {
-        return localities.Select(x => x.Map()).ToList();
+        var locs = localities.Select(x => x.Map()).ToList();
+        var res = new LocalityArray();
+        res.List.AddRange(locs);
+        return res;
+    }
+
+    public static List<Locality> Map(this LocalityArray localities)
+    {
+        return localities.List.Select(x => x.Map()).ToList();
+        
     }
 
     public static GrpcLocality Map(this Locality dbOrganization)

@@ -13,26 +13,26 @@ namespace PisWebApp.Controllers
             _grpcClient = grpcClient;
         }
     
-        [Route("Report/AppsPersentReport")]
+        [Route("Report/GenerateAppsPersentReport")]
         public async Task<IActionResult> GenerateAppsPersentReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string localityName)
         {
-            var report = await _grpcClient.GenerateAppsPercentReportAsync(new ReportRequest { StartDate = Timestamp.FromDateTime(startDate), EndDate = Timestamp.FromDateTime(endDate), TypeName = localityName });
+            var report = await _grpcClient.GenerateAppsPercentReportAsync(new ReportRequest { StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), TypeName = localityName });
 
             return View("Details", report);
         }
 
-        [Route("Report/ClosedAppsReport")]
+        [Route("Report/GenerateClosedAppsReport")]
         public async Task<IActionResult> GenerateClosedAppsReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string localityName)
         {
-            var report = await _grpcClient.GenerateClosedAppsReportAsync(new ReportRequest { StartDate = Timestamp.FromDateTime(startDate), EndDate = Timestamp.FromDateTime(endDate), TypeName = localityName });
+            var report = await _grpcClient.GenerateClosedAppsReportAsync(new ReportRequest { StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), TypeName = localityName });
 
             return View("Details", report);
         }
 
-        [Route("Report/ClosedContractsSumReport")]
+        [Route("Report/GenerateClosedContractsSumReport")]
         public async Task<IActionResult> GenerateClosedContractsSumReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string orgName)
         {
-            var report = await _grpcClient.GenerateClosedContractsSumReportAsync(new ReportRequest { StartDate = Timestamp.FromDateTime(startDate), EndDate = Timestamp.FromDateTime(endDate), TypeName = orgName });
+            var report = await _grpcClient.GenerateClosedContractsSumReportAsync(new ReportRequest { StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), TypeName = orgName });
 
             return View("Details", report);
         }

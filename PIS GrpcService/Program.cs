@@ -29,8 +29,8 @@ namespace PIS_GrpcService
             app.MapGrpcService<LocalityService>();
             app.MapGrpcService<OrganizationService>();
             app.MapGrpcService<LocalityCostService>();
-            //app.MapGrpcService<ContractService>();
-            //app.MapGrpcService<CaptureActService>();
+            app.MapGrpcService<ContractService>();
+            app.MapGrpcService<CaptureActService>();
             app.MapGrpcService<AnimalService>();
             //app.MapGrpcService<AnimalCardService>();
             app.MapGrpcService<ApplicationService>();

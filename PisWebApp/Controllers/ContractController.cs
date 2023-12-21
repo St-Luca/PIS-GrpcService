@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
+using static PIS_GrpcService.PIS_GrpcService.GrpcContractService;
 
-/*namespace PisWebApp.Controllers
+namespace PisWebApp.Controllers
 {
     public class ContractController : Controller
     {
@@ -105,4 +106,4 @@ using PIS_GrpcService.PIS_GrpcService;
             }
         }
     }
-}*/
+}

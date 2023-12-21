@@ -2,6 +2,7 @@
 
 import "Protos/organization.proto";
 import "Protos/locality.proto";
+import "Protos/LocalityCost.proto";
 import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "PIS_GrpcService.PIS_GrpcService";
@@ -20,7 +21,7 @@ message GrpcContract {
 	google.protobuf.Timestamp EffectiveDate = 3;
 	int32 Amount = 4;
 	GrpcOrganization Performer = 5;
-	LocalityArray Localities = 6;
+	LocalityCostArray LocalityCosts = 6;
 }
 
 message ContractsArray {

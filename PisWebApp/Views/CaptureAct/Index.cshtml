@@ -1,10 +1,10 @@
-﻿@*@model PIS_GrpcService.PIS_GrpcService.CaptureActArray
+﻿@model PIS_GrpcService.PIS_GrpcService.CaptureActArray
 
 @{
     ViewData["Title"] = "Реестр актов";
 }
 
-<h1>Организации</h1>
+<h1>Реестр актов отлова</h1>
 
 <table class="table">
     <thead>
@@ -23,9 +23,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.List[0].Performer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.List[0].Customer)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.List[0].Localities)
@@ -52,10 +49,7 @@
                     @Html.DisplayFor(modelItem => item.Performer)
                     </td>
                     <td>
-                    @Html.DisplayFor(modelItem => item.Customer)
-                    </td>
-                    <td>
-                    @Html.DisplayFor(modelItem => item.Localities)
+                    @Html.DisplayFor(modelItem => item.Locality)
                     </td>
                     <td style="text-align: center;">
                         <a asp-action="Add" style="text-decoration: none;" title="Создать">Создать</a> |
@@ -66,4 +60,4 @@
                 </tr>
         }
     </tbody>
-</table>*@
+</table>

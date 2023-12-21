@@ -5,7 +5,9 @@ namespace PIS_GrpcService.Models;
 public class LocalityCost
 {
     public int IdContract { get; set; }
-   // public MunicipalContract MunicipalContract { get; set; }
+
+    [ForeignKey("IdContract")]
+    public Contract Contract { get; set; }
     public int IdLocality { get; set; } 
 
     [ForeignKey("IdLocality")]

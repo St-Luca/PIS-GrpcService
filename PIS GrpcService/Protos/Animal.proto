@@ -24,7 +24,7 @@ message GrpcAnimal {
 	 string Color = 7;
 	 string Ears = 8;
 	 string Tail = 9;
-	 string CapturedAct = 10;
+	 int32 IdCapturedAct = 10;
 	 string Mark = 11;
 	 string IdentChip = 12;
 }

@@ -1,10 +1,13 @@
-﻿@*@model PIS_GrpcService.PIS_GrpcService.ContractArray
+﻿@model PIS_GrpcService.PIS_GrpcService.ContractsArray
 
 @{
     ViewData["Title"] = "Реестр контрактов";
 }
 
-<h1>Организации</h1>
+<h1>Реестр контрактов</h1>
+<div>
+<button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#dateModal1" onclick="openModal1(this)">Сделать отчет по закрытым контрактам</button>
+</div>
 
 <table class="table">
     <thead>
@@ -13,19 +16,16 @@
                 @Html.DisplayNameFor(model => model.List[0].Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.List[0].ConcDate)
+                @Html.DisplayNameFor(model => model.List[0].ConclusionDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.List[0].EffDate)
+                @Html.DisplayNameFor(model => model.List[0].EffectiveDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.List[0].Amount)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.List[0].Performer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.List[0].Customer)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.List[0].Localities)
@@ -40,19 +40,16 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ConcDate)
+                    @Html.DisplayFor(modelItem => item.ConclusionDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EffDate)
+                    @Html.DisplayFor(modelItem => item.EffectiveDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Amount)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Performer)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Customer)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Localities)
@@ -66,4 +63,65 @@
             </tr>
         }
     </tbody>
-</table>*@
+</table>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<div class="modal fade" id="dateModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Выберите дату</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="dateForm">
+                    <div class="form-group">
+                        <label for="locality">Выберите населенный пункт</label>
+                        <select class="form-control" id="locality">
+                            @foreach (var locality in Model.List.Select(item => item.Performer.OrgName).Distinct())
+                            {
+                                <option value="@locality">@locality</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">Начальная дата</label>
+                        <input type="date" class="form-control" id="startDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">Конечная дата</label>
+                        <input type="date" class="form-control" id="endDate">
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" onclick="submitDates1()">Показать отчет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //function openModal(element) {
+    //    var localityList = document.getElementById("localityList").value.split(",");
+    //}
+
+    function submitDates1() {
+
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+        var localityName = document.getElementById("locality").value;
+
+        window.location.href = '/Report/GenerateClosedContractsSumReport?startDate=' + startDate + ' &endDate=' + endDate + '&orgName=' + localityName;
+
+        $('#dateModal').modal('hide');
+    }
+</script>

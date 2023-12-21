@@ -5,6 +5,11 @@
 }
 
 <h1>Заявки</h1>
+<div>
+<button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#dateModal1" onclick="openModal1(this)">Сделать отчет по закрытым заявкам</button>
+<button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#dateModal2" onclick="openModal2(this)">Сделать отчет по проценту выполненных заявок</button>
+
+</div>
 
 <table class="table">
     <thead>
@@ -67,3 +72,122 @@
         }
     </tbody>
 </table>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<div class="modal fade" id="dateModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Выберите дату</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="dateForm">
+                    <div class="form-group">
+                        <label for="locality">Выберите населенный пункт</label>
+                        <select class="form-control" id="locality1">
+                            @foreach (var locality in Model.List.Select(item => item.Locality.Name).Distinct())
+                            {
+                                <option value="@locality">@locality</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">Начальная дата</label>
+                        <input type="date" class="form-control" id="startDate1">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">Конечная дата</label>
+                        <input type="date" class="form-control" id="endDate1">
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" onclick="submitDates1()">Показать отчет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //function openModal(element) {
+    //    var localityList = document.getElementById("localityList").value.split(",");
+    //}
+
+    function submitDates1() {
+
+        var startDate = document.getElementById("startDate1").value;
+        var endDate = document.getElementById("endDate1").value;
+        var localityName = document.getElementById("locality1").value;
+
+        window.location.href = '/Report/GenerateAppsPersentReport?startDate='+ startDate  + ' &endDate=' + endDate + '&localityName=' + localityName;
+
+        $('#dateModal1').modal('hide');
+    }
+</script>
+
+
+<div class="modal fade" id="dateModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Выберите дату</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="dateForm">
+                    <div class="form-group">
+                        <label for="locality">Выберите населенный пункт</label>
+                        <select class="form-control" id="locality2">
+                            @foreach (var locality in Model.List.Select(item => item.Locality.Name).Distinct())
+                            {
+                                <option value="@locality">@locality</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">Начальная дата</label>
+                        <input type="date" class="form-control" id="startDate2">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">Конечная дата</label>
+                        <input type="date" class="form-control" id="endDate2">
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" onclick="submitDates2()">Показать отчет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //function openModal(element) {
+    //    var localityList = document.getElementById("localityList").value.split(",");
+    //}
+
+    function submitDates2() {
+
+        var startDate = document.getElementById("startDate2").value;
+        var endDate = document.getElementById("endDate2").value;
+        var localityName = document.getElementById("locality2").value;
+
+        window.location.href = '/Report/GenerateClosedAppsReport?startDate=' + startDate + ' &endDate=' + endDate + '&localityName=' + localityName;
+
+        $('#dateModal2').modal('hide');
+    }
+</script>

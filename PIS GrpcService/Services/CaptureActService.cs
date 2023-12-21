@@ -6,7 +6,7 @@ using PIS_GrpcService.Services.Mappers;
 
 namespace PIS_GrpcService.PIS_GrpcService.Services;
 
-/*public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
+public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
 {
     private readonly ApplicationContext _dbContext;
     private readonly ILogger<CaptureActService> _logger;
@@ -16,19 +16,38 @@ namespace PIS_GrpcService.PIS_GrpcService.Services;
         _dbContext = dbContext;
     }
 
-    public override Task<CaptureActArray> GetAll(Empty e, ServerCallContext context)
+    public async override Task<CaptureActArray> GetAll(Empty e, ServerCallContext context)
     {
-        var response = _dbContext.CaptureActs.Select(o => o.Map()).ToList();
+       // var response = _dbContext.Acts.Select(o => o.Map()).ToList();
+        var acts = await _dbContext.Acts.ToListAsync();
+        //var localityIds = acts.Select(app => app.IdLocality).ToList();
+        var organizationIds = acts.Select(app => app.IdOrganization).ToList();
+        var animalIds = acts.Select(app => app.IdCapturedAnimal).ToList();
+        var localityIds = acts.Select(app => app.Locality.Id).ToList();
+        var applicationIds = acts.SelectMany(app => app.Applications.Select(l => l.Id)).ToList();
+
+        var animals = await _dbContext.Animals.Where(loc => animalIds.Contains(loc.Id)).ToListAsync();
+        var organizations = await _dbContext.Organizations.Where(org => organizationIds.Contains(org.Id)).ToListAsync();
+        var localities = await _dbContext.Localities.Where(org => localityIds.Contains(org.Id)).ToListAsync();
+        var applications = await _dbContext.Applications.Where(org => applicationIds.Contains(org.Id)).ToListAsync();
 
         var result = new CaptureActArray();
-        result.List.AddRange(response);
 
-        return Task.FromResult(result);
+        foreach (var act in acts)
+        {
+            act.CapturedAnimal = animals.FirstOrDefault(d => d.Id == act.IdCapturedAnimal);
+            act.Performer = organizations.FirstOrDefault(d => d.Id == act.IdOrganization);
+            //act.Localities = localities.Where(d => d.Id == act.IdOrganization); //loc cost
+            act.Applications = applications.Where(d => d.IdAct == act.Id).ToList();
+            result.List.Add(act.Map());
+        }
+
+        return result;
     }
 
     public override Task<GrpcCaptureAct?> Get(IdRequest request, ServerCallContext context)
     {
-        var response = _dbContext.CaptureAct.FirstOrDefault(o => o.Id == request.Id)?.Map();
+        var response = _dbContext.Acts.FirstOrDefault(o => o.Id == request.Id)?.Map();
 
         return Task.FromResult(response);
     }
@@ -52,11 +71,11 @@ namespace PIS_GrpcService.PIS_GrpcService.Services;
     {
         try
         {
-            var act = await _dbContext.CaptureAct.FindAsync(id.Id);
+            var act = await _dbContext.Acts.FindAsync(id.Id);
 
             if (act != null)
             {
-                _dbContext.Organizations.Remove(act);
+                _dbContext.Acts.Remove(act);
                 await _dbContext.SaveChangesAsync();
             }
 
@@ -72,9 +91,9 @@ namespace PIS_GrpcService.PIS_GrpcService.Services;
     public async override Task<Empty> Add(GrpcCaptureAct act, ServerCallContext context)
     {
         var entityCaptureAct = act?.Map();
-        _dbContext.Organizations.Add(entityCaptureAct);
+        _dbContext.Acts.Add(entityCaptureAct);
         await _dbContext.SaveChangesAsync();
 
         return new Empty();
     }
-}*/
+}

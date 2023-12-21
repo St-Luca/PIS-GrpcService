@@ -10,10 +10,14 @@ public class Application
     public string? AnimalDescription { get; set; } = string.Empty;
     public string? Urgency { get; set; } = string.Empty;
     public int IdLocality { get; set; }
+    public int IdAct { get; set; }
     public int IdOrganization { get; set; }
 
     [ForeignKey("IdLocality")]
     public Locality Locality { get; set; } = null!;
+
+    [ForeignKey("IdAct")]
+    public CaptureAct Act { get; set; } = null!;
 
     [ForeignKey("IdOrganization")]
     public Organization Organization { get; set; } = null!;

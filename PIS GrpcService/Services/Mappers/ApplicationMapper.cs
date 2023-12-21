@@ -5,9 +5,18 @@ namespace PIS_GrpcService.Services.Mappers;
 
 public static class ApplicationMapper
 {
-    public static List<GrpcApplication> Map(this List<Application> applications)
+    public static ApplicationArray Map(this List<Application> localities)
     {
-        return applications.Select(x => x.Map()).ToList();
+        var locs = localities.Select(x => x.Map()).ToList();
+        var res = new ApplicationArray();
+        res.List.AddRange(locs);
+        return res;
+    }
+
+    public static List<Application> Map(this ApplicationArray localities)
+    {
+        return localities.List.Select(x => x.Map()).ToList();
+
     }
 
     public static GrpcApplication Map(this Application dbApplication)
@@ -20,6 +29,7 @@ public static class ApplicationMapper
             AnimalDescription = dbApplication.AnimalDescription,
             Urgency = dbApplication.Urgency,
             Locality = dbApplication.Locality.Map(),
+            //Act = dbApplication.Act.Map(),
             Organization = dbApplication.Organization.Map()
         };
     }
@@ -34,6 +44,7 @@ public static class ApplicationMapper
             AnimalDescription = dbApplication.AnimalDescription,
             Urgency = dbApplication.Urgency,
             Locality = dbApplication.Locality.Map(),
+            //Act = dbApplication.Act.Map(),
             Organization = dbApplication.Organization.Map()
         };
     }

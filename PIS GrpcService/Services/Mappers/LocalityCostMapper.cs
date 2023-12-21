@@ -5,9 +5,18 @@ namespace PIS_GrpcService.Services.Mappers;
 
 public static class LocalityCostMapper
 {
-    public static List<GrpcLocalityCost> Map(this List<LocalityCost> localityCosts)
+    public static LocalityCostArray Map(this List<LocalityCost> localities)
     {
-        return localityCosts.Select(x => x.Map()).ToList();
+        var locs = localities.Select(x => x.Map()).ToList();
+        var res = new LocalityCostArray();
+        res.List.AddRange(locs);
+        return res;
+    }
+
+    public static List<LocalityCost> Map(this LocalityCostArray localities)
+    {
+        return localities.List.Select(x => x.Map()).ToList();
+
     }
 
     public static GrpcLocalityCost Map(this LocalityCost dbLocalityCost)

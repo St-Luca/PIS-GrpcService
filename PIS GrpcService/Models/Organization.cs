@@ -12,4 +12,5 @@ public class Organization
     public string OrgType { get; set; } = string.Empty;
     public string OrgAttribute { get; set; } = string.Empty;
     public List<Application> Applications { get; set; }
+    public List<Contract> Contracts { get; set; }
 }

@@ -6,7 +6,7 @@ using PIS_GrpcService.Services.Mappers;
 
 namespace PIS_GrpcService.PIS_GrpcService.Services;
 
-/*public class ContractService : GrpcContractService.GrpcContractServiceBase
+public class ContractService : GrpcContractService.GrpcContractServiceBase
 {
     private readonly ApplicationContext _dbContext;
     private readonly ILogger<ContractService> _logger;
@@ -16,11 +16,11 @@ namespace PIS_GrpcService.PIS_GrpcService.Services;
         _dbContext = dbContext;
     }
 
-    public override Task<ContractArray> GetAll(Empty e, ServerCallContext context)
+    public override Task<ContractsArray> GetAll(Empty e, ServerCallContext context)
     {
-        var response = _dbContext.Contract.Select(o => o.Map()).ToList();
+        var response = _dbContext.Contracts.Select(o => o.Map()).ToList();
 
-        var result = new ContractArray();
+        var result = new ContractsArray();
         result.List.AddRange(response);
 
         return Task.FromResult(result);
@@ -28,7 +28,7 @@ namespace PIS_GrpcService.PIS_GrpcService.Services;
 
     public override Task<GrpcContract?> Get(IdRequest request, ServerCallContext context)
     {
-        var response = _dbContext.Contract.FirstOrDefault(o => o.Id == request.Id)?.Map();
+        var response = _dbContext.Contracts.FirstOrDefault(o => o.Id == request.Id)?.Map();
 
         return Task.FromResult(response);
     }
@@ -52,11 +52,11 @@ namespace PIS_GrpcService.PIS_GrpcService.Services;
     {
         try
         {
-            var contract = await _dbContext.Contract.FindAsync(id.Id);
+            var contract = await _dbContext.Contracts.FindAsync(id.Id);
 
             if (contract != null)
             {
-                _dbContext.Organizations.Remove(contract);
+                _dbContext.Contracts.Remove(contract);
                 await _dbContext.SaveChangesAsync();
             }
 
@@ -72,9 +72,9 @@ namespace PIS_GrpcService.PIS_GrpcService.Services;
     public async override Task<Empty> Add(GrpcContract contract, ServerCallContext context)
     {
         var entityContract = contract?.Map();
-        _dbContext.Contract.Add(entityContract);
+        _dbContext.Contracts.Add(entityContract);
         await _dbContext.SaveChangesAsync();
 
         return new Empty();
     }
-}*/
+}

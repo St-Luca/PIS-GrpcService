@@ -6,15 +6,15 @@ namespace PIS_GrpcService.Models
     public class Contract
     {
         public int Id { get; set; }
-        public DateTime ConcDate { get; set; }
-        public DateTime EffDate { get; set; }
+        public DateTime ConclusionDate { get; set; }
+        public DateTime EffectiveDate { get; set; }
         public int Amount { get; set; }
         public int IdOrganization { get; set; }
 
         [ForeignKey("IdOrganization")]
         public Organization Performer { get; set; } 
 
-        [ForeignKey("IdLocality")]
-        public List<Locality> Localities { get; set; } 
+        public List<LocalityCost> LocalityCosts { get; set; }
+        public List<CaptureAct> CaptureActs { get; set; }
     }
 }

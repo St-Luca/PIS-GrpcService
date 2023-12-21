@@ -21,10 +21,9 @@ message GrpcCaptureAct {
 	google.protobuf.Timestamp ActDate = 2;
 	GrpcAnimal CapturedAnimal = 3;
 	int32 Amount = 4;
-	string Performer = 5;
-	GrpcOrganization Customer = 6;
-	LocalityArray Localities = 7;
-	ApplicationArray Applications = 8;
+	GrpcOrganization Performer = 5;
+	GrpcLocality Locality = 6;
+	ApplicationArray Applications = 7;
 }
 
 message CaptureActArray {
