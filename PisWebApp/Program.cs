@@ -80,6 +80,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=CaptureAct}/{action=Index}/{id?}");
+    pattern: "{controller=Animal}/{action=Index}/{id?}");
 
 app.Run();

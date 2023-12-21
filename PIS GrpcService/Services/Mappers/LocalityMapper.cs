@@ -24,7 +24,7 @@ public static class LocalityMapper
         return new GrpcLocality
         {
             Id = dbOrganization.Id,
-            Name = dbOrganization.Name
+            Name = dbOrganization.Name,
         };
     }
 

@@ -16,14 +16,26 @@ public class ContractService : GrpcContractService.GrpcContractServiceBase
         _dbContext = dbContext;
     }
 
-    public override Task<ContractsArray> GetAll(Empty e, ServerCallContext context)
+    public async override Task<ContractsArray> GetAll(Empty e, ServerCallContext context)
     {
-        var response = _dbContext.Contracts.Select(o => o.Map()).ToList();
+        var contracts = await _dbContext.Contracts.ToListAsync();
+        var localityCosts = _dbContext.LocalityCosts
+        .Where(lc => contracts.Any(c => c.LocalityCosts.Any(l => l.IdLocality == lc.IdLocality)))
+        .ToList();
+        var organizationIds = contracts.Select(app => app.IdOrganization).ToList();
+
+        var organizations = await _dbContext.Organizations.Where(org => organizationIds.Contains(org.Id)).ToListAsync();
 
         var result = new ContractsArray();
-        result.List.AddRange(response);
 
-        return Task.FromResult(result);
+        foreach (var contract in contracts)
+        {
+            contract.LocalityCosts = localityCosts.Where(lc => lc.IdContract == contract.Id).ToList();
+            contract.Performer = organizations.FirstOrDefault(d => d.Id == contract.IdOrganization);
+            result.List.Add(contract.Map());
+        }
+
+        return result;
     }
 
     public override Task<GrpcContract?> Get(IdRequest request, ServerCallContext context)

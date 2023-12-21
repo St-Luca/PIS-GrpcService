@@ -9,9 +9,6 @@ namespace PIS_GrpcService.Models
         public DateTime ActDate { get; set; }
         public int IdCapturedAnimal { get; set; }
 
-        [ForeignKey("IdCapturedAnimal")]
-        public Animal CapturedAnimal { get; set; }
-
         public int IdContract { get; set; }
 
         [ForeignKey("IdContract")]
@@ -20,7 +17,10 @@ namespace PIS_GrpcService.Models
         public int IdOrganization { get; set; }
 
         [ForeignKey("IdOrganization")]
-        public Organization Performer { get; set; } 
+        public Organization Performer { get; set; }
+        public int IdLocality { get; set; }
+
+        [ForeignKey("IdLocality")]
         public Locality Locality { get; set; }
         public List<Application> Applications { get; set; }
         public List<Animal> Animals { get; set; }

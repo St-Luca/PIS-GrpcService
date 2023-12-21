@@ -16,11 +16,11 @@ public static class CaptureActMapper
         {
             Id = dbCaptureAct.Id,
             ActDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime((DateTime)dbCaptureAct.ActDate),
-            CapturedAnimal = dbCaptureAct.CapturedAnimal.Map(),
             Amount = dbCaptureAct.Amount,
             Performer = dbCaptureAct.Performer.Map(),
-            //Localities = dbCaptureAct.Localities.Map(),
-            Applications = dbCaptureAct.Applications.Map()
+            Locality = dbCaptureAct.Locality.Map(),
+            Applications = dbCaptureAct.Applications.Map(),
+            Animals = new AnimalArray()//dbCaptureAct.Animals.Map()
         };
     }
 
@@ -30,11 +30,11 @@ public static class CaptureActMapper
         {
             Id = dbCaptureAct.Id,
             ActDate = dbCaptureAct.ActDate.ToDateTime(),
-            CapturedAnimal = dbCaptureAct.CapturedAnimal.Map(),
             Amount = dbCaptureAct.Amount,
             Performer = dbCaptureAct.Performer.Map(),
             Locality = dbCaptureAct.Locality.Map(),
-            Applications = dbCaptureAct.Applications.Map()
+            Applications = dbCaptureAct.Applications.Map(),
+            Animals = new List<Animal>()//dbCaptureAct.Animals.Map()
         };
     }
 }

@@ -79,8 +79,10 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<Animal>().HasData(animal1);
 
         Contract contract = new Contract { Id = 1, ConclusionDate = DateTime.UtcNow, EffectiveDate = DateTime.UtcNow, Amount = 12000, IdOrganization = o1.Id };
-        CaptureAct act1 = new CaptureAct { Id = 1, ActDate = DateTime.UtcNow, IdOrganization = o1.Id, Amount = 10, IdCapturedAnimal = animal1.Id };
+        CaptureAct act1 = new CaptureAct { Id = 1, ActDate = DateTime.UtcNow, IdOrganization = o1.Id, Amount = 10, IdCapturedAnimal = animal1.Id, IdContract = contract.Id, IdLocality = loc1.Id};
+
         modelBuilder.Entity<CaptureAct>().HasData(act1);
+        modelBuilder.Entity<Contract>().HasData(contract);
 
         Application app1 = new Application
         {

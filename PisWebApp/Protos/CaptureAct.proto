@@ -19,7 +19,7 @@ service GrpcCaptureActService {
 message GrpcCaptureAct {
 	int32 Id = 1;
 	google.protobuf.Timestamp ActDate = 2;
-	GrpcAnimal CapturedAnimal = 3;
+	AnimalArray Animals = 3;
 	int32 Amount = 4;
 	GrpcOrganization Performer = 5;
 	GrpcLocality Locality = 6;

@@ -2,6 +2,7 @@
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
+using PIS_GrpcService.Models;
 using PIS_GrpcService.Services.Mappers;
 
 namespace PIS_GrpcService.PIS_GrpcService.Services;
@@ -18,27 +19,29 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
 
     public async override Task<CaptureActArray> GetAll(Empty e, ServerCallContext context)
     {
-       // var response = _dbContext.Acts.Select(o => o.Map()).ToList();
-        var acts = await _dbContext.Acts.ToListAsync();
-        //var localityIds = acts.Select(app => app.IdLocality).ToList();
-        var organizationIds = acts.Select(app => app.IdOrganization).ToList();
-        var animalIds = acts.Select(app => app.IdCapturedAnimal).ToList();
-        var localityIds = acts.Select(app => app.Locality.Id).ToList();
-        var applicationIds = acts.SelectMany(app => app.Applications.Select(l => l.Id)).ToList();
+        var acts = await _dbContext.Acts
+            .Include(a => a.Animals)
+            .Include(a => a.Applications)
+            .ToListAsync();
 
-        var animals = await _dbContext.Animals.Where(loc => animalIds.Contains(loc.Id)).ToListAsync();
-        var organizations = await _dbContext.Organizations.Where(org => organizationIds.Contains(org.Id)).ToListAsync();
-        var localities = await _dbContext.Localities.Where(org => localityIds.Contains(org.Id)).ToListAsync();
-        var applications = await _dbContext.Applications.Where(org => applicationIds.Contains(org.Id)).ToListAsync();
+        var organizationIds = acts.Select(app => app.IdOrganization).ToList();
+        var localityIds = acts.Select(app => app.IdLocality).ToList();
+
+        var organizations = await _dbContext.Organizations
+            .Where(org => organizationIds.Contains(org.Id))
+            .ToListAsync();
+
+        var localities = await _dbContext.Localities
+            .Where(loc => localityIds.Contains(loc.Id))
+            .ToListAsync();
 
         var result = new CaptureActArray();
 
         foreach (var act in acts)
         {
-            act.CapturedAnimal = animals.FirstOrDefault(d => d.Id == act.IdCapturedAnimal);
             act.Performer = organizations.FirstOrDefault(d => d.Id == act.IdOrganization);
-            //act.Localities = localities.Where(d => d.Id == act.IdOrganization); //loc cost
-            act.Applications = applications.Where(d => d.IdAct == act.Id).ToList();
+            act.Locality = localities.FirstOrDefault(d => d.Id == act.IdLocality);
+            act.Locality.LocalityCosts = new List<LocalityCost> { new LocalityCost { IdContract = act.IdContract, IdLocality = act.IdLocality, Cost = 50 } };
             result.List.Add(act.Map());
         }
 
