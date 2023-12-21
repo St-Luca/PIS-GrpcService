@@ -31,50 +31,62 @@ public class ReportService : GrpcReportService.GrpcReportServiceBase
         .Where(a => a.Date >= reportRequest.StartDate.ToDateTime() &&
         a.Date <= reportRequest.EndDate.ToDateTime() && a.Locality.Name == reportRequest.TypeName).ToList();
 
+        decimal percentage = ((decimal)allDoneAppsOfActs.Count / allDoneApps.Count) * 100;
         //var report =  GrpcReport().GenerateAppsPercentReport(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.TypeName);
         return new GrpcReport{ 
               Number = 1,
               Name = "Отчет по проценту выполненных заявок в населенном пункте",
               Description = $"За период с {reportRequest.StartDate.ToDateTime().Date} по {reportRequest.EndDate.ToDateTime().Date} в нас. пункте {reportRequest.TypeName} " +
-              $"было выполнено {allDoneAppsOfActs.Count/ allDoneApps.Count} заявок"
+              $"было выполнено {percentage}% заявок"
             };
     }
 
     public override async Task<GrpcReport> GenerateClosedAppsReport(ReportRequest reportRequest, ServerCallContext context)
-    { 
-        var allActs = _dbContext.Acts;
+    {
+        var allActs = _dbContext.Acts
+            .Include(a => a.Applications)
+            .ThenInclude(app => app.Act.Contract.LocalityCosts);
 
-        var allDoneActs = allActs.Where(a => a.ActDate >= reportRequest.StartDate.ToDateTime() &&
-        a.ActDate <= reportRequest.EndDate.ToDateTime() && a.Locality.Name == reportRequest.TypeName).ToList();
-
-        var allDoneApplications = allDoneActs
-            .SelectMany(act => act.Applications)
+        var allDoneActs = allActs
+            .Where(a => a.ActDate >= reportRequest.StartDate.ToDateTime() &&
+                        a.ActDate <= reportRequest.EndDate.ToDateTime() &&
+                        a.Locality.Name == reportRequest.TypeName)
             .ToList();
 
         int totalCost = 0;
 
-        foreach (var application in allDoneApplications)
+        foreach (var act in allDoneActs)
         {
-            var contract = application.Act?.Contract; 
-            if (contract != null)
+            foreach (var application in act.Applications)
             {
-                // Если контракт есть, добавляем стоимость 1 отлова к общей сумме
-                totalCost += contract.LocalityCosts.FirstOrDefault(lc => lc.IdContract == contract.Id && lc.Locality == application.Act.Locality).Cost;
+                var contract = application.Act?.Contract;
+                var locality = application.Act?.Locality;
+
+                if (contract != null && locality != null)
+                {
+                    var localityCost = contract.LocalityCosts.FirstOrDefault(lc => lc.IdLocality == locality.Id);
+                    if (localityCost != null)
+                    {
+                        // Добавляем стоимость заявки к общей сумме
+                        totalCost += localityCost.Cost;
+                    }
+                }
             }
         }
 
-        //var report =  GrpcReport().GenerateAppsPercentReport(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.TypeName);
         return new GrpcReport
         {
             Number = 1,
             Name = "Отчет по стоимости закрытых заявок в населенном пункте за период",
             Description = $"За период с {reportRequest.StartDate.ToDateTime().Date} по {reportRequest.EndDate.ToDateTime().Date} в нас. пункте {reportRequest.TypeName} " +
-              $"было закрыто заявок на сумму: {totalCost}"
+                $"было закрыто заявок на сумму: {totalCost}"
         };
     }
 
+
     public override async Task<GrpcReport> GenerateClosedContractsSumReport(ReportRequest reportRequest, ServerCallContext context)
     {
+        //var contracts = new ContractService.GetAllAsync();
         var contracts = _dbContext.Contracts;
 
         var allDoneContracts = contracts.Where(a => a.EffectiveDate >= reportRequest.StartDate.ToDateTime() &&

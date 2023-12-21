@@ -18,19 +18,19 @@ public class ContractService : GrpcContractService.GrpcContractServiceBase
 
     public async override Task<ContractsArray> GetAll(Empty e, ServerCallContext context)
     {
-        var contracts = await _dbContext.Contracts.ToListAsync();
-        var localityCosts = _dbContext.LocalityCosts
-        .Where(lc => contracts.Any(c => c.LocalityCosts.Any(l => l.IdLocality == lc.IdLocality)))
-        .ToList();
-        var organizationIds = contracts.Select(app => app.IdOrganization).ToList();
+        var contracts = await _dbContext.Contracts
+            .Include(c => c.LocalityCosts) // Загрузка связанных LocalityCosts для каждого контракта
+            .ToListAsync();
 
-        var organizations = await _dbContext.Organizations.Where(org => organizationIds.Contains(org.Id)).ToListAsync();
+        var organizationIds = contracts.Select(app => app.IdOrganization).ToList();
+        var organizations = await _dbContext.Organizations
+            .Where(org => organizationIds.Contains(org.Id))
+            .ToListAsync();
 
         var result = new ContractsArray();
 
         foreach (var contract in contracts)
         {
-            contract.LocalityCosts = localityCosts.Where(lc => lc.IdContract == contract.Id).ToList();
             contract.Performer = organizations.FirstOrDefault(d => d.Id == contract.IdOrganization);
             result.List.Add(contract.Map());
         }

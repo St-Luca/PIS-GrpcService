@@ -83,12 +83,14 @@ public class ApplicationContext : DbContext
 
         modelBuilder.Entity<CaptureAct>().HasData(act1);
         modelBuilder.Entity<Contract>().HasData(contract);
+        CaptureAct act2 = new CaptureAct { Id = 2, ActDate = new DateTime(2023, 10, 01).ToUniversalTime(), IdOrganization = o2.Id, Amount = 15, IdCapturedAnimal = animal1.Id, IdContract = contract.Id, IdLocality = 3 };
+
 
         Application app1 = new Application
         {
             Id = 1,
             AnimalDescription = "Gtc",
-            Date = DateTime.UtcNow,
+            Date = new DateTime(2023,01,01).ToUniversalTime(),
             ApplicantCategory = "app cat",
             IdLocality = loc1.Id,
             IdOrganization = o1.Id,
@@ -100,11 +102,11 @@ public class ApplicationContext : DbContext
         {
             Id = 2,
             AnimalDescription = "Animal2",
-            Date = DateTime.UtcNow,
+            Date = new DateTime(2023, 10, 01).ToUniversalTime(),
             ApplicantCategory = "app cat",
             IdLocality = loc2.Id,
             IdOrganization = o1.Id,
-            IdAct = act1.Id,
+            IdAct = 10,
             Urgency = "urg"
         };
 
@@ -112,14 +114,29 @@ public class ApplicationContext : DbContext
         {
             Id = 3,
             AnimalDescription = "Animal3",
-            Date = DateTime.UtcNow,
+            Date = new DateTime(2023, 12, 01).ToUniversalTime(),
             ApplicantCategory = "app cat",
             IdLocality = loc3.Id,
             IdOrganization = o1.Id,
-            IdAct = act1.Id,
+            IdAct = act2.Id,
             Urgency = "urg"
         };
         modelBuilder.Entity<Application>().HasData(app1, app2, app3);
+
+        Organization o3 = new Organization { Id = 3, OrgName = "TIU", INN = "21231", KPP = "12313131" };
+        modelBuilder.Entity<Organization>().HasData(o3);
+
+        LocalityCost locCost2 = new LocalityCost { IdContract = 1, IdLocality = 2, Cost = 11000 };
+        LocalityCost locCost3 = new LocalityCost { IdContract = 2, IdLocality = 3, Cost = 10000 };
+        modelBuilder.Entity<LocalityCost>().HasData(locCost2, locCost3);
+
+        Animal animal2 = new Animal { Id = 2, Category = "Кошка", Sex = "Самка", Breed = "Сиамская", Size = "Большая", Coat = "Густая", Color = "Коричневая", Ears = "Коричневая", Tail = "Короткий", IdCaptureAct = 1, Mark = "132", IdentChip = "222" };
+        modelBuilder.Entity<Animal>().HasData(animal2);
+
+        Contract contract2 = new Contract { Id = 2, ConclusionDate = new DateTime(2023, 01, 01).ToUniversalTime(), EffectiveDate = DateTime.UtcNow, Amount = 10000, IdOrganization = o1.Id };
+
+        modelBuilder.Entity<CaptureAct>().HasData(act2);
+        modelBuilder.Entity<Contract>().HasData(contract2);
     }
 
 }

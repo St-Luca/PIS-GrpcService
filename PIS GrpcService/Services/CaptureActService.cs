@@ -26,6 +26,7 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
 
         var organizationIds = acts.Select(app => app.IdOrganization).ToList();
         var localityIds = acts.Select(app => app.IdLocality).ToList();
+        var contractIds = acts.Select(app => app.IdContract).ToList();
 
         var organizations = await _dbContext.Organizations
             .Where(org => organizationIds.Contains(org.Id))
@@ -35,13 +36,27 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
             .Where(loc => localityIds.Contains(loc.Id))
             .ToListAsync();
 
+        var contracts = await _dbContext.Contracts
+            .Where(contract => contractIds.Contains(contract.Id))
+            .ToListAsync();
+
         var result = new CaptureActArray();
 
         foreach (var act in acts)
         {
             act.Performer = organizations.FirstOrDefault(d => d.Id == act.IdOrganization);
             act.Locality = localities.FirstOrDefault(d => d.Id == act.IdLocality);
-            act.Locality.LocalityCosts = new List<LocalityCost> { new LocalityCost { IdContract = act.IdContract, IdLocality = act.IdLocality, Cost = 50 } };
+            act.Contract = contracts.FirstOrDefault(c => c.Id == act.IdContract);
+
+
+            // Включаем список заявок (Applications) для каждого акта (Act)
+            var applications = await _dbContext.Applications
+    .Include(a => a.Locality)
+    .ToListAsync();
+
+            act.Applications = applications;
+
+
             result.List.Add(act.Map());
         }
 
