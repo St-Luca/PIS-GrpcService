@@ -22,11 +22,11 @@
     </div>
     <div class="form-group">
         <label asp-for="Performer"></label>
-        <input asp-for="Performer" class="form-control" />
+        <select asp-for="Performer" class="form-control" asp-items="ViewBag.orgId"/>
     </div>
     <div class="form-group">
         <label asp-for="Locality"></label>
-        <input asp-for="Locality" class="form-control" />
+        <select asp-for="Locality" class="form-control" asp-items="ViewBag.locId"/>
     </div>
     <button type="submit" class="btn btn-primary">Создать</button>
 </form>

@@ -5,15 +5,23 @@ using PIS_GrpcService;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcCaptureActService;
+using static PIS_GrpcService.PIS_GrpcService.GrpcOrganizationService;
+using static PIS_GrpcService.PIS_GrpcService.GrpcLocalityService;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PisWebApp.Controllers
 {
     public class CaptureActController : Controller
     {
         private readonly GrpcCaptureActServiceClient _grpcClient;
-        public CaptureActController(GrpcCaptureActServiceClient grpcClient)
+        private readonly GrpcOrganizationServiceClient _organizationClient;
+        private readonly GrpcLocalityServiceClient _localityCleint;
+
+        public CaptureActController(GrpcCaptureActServiceClient grpcClient, GrpcOrganizationServiceClient grpcOrganizationServiceClient, GrpcLocalityServiceClient grpcLocalityServiceClient)
         {
             _grpcClient = grpcClient;
+            _organizationClient = grpcOrganizationServiceClient;
+            _localityCleint = grpcLocalityServiceClient;
         }
 
         // GET: CaptureActController
@@ -35,6 +43,12 @@ namespace PisWebApp.Controllers
         // GET: CaptureActController/Create
         public async Task<IActionResult> Add()
         {
+            var organizations = await _organizationClient.GetAllAsync(new Empty());
+            var localities = await _localityCleint.GetAllAsync(new Empty());
+
+            ViewBag.orgId = new SelectList(organizations.List, "Id", "Id");
+            ViewBag.locCostId = new SelectList(localities.List, "Id", "Id");
+
             return View();
         }
 
@@ -68,6 +82,11 @@ namespace PisWebApp.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var act = await _grpcClient.GetAsync(new IdRequest { Id = id });
+            var organizations = await _organizationClient.GetAllAsync(new Empty());
+            var localities = await _localityCleint.GetAllAsync(new Empty());
+
+            ViewBag.orgId = new SelectList(organizations.List, "Id", "Id");
+            ViewBag.locCostId = new SelectList(localities.List, "Id", "Id");
 
             return View(act);
         }

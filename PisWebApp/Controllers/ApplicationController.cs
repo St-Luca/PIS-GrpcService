@@ -5,15 +5,23 @@ using PIS_GrpcService;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcApplicationService;
+using static PIS_GrpcService.PIS_GrpcService.GrpcOrganizationService;
+using static PIS_GrpcService.PIS_GrpcService.GrpcLocalityService;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PisWebApp.Controllers
 {
     public class ApplicationController : Controller
     {
         private readonly GrpcApplicationServiceClient _grpcClient;
-        public ApplicationController(GrpcApplicationServiceClient grpcClient)
+        private readonly GrpcOrganizationServiceClient _grpcOrganizationClient;
+        private readonly GrpcLocalityServiceClient _grpcLocalityClient;
+
+        public ApplicationController(GrpcApplicationServiceClient grpcClient, GrpcOrganizationServiceClient grpcOrganizationServiceClient, GrpcLocalityServiceClient grpcLocalityServiceClient)
         {
             _grpcClient = grpcClient;
+            _grpcOrganizationClient = grpcOrganizationServiceClient;
+            _grpcLocalityClient = grpcLocalityServiceClient;
         }
 
         // GET: ApplicationController
@@ -35,6 +43,12 @@ namespace PisWebApp.Controllers
         // GET: ApplicationController/Create
         public async Task<IActionResult> Add()
         {
+            var organizations = await _grpcOrganizationClient.GetAllAsync(new Empty());
+            var localities = await _grpcLocalityClient.GetAllAsync(new Empty());
+
+            ViewBag.orgId = new SelectList(organizations.List, "Id", "Id");
+            ViewBag.locId = new SelectList(localities.List, "Id", "Id");
+
             return View();
         }
 
@@ -68,6 +82,11 @@ namespace PisWebApp.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var application = await _grpcClient.GetAsync(new IdRequest { Id = id });
+            var organizations = await _grpcOrganizationClient.GetAllAsync(new Empty());
+            var localities = await _grpcLocalityClient.GetAllAsync(new Empty());
+
+            ViewBag.orgId = new SelectList(organizations.List, "Id", "Id");
+            ViewBag.locId = new SelectList(localities.List, "Id", "Id");
 
             return View(application);
         }
