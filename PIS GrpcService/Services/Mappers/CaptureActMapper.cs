@@ -33,7 +33,7 @@ public static class CaptureActMapper
             Amount = dbCaptureAct.Amount,
             Performer = dbCaptureAct.Performer.MapFromGrpc(),
             Locality = dbCaptureAct.Locality.MapFromGrpc(),
-            Applications = dbCaptureAct.Applications.MapFromGrpc(),
+            Applications = dbCaptureAct.Applications.MapFromGrpc(dbCaptureAct.Performer.MapFromGrpc(), dbCaptureAct.Locality.MapFromGrpc()),
             Animals = new List<Animal>()//dbCaptureAct.Animals.Map()
         };
     }

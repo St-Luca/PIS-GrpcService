@@ -13,9 +13,9 @@ public static class ApplicationMapper
         return res;
     }
 
-    public static List<Application> MapFromGrpc(this ApplicationArray localities)
+    public static List<Application> MapFromGrpc(this ApplicationArray localities, Organization org, Locality loc)
     {
-        return localities.List.Select(x => x.MapFromGrpc()).ToList();
+        return localities.List.Select(x => x.MapFromGrpc(loc, org)).ToList();
 
     }
 
@@ -28,13 +28,13 @@ public static class ApplicationMapper
             ApplicantCategory = dbApplication.ApplicantCategory,
             AnimalDescription = dbApplication.AnimalDescription,
             Urgency = dbApplication.Urgency,
-            Locality = dbApplication.Locality.MapToGrpc(),
+            IdLocality = dbApplication.Locality.Id,
             //Act = dbApplication.Act.Map(),
-            Organization = dbApplication.Organization.MapToGrpc()
+            IdOrganization = dbApplication.Organization.Id
         };
     }
 
-    public static Application MapFromGrpc(this GrpcApplication dbApplication)
+    public static Application MapFromGrpc(this GrpcApplication dbApplication, Locality loc, Organization org)
     {
         return new Application
         {
@@ -43,9 +43,9 @@ public static class ApplicationMapper
             ApplicantCategory = dbApplication.ApplicantCategory,
             AnimalDescription = dbApplication.AnimalDescription,
             Urgency = dbApplication.Urgency,
-            Locality = dbApplication.Locality.MapFromGrpc(),
+            Locality = loc,
             //Act = dbApplication.Act.Map(),
-            Organization = dbApplication.Organization.MapFromGrpc()
+            Organization = org
         };
     }
 }

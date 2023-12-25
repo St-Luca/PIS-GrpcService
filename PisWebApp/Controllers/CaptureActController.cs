@@ -36,7 +36,7 @@ namespace PisWebApp.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var act = await _grpcClient.GetAsync(new IdRequest { Id = id });
-
+            
             return View(act);
         }
 

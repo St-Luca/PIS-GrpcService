@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.DataAccess.Repositories;
@@ -7,6 +8,7 @@ using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.PIS_GrpcService.Services;
 using PIS_GrpcService.Services.Mappers;
 using System.Net.Sockets;
+using Empty = PIS_GrpcService.PIS_GrpcService.Empty;
 
 namespace PIS_GrpcService.Services;
 
@@ -48,18 +50,26 @@ public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceB
         return result;
     }
 
-    public override Task<GrpcApplication?> Get(IdRequest id, ServerCallContext context)
+    public async override Task<GrpcApplication?> Get(IdRequest id, ServerCallContext context)
     {
-        var response = repository.Get(id.Id)?.MapToGrpc();
+        var response = repository.Get(id.Id);
+        var locality = localitiesRepository.Get(response.IdLocality);
+        var organization = organizationsRepository.Get(response.IdOrganization);
 
-        return Task.FromResult(response);
+        response.Locality = locality;
+        response.Organization = organization;
+        
+        return response.MapToGrpc();
     }
 
     public override Task<Empty> Edit(GrpcApplication application, ServerCallContext context)
     {
+        var loc = new Locality { Id = application.Id };
+        var org = new Organization { Id = application.Id };
+        
         try
         {
-            repository.Edit(application.MapFromGrpc());
+            repository.Edit(application.MapFromGrpc(loc, org));
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -91,7 +101,10 @@ public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceB
 
     public async override Task<Empty> Add(GrpcApplication application, ServerCallContext context)
     {
-        var entityApplication = application?.MapFromGrpc();
+        var loc = new Locality();
+        var org = new Organization();
+
+        var entityApplication = application?.MapFromGrpc(loc, org);
 
         if (entityApplication != null)
         {

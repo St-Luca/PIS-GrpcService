@@ -30,10 +30,10 @@
                 @Html.DisplayNameFor(model => model.List[0].Urgency)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.List[0].Locality)
+                @Html.DisplayNameFor(model => model.List[0].IdLocality)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.List[0].Organization)
+                @Html.DisplayNameFor(model => model.List[0].IdOrganization)
             </th>
         </tr>
     </thead>
@@ -57,10 +57,10 @@
                     @Html.DisplayFor(modelItem => item.Urgency)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Locality)
+                    @Html.DisplayFor(modelItem => item.IdLocality)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Organization)
+                    @Html.DisplayFor(modelItem => item.IdOrganization)
                 </td>
                 <td style="text-align: center;">
                     <a asp-action="Add" style="text-decoration: none;" title="Создать">Создать</a> |
@@ -93,7 +93,7 @@
                     <div class="form-group">
                         <label for="locality">Выберите населенный пункт</label>
                         <select class="form-control" id="locality1">
-                            @foreach (var locality in Model.List.Select(item => item.Locality.Name).Distinct())
+                            @foreach (var locality in Model.List.Select(item => item.IdLocality).Distinct())
                             {
                                 <option value="@locality">@locality</option>
                             }
@@ -150,7 +150,7 @@
                     <div class="form-group">
                         <label for="locality">Выберите населенный пункт</label>
                         <select class="form-control" id="locality2">
-                            @foreach (var locality in Model.List.Select(item => item.Locality.Name).Distinct())
+                            @foreach (var locality in Model.List.Select(item => item.IdLocality).Distinct())
                             {
                                 <option value="@locality">@locality</option>
                             }
