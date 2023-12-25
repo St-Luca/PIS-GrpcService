@@ -121,6 +121,7 @@ public class ApplicationContext : DbContext
             IdAct = act2.Id,
             Urgency = "urg"
         };
+
         modelBuilder.Entity<Application>().HasData(app1, app2, app3);
 
         Organization o3 = new Organization { Id = 3, OrgName = "TIU", INN = "21231", KPP = "12313131" };

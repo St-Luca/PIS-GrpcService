@@ -1,19 +1,25 @@
 ﻿using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
+using System.Diagnostics.Contracts;
 using static PIS_GrpcService.PIS_GrpcService.GrpcContractService;
+using static PIS_GrpcService.PIS_GrpcService.GrpcOrganizationService;
 
 namespace PisWebApp.Controllers
 {
     public class ContractController : Controller
     {
         private readonly GrpcContractServiceClient _grpcClient;
-        public ContractController(GrpcContractServiceClient grpcClient)
+        private readonly GrpcOrganizationServiceClient _organizationClient;
+
+        public ContractController(GrpcContractServiceClient grpcClient, GrpcOrganizationServiceClient grpcOrganizationServiceClient)
         {
             _grpcClient = grpcClient;
+            _organizationClient = grpcOrganizationServiceClient;
         }
 
         // GET: ContractController
@@ -35,6 +41,10 @@ namespace PisWebApp.Controllers
         // GET: ContractController/Create
         public async Task<IActionResult> Add()
         {
+            var organizations = await _organizationClient.GetAllAsync(new Empty());
+
+            ViewBag.orgId = new SelectList(organizations.List,"Id", "Id");
+            
             return View();
         }
 

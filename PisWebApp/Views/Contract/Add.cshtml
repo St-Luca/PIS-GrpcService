@@ -22,7 +22,8 @@
     </div>
     <div class="form-group">
         <label asp-for="Performer"></label>
-        <input asp-for="Performer" class="form-control" />
+        <select asp-for="Performer" class="form-control" asp-items="ViewBag.orgId"></select>
+        <span asp-validation-for="Performer" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="LocalityCosts"></label>
