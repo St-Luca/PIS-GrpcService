@@ -25,11 +25,11 @@
     </div>
     <div class="form-group">
         <label asp-for="Performer"></label>
-        <input asp-for="Performer" class="form-control" />
+        <select asp-for="Performer" class="form-control" asp-items="ViewBag.orgId" />
     </div>
     <div class="form-group">
         <label asp-for="LocalityCosts"></label>
-        <input asp-for="LocalityCosts" class="form-control" />
+        <select asp-for="LocalityCosts" class="form-control" asp-items="ViewBag.locId"/>
     </div>
     <div class="form-group">
         <input type="submit" value="Сохранить" class="btn btn-primary" />

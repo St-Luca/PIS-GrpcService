@@ -1,5 +1,6 @@
 ﻿using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService;
 using PIS_GrpcService.Models;
@@ -67,7 +68,20 @@ namespace PisWebApp.Controllers
         // GET: ContractController/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             var contract = await _grpcClient.GetAsync(new IdRequest { Id = id });
+
+            if (contract == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            //ViewBag.orgId = new SelectList(, "Id", "Id", contract.Performer.Id);
+            //ViewBag.locId = new SelectList(, "Id", "Id", contract.Locality.Id);
 
             return View(contract);
         }
