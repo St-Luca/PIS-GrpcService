@@ -5,21 +5,21 @@ namespace PIS_GrpcService.Services.Mappers;
 
 public static class ApplicationMapper
 {
-    public static ApplicationArray Map(this List<Application> localities)
+    public static ApplicationArray MapToGrpc(this List<Application> localities)
     {
-        var locs = localities.Select(x => x.Map()).ToList();
+        var locs = localities.Select(x => x.MapToGrpc()).ToList();
         var res = new ApplicationArray();
         res.List.AddRange(locs);
         return res;
     }
 
-    public static List<Application> Map(this ApplicationArray localities)
+    public static List<Application> MapFromGrpc(this ApplicationArray localities)
     {
-        return localities.List.Select(x => x.Map()).ToList();
+        return localities.List.Select(x => x.MapFromGrpc()).ToList();
 
     }
 
-    public static GrpcApplication Map(this Application dbApplication)
+    public static GrpcApplication MapToGrpc(this Application dbApplication)
     {
         return new GrpcApplication
         {
@@ -28,13 +28,13 @@ public static class ApplicationMapper
             ApplicantCategory = dbApplication.ApplicantCategory,
             AnimalDescription = dbApplication.AnimalDescription,
             Urgency = dbApplication.Urgency,
-            Locality = dbApplication.Locality.Map(),
+            Locality = dbApplication.Locality.MapToGrpc(),
             //Act = dbApplication.Act.Map(),
-            Organization = dbApplication.Organization.Map()
+            Organization = dbApplication.Organization.MapToGrpc()
         };
     }
 
-    public static Application Map(this GrpcApplication dbApplication)
+    public static Application MapFromGrpc(this GrpcApplication dbApplication)
     {
         return new Application
         {
@@ -43,9 +43,9 @@ public static class ApplicationMapper
             ApplicantCategory = dbApplication.ApplicantCategory,
             AnimalDescription = dbApplication.AnimalDescription,
             Urgency = dbApplication.Urgency,
-            Locality = dbApplication.Locality.Map(),
+            Locality = dbApplication.Locality.MapFromGrpc(),
             //Act = dbApplication.Act.Map(),
-            Organization = dbApplication.Organization.Map()
+            Organization = dbApplication.Organization.MapFromGrpc()
         };
     }
 }

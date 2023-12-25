@@ -13,8 +13,6 @@ namespace PIS_GrpcService.Models
 
         [ForeignKey("IdOrganization")]
         public Organization Performer { get; set; } 
-
         public List<LocalityCost> LocalityCosts { get; set; }
-        public List<CaptureAct> CaptureActs { get; set; }
     }
 }

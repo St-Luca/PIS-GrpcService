@@ -54,10 +54,10 @@ public class ApplicationContext : DbContext
                    .WithOne(d => d.Act)
                    .HasForeignKey(d => d.IdCaptureAct);
 
-        modelBuilder.Entity<Contract>()
-                   .HasMany(p => p.CaptureActs)
-                   .WithOne(d => d.Contract)
-                   .HasForeignKey(d => d.IdContract);
+        //modelBuilder.Entity<CaptureAct>()
+        //           .HasMany(p => p.CaptureActs)  связь между актом и контрактом
+        //           .WithOne(d => d.Contract)
+        //           .HasForeignKey(d => d.IdContract);
 
 
         Organization o1 = new Organization { Id = 1, OrgName = "Smartway", INN = "111", KPP = "ss" };

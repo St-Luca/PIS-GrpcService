@@ -1,6 +1,8 @@
 ﻿using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
+using PIS_GrpcService.DataAccess.Repositories;
+using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.PIS_GrpcService.Services;
 using PIS_GrpcService.Services.Mappers;
@@ -10,40 +12,45 @@ namespace PIS_GrpcService.Services;
 
 public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceBase
 {
-    private readonly ApplicationContext _dbContext;
+    private readonly CatchingApplicationsRepository repository;
+    private readonly LocalitiesRepository localitiesRepository;
+    private readonly OrganizationsRepository organizationsRepository;
     private readonly ILogger<ApplicationService> _logger;
 
-    public ApplicationService(ILogger<ApplicationService> logger, ApplicationContext dbContext)
+    public ApplicationService(ILogger<ApplicationService> logger, CatchingApplicationsRepository applicationsRepository, 
+        LocalitiesRepository localities, 
+        OrganizationsRepository organizations)
     {
         _logger = logger;
-        _dbContext = dbContext;
+        repository = applicationsRepository;
+        localitiesRepository = localities;
+        organizationsRepository = organizations;
     }
 
     public async override Task<ApplicationArray> GetAll(Empty e, ServerCallContext context)
     {
-        var applications = await _dbContext.Applications.ToListAsync();
+        var applications = repository.GetAll();
         var localityIds = applications.Select(app => app.IdLocality).ToList();
         var organizationIds = applications.Select(app => app.IdOrganization).ToList();
 
-        var localities = await _dbContext.Localities.Where(loc => localityIds.Contains(loc.Id)).ToListAsync();
-        var organizations = await _dbContext.Organizations.Where(org => organizationIds.Contains(org.Id)).ToListAsync();
+        var localities = localitiesRepository.GetAll().Where(loc => localityIds.Contains(loc.Id)).ToList();
+        var organizations = organizationsRepository.GetAll().Where(org => organizationIds.Contains(org.Id)).ToList();
 
         var result = new ApplicationArray();
 
         foreach (var app in applications)
         {
-            app.Locality = localities.FirstOrDefault(d => d.Id == app.IdLocality);
-            app.Organization = organizations.FirstOrDefault(d => d.Id == app.IdOrganization);
-            result.List.Add(app.Map());
+            app.Locality = localities.First(d => d.Id == app.IdLocality);
+            app.Organization = organizations.First(d => d.Id == app.IdOrganization);
+            result.List.Add(app.MapToGrpc());
         }
 
         return result;
     }
 
-
     public override Task<GrpcApplication?> Get(IdRequest id, ServerCallContext context)
     {
-        var response = _dbContext.Applications.FirstOrDefault(o => o.Id == id.Id)?.Map();
+        var response = repository.Get(id.Id)?.MapToGrpc();
 
         return Task.FromResult(response);
     }
@@ -52,8 +59,7 @@ public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceB
     {
         try
         {
-            _dbContext.Update(application.Map());
-            _dbContext.SaveChangesAsync();
+            repository.Edit(application.MapFromGrpc());
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -67,12 +73,11 @@ public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceB
     {
         try
         {
-            var application = await _dbContext.Applications.FindAsync(id.Id);
+            var application = repository.Get(id.Id);
 
             if (application != null)
             {
-                _dbContext.Applications.Remove(application);
-                await _dbContext.SaveChangesAsync();
+                repository.Delete(id.Id);
             }
 
         }
@@ -86,9 +91,12 @@ public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceB
 
     public async override Task<Empty> Add(GrpcApplication application, ServerCallContext context)
     {
-        var entityApplication = application?.Map();
-        _dbContext.Applications.Add(entityApplication);
-        await _dbContext.SaveChangesAsync();
+        var entityApplication = application?.MapFromGrpc();
+
+        if (entityApplication != null)
+        {
+            repository.Add(entityApplication);
+        }
 
         return new Empty();
     }

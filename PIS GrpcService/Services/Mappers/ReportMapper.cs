@@ -6,17 +6,17 @@ namespace PIS_GrpcService.Services.Mappers;
 
 public static class ReportMapper
 {
-    /*public static GrpcReport Map(this Report dbOrganization)
+    public static GrpcReport MapToGrpc(this Report dbOrganization)
     {
         return new GrpcReport
         {
-            Number = dbOrganization.Id,
+            Number = dbOrganization.Number,
             Name = dbOrganization.Name,
             Description = dbOrganization.Description
         };
     }
 
-    public static Report Map(this GrpcReport dbLocality)
+    public static Report MapFromGrpc(this GrpcReport dbLocality)
     {
         return new Report
         {
@@ -24,5 +24,5 @@ public static class ReportMapper
             Name = dbLocality.Name,
             Description = dbLocality.Description
         };
-    }*/
+    }
 }

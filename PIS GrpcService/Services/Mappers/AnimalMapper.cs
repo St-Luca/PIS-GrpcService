@@ -5,12 +5,12 @@ namespace PIS_GrpcService.Services.Mappers;
 
 public static class AnimalMapper
 {
-    public static List<GrpcAnimal> Map(this List<Animal> animals)
+    public static List<GrpcAnimal> MapToGrpc(this List<Animal> animals)
     {
-        return animals.Select(x => x.Map()).ToList();
+        return animals.Select(x => x.MapToGrpc()).ToList();
     }
 
-    public static GrpcAnimal Map(this Animal dbAnimal)
+    public static GrpcAnimal MapToGrpc(this Animal dbAnimal)
     {
         return new GrpcAnimal
         {
@@ -29,7 +29,7 @@ public static class AnimalMapper
         };
     }
 
-    public static Animal Map(this GrpcAnimal dbAnimal)
+    public static Animal MapFromGrpc(this GrpcAnimal dbAnimal)
     {
         return new Animal
         {

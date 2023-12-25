@@ -87,26 +87,26 @@ public class ReportService : GrpcReportService.GrpcReportServiceBase
     public override async Task<GrpcReport> GenerateClosedContractsSumReport(ReportRequest reportRequest, ServerCallContext context)
     {
         //var contracts = new ContractService.GetAllAsync();
-        var contracts = _dbContext.Contracts;
+        var contracts = _dbContext.Contracts;      
 
         var allDoneContracts = contracts.Where(a => a.EffectiveDate >= reportRequest.StartDate.ToDateTime() &&
         a.EffectiveDate <= reportRequest.EndDate.ToDateTime() && a.Performer.OrgName == reportRequest.TypeName).ToList();
 
+        var actsOfAllDoneContracts = _dbContext.Acts.Where(a => allDoneContracts.Select(c => c.Id).Contains(a.IdContract)).ToList();
+
         var sum = 0;
 
-        foreach (var contract in allDoneContracts)
+        foreach (var act in actsOfAllDoneContracts)
         {
-            foreach (var act in contract.CaptureActs)
-            {
-                var locality = act.Locality;
-                var localityCost = _dbContext.LocalityCosts.FirstOrDefault(lc => lc.IdLocality == locality.Id && lc.IdContract == contract.Id);
+            var locality = act.Locality;
+            var localityCost = _dbContext.LocalityCosts.FirstOrDefault(lc => lc.IdLocality == locality.Id && lc.IdContract == act.IdContract);
 
-                if (localityCost != null)
-                {
-                    sum += localityCost.Cost;
-                }
+            if (localityCost != null)
+            {
+                sum += localityCost.Cost;
             }
         }
+
 
         return new GrpcReport
         {

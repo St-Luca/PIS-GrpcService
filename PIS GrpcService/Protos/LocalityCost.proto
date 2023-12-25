@@ -7,10 +7,7 @@ option csharp_namespace = "PIS_GrpcService.PIS_GrpcService";
 
 service GrpcLocalityCostService {
   rpc GetAll(Empty) returns (LocalityCostArray);
-  rpc Add(GrpcLocalityCost) returns (Empty);
   rpc Get(IdRequest) returns (GrpcLocalityCost);
-  rpc Edit(GrpcLocalityCost) returns (Empty);
-  rpc Delete(IdRequest) returns (Empty);
 }
 
 

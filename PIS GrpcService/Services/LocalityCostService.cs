@@ -1,6 +1,7 @@
 ﻿using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
+using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.PIS_GrpcService.Services;
@@ -10,18 +11,18 @@ namespace PIS_GrpcService.Services;
 
 public class LocalityCostService : GrpcLocalityCostService.GrpcLocalityCostServiceBase
 {
-    private readonly ApplicationContext _dbContext;
+    private readonly LocalityCostsRepository repository;
     private readonly ILogger<LocalityCostService> _logger;
 
-    public LocalityCostService(ILogger<LocalityCostService> logger, ApplicationContext dbContext)
+    public LocalityCostService(ILogger<LocalityCostService> logger, LocalityCostsRepository localitiesRepository)
     {
         _logger = logger;
-        _dbContext = dbContext;
+        repository = localitiesRepository;
     }
 
     public override Task<LocalityCostArray> GetAll(Empty e, ServerCallContext context)
     {
-        var response = _dbContext.LocalityCosts.Select(o => o.Map()).ToList();
+        var response = repository.GetAll().Select(o => o.MapToGrpc()).ToList();
 
         var result = new LocalityCostArray();
         result.List.AddRange(response);
@@ -31,53 +32,8 @@ public class LocalityCostService : GrpcLocalityCostService.GrpcLocalityCostServi
 
     public override Task<GrpcLocalityCost?> Get(IdRequest id, ServerCallContext context)
     {
-        var response = _dbContext.LocalityCosts.FirstOrDefault(o => o.IdLocality == id.Id)?.Map();
+        var response = repository.Get(id.Id)?.MapToGrpc();
 
         return Task.FromResult(response);
-    }
-
-    public override Task<Empty> Edit(GrpcLocalityCost localityCost, ServerCallContext context)
-    {
-        try
-        {
-            _dbContext.Update(localityCost.Map());
-            _dbContext.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            //_logger.Log();
-        }
-
-        return Task.FromResult(new Empty());
-    }
-
-    public async override Task<Empty> Delete(IdRequest id, ServerCallContext context)
-    {
-        try
-        {
-            var localityCost = await _dbContext.LocalityCosts.FindAsync(id.Id);
-
-            if (localityCost != null)
-            {
-                _dbContext.LocalityCosts.Remove(localityCost);
-                await _dbContext.SaveChangesAsync();
-            }
-
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            //_logger.Log();
-        }
-
-        return new Empty();
-    }
-
-    public async override Task<Empty> Add(GrpcLocalityCost localityCost, ServerCallContext context)
-    {
-        var entityLocalityCost = localityCost?.Map();
-        _dbContext.LocalityCosts.Add(entityLocalityCost);
-        await _dbContext.SaveChangesAsync();
-
-        return new Empty();
     }
 }

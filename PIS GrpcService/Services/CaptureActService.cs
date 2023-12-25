@@ -2,6 +2,7 @@
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
+using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.Services.Mappers;
 
@@ -9,55 +10,73 @@ namespace PIS_GrpcService.PIS_GrpcService.Services;
 
 public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
 {
-    private readonly ApplicationContext _dbContext;
+    private readonly CaptureActsRepository repository;
+    private readonly LocalitiesRepository localitiesRepository;
+    private readonly OrganizationsRepository organizationsRepository;
+    private readonly MunicipalContractsRepository contractsRepository;
+    private readonly CatchingApplicationsRepository applicationsRepository;
     private readonly ILogger<CaptureActService> _logger;
-    public CaptureActService(ILogger<CaptureActService> logger, ApplicationContext dbContext)
+    public CaptureActService(ILogger<CaptureActService> logger, 
+        CaptureActsRepository actRepository, 
+        LocalitiesRepository localitiesRepository,
+        OrganizationsRepository organizationsRepository,
+        MunicipalContractsRepository contractsRepository,
+        CatchingApplicationsRepository applicationsRepository)
     {
         _logger = logger;
-        _dbContext = dbContext;
+        repository = actRepository;
+        this.localitiesRepository = localitiesRepository;
+        this.organizationsRepository = organizationsRepository;
+        this.contractsRepository = contractsRepository;
+        this.applicationsRepository = applicationsRepository;
     }
 
     public async override Task<CaptureActArray> GetAll(Empty e, ServerCallContext context)
     {
-        var acts = await _dbContext.Acts
-            .Include(a => a.Animals)
-            .Include(a => a.Applications)
-            .ToListAsync();
+        var acts = repository.GetAll();
+        //var acts = await _dbContext.Acts
+        //    .Include(a => a.Animals)
+        //    .Include(a => a.Applications)
+        //    .ToListAsync();
 
         var organizationIds = acts.Select(app => app.IdOrganization).ToList();
         var localityIds = acts.Select(app => app.IdLocality).ToList();
         var contractIds = acts.Select(app => app.IdContract).ToList();
 
-        var organizations = await _dbContext.Organizations
+        var organizations = organizationsRepository.GetAll()
             .Where(org => organizationIds.Contains(org.Id))
-            .ToListAsync();
+            .ToList();
 
-        var localities = await _dbContext.Localities
+        var localities = localitiesRepository.GetAll()
             .Where(loc => localityIds.Contains(loc.Id))
-            .ToListAsync();
+            .ToList();
 
-        var contracts = await _dbContext.Contracts
+        var contracts = contractsRepository.GetAll()
             .Where(contract => contractIds.Contains(contract.Id))
-            .ToListAsync();
+            .ToList();
+
+        var applications = applicationsRepository.GetAll()
+            .Where(app => acts.Select(act => act.Id).Contains(app.IdAct))
+            .ToList();
 
         var result = new CaptureActArray();
 
         foreach (var act in acts)
         {
-            act.Performer = organizations.FirstOrDefault(d => d.Id == act.IdOrganization);
-            act.Locality = localities.FirstOrDefault(d => d.Id == act.IdLocality);
-            act.Contract = contracts.FirstOrDefault(c => c.Id == act.IdContract);
-
+            act.Performer = organizations.First(d => d.Id == act.IdOrganization);
+            act.Locality = localities.First(d => d.Id == act.IdLocality);
+            act.Contract = contracts.First(c => c.Id == act.IdContract);
+            act.Applications = applications.Where(a => a.IdAct == act.Id).ToList();
 
             // Включаем список заявок (Applications) для каждого акта (Act)
-            var applications = await _dbContext.Applications
-    .Include(a => a.Locality)
-    .ToListAsync();
+            //var applications = await _dbContext.Applications
+            //.Include(a => a.Locality)
+            //.ToListAsync();
 
-            act.Applications = applications;
+            //act.Applications = applications;
 
 
-            result.List.Add(act.Map());
+            result.List.Add(act.MapToGrpc());
         }
 
         return result;
@@ -65,7 +84,7 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
 
     public override Task<GrpcCaptureAct?> Get(IdRequest request, ServerCallContext context)
     {
-        var response = _dbContext.Acts.FirstOrDefault(o => o.Id == request.Id)?.Map();
+        var response = repository.Get(request.Id)?.MapToGrpc();
 
         return Task.FromResult(response);
     }
@@ -74,8 +93,7 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
     {
         try
         {
-            _dbContext.Update(act.Map());
-            _dbContext.SaveChangesAsync();
+            repository.Edit(act.MapFromGrpc());
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -89,12 +107,11 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
     {
         try
         {
-            var act = await _dbContext.Acts.FindAsync(id.Id);
+            var act = repository.Get(id.Id);
 
             if (act != null)
             {
-                _dbContext.Acts.Remove(act);
-                await _dbContext.SaveChangesAsync();
+                repository.Delete(id.Id);
             }
 
         }
@@ -108,9 +125,12 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
 
     public async override Task<Empty> Add(GrpcCaptureAct act, ServerCallContext context)
     {
-        var entityCaptureAct = act?.Map();
-        _dbContext.Acts.Add(entityCaptureAct);
-        await _dbContext.SaveChangesAsync();
+        var entityCaptureAct = act?.MapFromGrpc();
+
+        if (entityCaptureAct != null)
+        {
+            repository.Add(entityCaptureAct);
+        }
 
         return new Empty();
     }

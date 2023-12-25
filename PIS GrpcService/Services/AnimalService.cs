@@ -1,6 +1,7 @@
 ﻿using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
+using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.PIS_GrpcService.Services;
@@ -10,18 +11,18 @@ namespace PIS_GrpcService.Services;
 
 public class AnimalService : GrpcAnimalService.GrpcAnimalServiceBase
 {
-    private readonly ApplicationContext _dbContext;
+    private readonly AnimalsRepository repository;
     private readonly ILogger<AnimalService> _logger;
 
-    public AnimalService(ILogger<AnimalService> logger, ApplicationContext dbContext)
+    public AnimalService(ILogger<AnimalService> logger, AnimalsRepository animalsRepository)
     {
         _logger = logger;
-        _dbContext = dbContext;
+        repository = animalsRepository;
     }
 
     public override Task<AnimalArray> GetAll(Empty e, ServerCallContext context)
     {
-        var response = _dbContext.Animals.Select(o => o.Map()).ToList();
+        var response = repository.GetAll().Select(o => o.MapToGrpc()).ToList();
 
         var result = new AnimalArray();
         result.List.AddRange(response);
@@ -31,7 +32,7 @@ public class AnimalService : GrpcAnimalService.GrpcAnimalServiceBase
 
     public override Task<GrpcAnimal?> Get(IdRequest id, ServerCallContext context)
     {
-        var response = _dbContext.Animals.FirstOrDefault(o => o.Id == id.Id)?.Map();
+        var response = repository.Get(id.Id)?.MapToGrpc();
 
         return Task.FromResult(response);
     }
@@ -40,8 +41,7 @@ public class AnimalService : GrpcAnimalService.GrpcAnimalServiceBase
     {
         try
         {
-            _dbContext.Update(animal.Map());
-            _dbContext.SaveChangesAsync();
+            repository.Edit(animal.MapFromGrpc());
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -55,12 +55,11 @@ public class AnimalService : GrpcAnimalService.GrpcAnimalServiceBase
     {
         try
         {
-            var animal = await _dbContext.Animals.FindAsync(id.Id);
+            var organization = repository.Get(id.Id);
 
-            if (animal != null)
+            if (organization != null)
             {
-                _dbContext.Animals.Remove(animal);
-                await _dbContext.SaveChangesAsync();
+                repository.Delete(id.Id);
             }
 
         }
@@ -74,9 +73,12 @@ public class AnimalService : GrpcAnimalService.GrpcAnimalServiceBase
 
     public async override Task<Empty> Add(GrpcAnimal animal, ServerCallContext context)
     {
-        var entityAnimal = animal?.Map();
-        _dbContext.Animals.Add(entityAnimal);
-        await _dbContext.SaveChangesAsync();
+        var entityAnimal = animal?.MapFromGrpc();
+
+        if (entityAnimal != null)
+        {
+            repository.Add(entityAnimal);
+        }
 
         return new Empty();
     }

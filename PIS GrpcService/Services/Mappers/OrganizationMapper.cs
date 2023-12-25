@@ -5,12 +5,12 @@ namespace PIS_GrpcService.Services.Mappers;
 
 public static class OrganizationMapper
 {
-    public static List<GrpcOrganization> Map(this List<Organization> organizations)
+    public static List<GrpcOrganization> MapToGrpc(this List<Organization> organizations)
     {
-        return organizations.Select(x => x.Map()).ToList();
+        return organizations.Select(x => x.MapToGrpc()).ToList();
     }
 
-    public static GrpcOrganization Map(this Organization dbOrganization)
+    public static GrpcOrganization MapToGrpc(this Organization dbOrganization)
     {
         return new GrpcOrganization
         {
@@ -24,7 +24,7 @@ public static class OrganizationMapper
         };
     }
 
-    public static Organization Map(this GrpcOrganization dbOrganization)
+    public static Organization MapFromGrpc(this GrpcOrganization dbOrganization)
     {
         return new Organization
         {

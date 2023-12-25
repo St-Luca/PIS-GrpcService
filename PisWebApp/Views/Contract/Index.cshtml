@@ -82,7 +82,7 @@
             <div class="modal-body">
                 <form id="dateForm">
                     <div class="form-group">
-                        <label for="locality">Выберите населенный пункт</label>
+                        <label for="locality">Выберите организацию</label>
                         <select class="form-control" id="locality">
                             @foreach (var locality in Model.List.Select(item => item.Performer.OrgName).Distinct())
                             {

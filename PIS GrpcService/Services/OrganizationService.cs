@@ -1,23 +1,24 @@
 ﻿using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
+using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.Services.Mappers;
 
 namespace PIS_GrpcService.PIS_GrpcService.Services;
 
 public class OrganizationService : GrpcOrganizationService.GrpcOrganizationServiceBase
 {
-    private readonly ApplicationContext _dbContext;
+    private readonly OrganizationsRepository repository;
     private readonly ILogger<OrganizationService> _logger;
-    public OrganizationService(ILogger<OrganizationService> logger, ApplicationContext dbContext)
+    public OrganizationService(ILogger<OrganizationService> logger, OrganizationsRepository organizationsRepository)
     {
         _logger = logger;
-        _dbContext = dbContext;
+        repository = organizationsRepository;
     }
 
     public override Task<OrganizationArray> GetAll(Empty e, ServerCallContext context)
     { 
-        var response = _dbContext.Organizations.Select(o => o.Map()).ToList();
+        var response = repository.GetAll().Select(o => o.MapToGrpc()).ToList();
 
         var result = new OrganizationArray();
         result.List.AddRange(response);
@@ -27,7 +28,7 @@ public class OrganizationService : GrpcOrganizationService.GrpcOrganizationServi
 
     public override Task<GrpcOrganization?> Get(IdRequest request, ServerCallContext context)
     {
-        var response = _dbContext.Organizations.FirstOrDefault(o => o.Id == request.Id)?.Map();
+        var response = repository.Get(request.Id)?.MapToGrpc();
 
         return Task.FromResult(response);
     }
@@ -36,8 +37,7 @@ public class OrganizationService : GrpcOrganizationService.GrpcOrganizationServi
     {
         try
         {
-            _dbContext.Update(organization.Map());
-            _dbContext.SaveChangesAsync();
+            repository.Edit(organization.MapFromGrpc());
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -51,12 +51,11 @@ public class OrganizationService : GrpcOrganizationService.GrpcOrganizationServi
     {
         try
         {
-            var organization = await _dbContext.Organizations.FindAsync(id.Id);
+            var organization = repository.Get(id.Id);
 
             if (organization != null)
             {
-                _dbContext.Organizations.Remove(organization);
-                await _dbContext.SaveChangesAsync();
+                repository.Delete(id.Id);
             }
 
         }
@@ -70,9 +69,12 @@ public class OrganizationService : GrpcOrganizationService.GrpcOrganizationServi
 
     public async override Task<Empty> Add(GrpcOrganization organization, ServerCallContext context)
     {
-        var entityOrganization = organization?.Map();
-        _dbContext.Organizations.Add(entityOrganization);
-        await _dbContext.SaveChangesAsync();
+        var entityOrganization = organization?.MapFromGrpc();
+
+        if (entityOrganization != null)
+        {
+            repository.Add(entityOrganization);
+        }
 
         return new Empty();
     }

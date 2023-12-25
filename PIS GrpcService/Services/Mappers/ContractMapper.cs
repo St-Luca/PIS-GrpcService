@@ -7,12 +7,12 @@ namespace PIS_GrpcService.Services.Mappers;
 
 public static class ContractMapper
 {
-    public static List<GrpcContract> Map(this List<Contract> contracts)
+    public static List<GrpcContract> MapToGrpc(this List<Contract> contracts)
     {
-        return contracts.Select(x => x.Map()).ToList();
+        return contracts.Select(x => x.MapToGrpc()).ToList();
     }
 
-    public static GrpcContract Map(this Contract dbContract)
+    public static GrpcContract MapToGrpc(this Contract dbContract)
     {
         return new GrpcContract
         {
@@ -20,12 +20,12 @@ public static class ContractMapper
             ConclusionDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime((DateTime)dbContract.ConclusionDate),
             EffectiveDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime((DateTime)dbContract.EffectiveDate),
             Amount = dbContract.Amount,
-            Performer = dbContract.Performer.Map(),
-            LocalityCosts = dbContract.LocalityCosts.Map()
+            Performer = dbContract.Performer.MapToGrpc(),
+            LocalityCosts = dbContract.LocalityCosts.MapToGrpc()
         };
     }
 
-    public static Contract Map(this GrpcContract dbContract)
+    public static Contract MapFromGrpc(this GrpcContract dbContract)
     {
         return new Contract
         {
@@ -33,8 +33,8 @@ public static class ContractMapper
             ConclusionDate = dbContract.ConclusionDate.ToDateTime(),
             EffectiveDate = dbContract.EffectiveDate.ToDateTime(),
             Amount = dbContract.Amount,
-            Performer = dbContract.Performer.Map(),
-            LocalityCosts = dbContract.LocalityCosts.Map()
+            Performer = dbContract.Performer.MapFromGrpc(),
+            LocalityCosts = dbContract.LocalityCosts.MapFromGrpc()
         };
     }
 }

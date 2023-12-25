@@ -2,37 +2,44 @@
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
+using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.Services.Mappers;
 
 namespace PIS_GrpcService.PIS_GrpcService.Services;
 
 public class ContractService : GrpcContractService.GrpcContractServiceBase
 {
-    private readonly ApplicationContext _dbContext;
+    private readonly MunicipalContractsRepository repository;
+    private readonly LocalityCostsRepository localityCostsRepository;
+    private readonly OrganizationsRepository organizationsRepository;
     private readonly ILogger<ContractService> _logger;
-    public ContractService(ILogger<ContractService> logger, ApplicationContext dbContext)
+    public ContractService(ILogger<ContractService> logger, MunicipalContractsRepository contractsRepository, LocalityCostsRepository localityCosts, OrganizationsRepository organizations)
     {
         _logger = logger;
-        _dbContext = dbContext;
+        repository = contractsRepository;
+        localityCostsRepository = localityCosts;
+        organizationsRepository = organizations;
     }
 
     public async override Task<ContractsArray> GetAll(Empty e, ServerCallContext context)
     {
-        var contracts = await _dbContext.Contracts
-            .Include(c => c.LocalityCosts) // Загрузка связанных LocalityCosts для каждого контракта
-            .ToListAsync();
+        var contracts = repository.GetAll();
+            //.Include(c => c.LocalityCosts) // Загрузка связанных LocalityCosts для каждого контракта
+            //.ToListAsync();
 
         var organizationIds = contracts.Select(app => app.IdOrganization).ToList();
-        var organizations = await _dbContext.Organizations
+        var organizations = organizationsRepository.GetAll()
             .Where(org => organizationIds.Contains(org.Id))
-            .ToListAsync();
+            .ToList();
 
         var result = new ContractsArray();
 
         foreach (var contract in contracts)
         {
-            contract.Performer = organizations.FirstOrDefault(d => d.Id == contract.IdOrganization);
-            result.List.Add(contract.Map());
+            contract.Performer = organizations.First(d => d.Id == contract.IdOrganization);
+            contract.LocalityCosts = localityCostsRepository.GetAll().Where(lc => lc.IdContract == contract.Id).ToList();
+
+            result.List.Add(contract.MapToGrpc());
         }
 
         return result;
@@ -40,7 +47,7 @@ public class ContractService : GrpcContractService.GrpcContractServiceBase
 
     public override Task<GrpcContract?> Get(IdRequest request, ServerCallContext context)
     {
-        var response = _dbContext.Contracts.FirstOrDefault(o => o.Id == request.Id)?.Map();
+        var response = repository.Get(request.Id)?.MapToGrpc();
 
         return Task.FromResult(response);
     }
@@ -49,8 +56,7 @@ public class ContractService : GrpcContractService.GrpcContractServiceBase
     {
         try
         {
-            _dbContext.Update(contract.Map());
-            _dbContext.SaveChangesAsync();
+            repository.Edit(contract.MapFromGrpc());
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -64,12 +70,11 @@ public class ContractService : GrpcContractService.GrpcContractServiceBase
     {
         try
         {
-            var contract = await _dbContext.Contracts.FindAsync(id.Id);
+            var contract = repository.Get(id.Id);
 
             if (contract != null)
             {
-                _dbContext.Contracts.Remove(contract);
-                await _dbContext.SaveChangesAsync();
+                repository.Delete(id.Id);
             }
 
         }
@@ -83,9 +88,12 @@ public class ContractService : GrpcContractService.GrpcContractServiceBase
 
     public async override Task<Empty> Add(GrpcContract contract, ServerCallContext context)
     {
-        var entityContract = contract?.Map();
-        _dbContext.Contracts.Add(entityContract);
-        await _dbContext.SaveChangesAsync();
+        var entityContract = contract?.MapFromGrpc();
+
+        if (entityContract != null)
+        {
+            repository.Add(entityContract);
+        }
 
         return new Empty();
     }

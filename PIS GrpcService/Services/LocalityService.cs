@@ -1,23 +1,24 @@
 ﻿using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
+using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.Services.Mappers;
 
 namespace PIS_GrpcService.PIS_GrpcService.Services;
 
 public class LocalityService : GrpcLocalityService.GrpcLocalityServiceBase
 {
-    private readonly ApplicationContext _dbContext;
+    private readonly LocalitiesRepository repository;
     private readonly ILogger<LocalityService> _logger;
-    public LocalityService(ILogger<LocalityService> logger, ApplicationContext dbContext)
+    public LocalityService(ILogger<LocalityService> logger, LocalitiesRepository localities)
     {
         _logger = logger;
-        _dbContext = dbContext;
+        repository = localities;
     }
 
     public override Task<LocalityArray> GetAll(Empty e, ServerCallContext context)
     {
-        var response = _dbContext.Localities.Select(o => o.Map()).ToList();
+        var response = repository.GetAll().Select(o => o.MapToGrpc()).ToList();
 
         var result = new LocalityArray();
         result.List.AddRange(response);
@@ -27,7 +28,7 @@ public class LocalityService : GrpcLocalityService.GrpcLocalityServiceBase
 
     public override Task<GrpcLocality?> Get(IdRequest request, ServerCallContext context)
     {
-        var response = _dbContext.Localities.FirstOrDefault(o => o.Id == request.Id)?.Map();
+        var response = repository.Get(request.Id)?.MapToGrpc();
 
         return Task.FromResult(response);
     }

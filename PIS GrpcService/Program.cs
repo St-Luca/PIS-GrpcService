@@ -4,6 +4,7 @@ using PIS_GrpcService.Services;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.PIS_GrpcService.Services;
 using PIS_GrpcService.Models;
+using PIS_GrpcService.DataAccess.Repositories;
 
 namespace PIS_GrpcService
 {
@@ -17,8 +18,13 @@ namespace PIS_GrpcService
             // добавляем контекст ApplicationContext в качестве сервиса в приложение
             builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connection));
 
-            // Additional configuration is required to successfully run gRPC on macOS.
-            // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
+            builder.Services.AddScoped<OrganizationsRepository>();
+            builder.Services.AddScoped<AnimalsRepository>();
+            builder.Services.AddScoped<CaptureActsRepository>();
+            builder.Services.AddScoped<CatchingApplicationsRepository>();
+            builder.Services.AddScoped<LocalitiesRepository>();
+            builder.Services.AddScoped<LocalityCostsRepository>();
+            builder.Services.AddScoped<MunicipalContractsRepository>();
 
             // Add services to the container.
             builder.Services.AddGrpc();
@@ -32,7 +38,6 @@ namespace PIS_GrpcService
             app.MapGrpcService<ContractService>();
             app.MapGrpcService<CaptureActService>();
             app.MapGrpcService<AnimalService>();
-            //app.MapGrpcService<AnimalCardService>();
             app.MapGrpcService<ApplicationService>();
             app.MapGrpcService<ReportService>();
 

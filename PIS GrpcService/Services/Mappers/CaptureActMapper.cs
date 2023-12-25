@@ -5,35 +5,35 @@ namespace PIS_GrpcService.Services.Mappers;
 
 public static class CaptureActMapper
 {
-    public static List<GrpcCaptureAct> Map(this List<CaptureAct> acts)
+    public static List<GrpcCaptureAct> MapToGrpc(this List<CaptureAct> acts)
     {
-        return acts.Select(x => x.Map()).ToList();
+        return acts.Select(x => x.MapToGrpc()).ToList();
     }
 
-    public static GrpcCaptureAct Map(this CaptureAct dbCaptureAct)
+    public static GrpcCaptureAct MapToGrpc(this CaptureAct dbCaptureAct)
     {
         return new GrpcCaptureAct
         {
             Id = dbCaptureAct.Id,
             ActDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime((DateTime)dbCaptureAct.ActDate),
             Amount = dbCaptureAct.Amount,
-            Performer = dbCaptureAct.Performer.Map(),
-            Locality = dbCaptureAct.Locality.Map(),
-            Applications = dbCaptureAct.Applications.Map(),
+            Performer = dbCaptureAct.Performer.MapToGrpc(),
+            Locality = dbCaptureAct.Locality.MapToGrpc(),
+            Applications = dbCaptureAct.Applications.MapToGrpc(),
             Animals = new AnimalArray()//dbCaptureAct.Animals.Map()
         };
     }
 
-    public static CaptureAct Map(this GrpcCaptureAct dbCaptureAct)
+    public static CaptureAct MapFromGrpc(this GrpcCaptureAct dbCaptureAct)
     {
         return new CaptureAct
         {
             Id = dbCaptureAct.Id,
             ActDate = dbCaptureAct.ActDate.ToDateTime(),
             Amount = dbCaptureAct.Amount,
-            Performer = dbCaptureAct.Performer.Map(),
-            Locality = dbCaptureAct.Locality.Map(),
-            Applications = dbCaptureAct.Applications.Map(),
+            Performer = dbCaptureAct.Performer.MapFromGrpc(),
+            Locality = dbCaptureAct.Locality.MapFromGrpc(),
+            Applications = dbCaptureAct.Applications.MapFromGrpc(),
             Animals = new List<Animal>()//dbCaptureAct.Animals.Map()
         };
     }
