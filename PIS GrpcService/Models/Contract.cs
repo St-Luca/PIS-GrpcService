@@ -17,15 +17,15 @@ namespace PIS_GrpcService.Models
         public List<LocalityCost> LocalityCosts { get; set; }
 
 
-        public LocalityCost GetCostContract(Locality locality)
+        public LocalityCost GetCostContract(int localityId)
         {
-            var costInCity = GetCostByLocality(LocalityCosts, locality);
+            var costInCity = GetCostByLocality(LocalityCosts, localityId);
             return costInCity;
         }
 
-        public LocalityCost? GetCostByLocality(List<LocalityCost> localityCosts, Locality locality)
+        public LocalityCost? GetCostByLocality(List<LocalityCost> localityCosts, int localityId)
         {
-            return localityCosts.FirstOrDefault(lc => lc.Locality == locality);
+            return localityCosts.FirstOrDefault(lc => lc.IdLocality == localityId);
         }
     }
 }

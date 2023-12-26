@@ -30,13 +30,13 @@ public class CaptureAct
         return ActDate >= startDate && ActDate <= endDate && Locality.GetId() == localityName;
     }
 
-    public bool IsInPeriodAndOrganization(DateTime startDate, DateTime endDate, string orgName)
+    public bool IsInOrganization(string orgName)
     {
-        return ActDate >= startDate && ActDate <= endDate && Performer.OrgName == orgName;
+        return Performer.OrgName == orgName;
     }
 
-    public LocalityCost GetCostClosedApp(Locality locality)
+    public LocalityCost GetCostClosedApp(int localityId)
     {
-        return Contract.GetCostContract(locality);
+        return Contract.GetCostContract(localityId);
     }
 }

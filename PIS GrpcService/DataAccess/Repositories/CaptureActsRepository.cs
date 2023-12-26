@@ -77,15 +77,15 @@ public class CaptureActsRepository
     {
         var allActs = context.Acts.Include(c => c.Applications).Include(c => c.Locality).Include(c => c.Performer).Include(c => c.Contract).ToList();
 
-        var closedActs = allActs.Where(act => act.IsInPeriodAndOrganization(startDate, endDate, orgName)).ToList();
+        var actsByOrg = allActs.Where(act => act.IsInOrganization(orgName)).ToList();
 
         var totalSum = 0;
 
-        foreach (var act in closedActs)
+        foreach (var act in actsByOrg)
         {
             if(act.Contract.EffectiveDate >= startDate && act.Contract.EffectiveDate <= endDate)
             {
-                var costInCity = act.Contract.GetCostContract(act.Locality);
+                var costInCity = act.Contract.GetCostContract(act.IdLocality);
                 totalSum += costInCity.Cost;
             }
 
@@ -105,7 +105,7 @@ public class CaptureActsRepository
         {
             foreach (var app in act.Applications.Where(app => app.IsInPeriodAndLocality(startDate, endDate, act.Locality.Id)))
             {
-                var costInCity = act.GetCostClosedApp(act.Locality);
+                var costInCity = act.GetCostClosedApp(act.IdLocality);
                 totalCost += costInCity.Cost;
             } 
         }
