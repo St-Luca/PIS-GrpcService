@@ -86,7 +86,11 @@ public class CaptureActsRepository
             if(act.Contract.EffectiveDate >= startDate && act.Contract.EffectiveDate <= endDate)
             {
                 var costInCity = act.Contract.GetCostContract(act.IdLocality);
-                totalSum += costInCity.Cost;
+
+                if (costInCity != null)
+                {
+                    totalSum += costInCity.Cost;
+                }
             }
 
         }
