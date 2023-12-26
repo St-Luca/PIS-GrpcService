@@ -127,9 +127,9 @@
 
         var startDate = document.getElementById("startDate1").value;
         var endDate = document.getElementById("endDate1").value;
-        var localityName = document.getElementById("locality1").value;
+        var localityId1 = document.getElementById("locality1").value;
 
-        window.location.href = '/Report/GenerateAppsPersentReport?startDate='+ startDate  + ' &endDate=' + endDate + '&localityName=' + localityName;
+        window.location.href = '/ReportGenerator/GenerateAppsPersentReport?startDate=' + startDate + ' &endDate=' + endDate + '&localityId=' + localityId1;
 
         $('#dateModal1').modal('hide');
     }
@@ -184,9 +184,9 @@
 
         var startDate = document.getElementById("startDate2").value;
         var endDate = document.getElementById("endDate2").value;
-        var localityName = document.getElementById("locality2").value;
+        var localityId2 = document.getElementById("locality2").value;
 
-        window.location.href = '/Report/GenerateClosedAppsReport?startDate=' + startDate + ' &endDate=' + endDate + '&localityName=' + localityName;
+        window.location.href = '/ReportGenerator/GenerateClosedAppsReport?startDate=' + startDate + ' &endDate=' + endDate + '&localityId=' + localityId2;
 
         $('#dateModal2').modal('hide');
     }

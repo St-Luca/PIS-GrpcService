@@ -1,4 +1,5 @@
-﻿using PIS_GrpcService.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PIS_GrpcService.Models;
 
 namespace PIS_GrpcService.DataAccess.Repositories;
 
@@ -37,5 +38,19 @@ public class CatchingApplicationsRepository
     public List<Application> GetAll()
     {
         return context.Applications.ToList();
+    }
+
+    public int GetAllAppsInPeriodCount(DateTime startDate, DateTime endDate, int localityName)
+    {
+        var allApps = GetAppsInPeriod(startDate, endDate, localityName);
+
+        return allApps.Count;
+    }
+
+    public List<Application> GetAppsInPeriod(DateTime startDate, DateTime endDate, int localityName)
+    {
+        var apps = context.Applications.Include(a => a.Locality).ToList();
+
+        return apps.Where(app => app.IsInPeriodAndLocality(startDate, endDate, localityName)).ToList();
     }
 }

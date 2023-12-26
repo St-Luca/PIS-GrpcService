@@ -25,6 +25,7 @@ namespace PIS_GrpcService
             builder.Services.AddScoped<LocalitiesRepository>();
             builder.Services.AddScoped<LocalityCostsRepository>();
             builder.Services.AddScoped<MunicipalContractsRepository>();
+           // builder.Services.AddScoped<ReportGenerator>();
 
             // Add services to the container.
             builder.Services.AddGrpc();

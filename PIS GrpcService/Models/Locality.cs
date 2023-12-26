@@ -7,4 +7,14 @@ public class Locality
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public List<LocalityCost> LocalityCosts { get; set; }
+
+    public string GetName()
+    {
+        return Name;
+    }
+
+    public int GetId()
+    {
+        return Id;
+    }
 }

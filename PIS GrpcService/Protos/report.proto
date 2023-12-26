@@ -18,6 +18,6 @@ message GrpcReport {
 message ReportRequest{
 	google.protobuf.Timestamp StartDate = 1;
 	google.protobuf.Timestamp EndDate = 2;
-	string TypeName = 3;
+	int32 TypeId = 3;
 }
 

@@ -13,26 +13,32 @@ namespace PisWebApp.Controllers
             _grpcClient = grpcClient;
         }
     
-        [Route("Report/GenerateAppsPersentReport")]
-        public async Task<IActionResult> GenerateAppsPersentReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string localityName)
+        [Route("ReportGenerator/GenerateAppsPersentReport")]
+        public async Task<IActionResult> GenerateAppsPersentReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] int localityId)
         {
-            var report = await _grpcClient.GenerateAppsPercentReportAsync(new ReportRequest { StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), TypeName = localityName });
+            var report = await _grpcClient.GenerateAppsPercentReportAsync(
+                new ReportRequest { 
+                    StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), TypeId = localityId });
 
             return View("Details", report);
         }
 
-        [Route("Report/GenerateClosedAppsReport")]
-        public async Task<IActionResult> GenerateClosedAppsReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string localityName)
+        [Route("ReportGenerator/GenerateClosedAppsReport")]
+        public async Task<IActionResult> GenerateClosedAppsReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] int localityName)
         {
-            var report = await _grpcClient.GenerateClosedAppsReportAsync(new ReportRequest { StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), TypeName = localityName });
+            var report = await _grpcClient.GenerateClosedAppsReportAsync(
+                new ReportRequest { 
+                    StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), TypeId = localityName });
 
             return View("Details", report);
         }
 
-        [Route("Report/GenerateClosedContractsSumReport")]
-        public async Task<IActionResult> GenerateClosedContractsSumReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string orgName)
+        [Route("ReportGenerator/GenerateClosedContractsSumReport")]
+        public async Task<IActionResult> GenerateClosedContractsSumReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] int orgName)
         {
-            var report = await _grpcClient.GenerateClosedContractsSumReportAsync(new ReportRequest { StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), TypeName = orgName });
+            var report = await _grpcClient.GenerateClosedContractsSumReportAsync(
+                new ReportRequest { 
+                    StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), TypeId = orgName });
 
             return View("Details", report);
         }

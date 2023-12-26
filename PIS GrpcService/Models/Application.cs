@@ -21,4 +21,10 @@ public class Application
 
     [ForeignKey("IdOrganization")]
     public Organization Organization { get; set; } = null!;
+
+
+    public bool IsInPeriodAndLocality(DateTime startDate, DateTime endDate, int localityName)
+    {
+        return Date >= startDate && Date <= endDate && Locality.GetId() == localityName;
+    }
 }
