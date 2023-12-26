@@ -23,9 +23,9 @@ namespace PIS_GrpcService.Models
             return costInCity;
         }
 
-        public LocalityCost? GetCostByLocality(List<LocalityCost> localityCosts, int localityId)
+        public LocalityCost GetCostByLocality(List<LocalityCost> localityCosts, int localityId)
         {
-            return localityCosts.FirstOrDefault(lc => lc.IdLocality == localityId);
+            return localityCosts.First(lc => lc.IdLocality == localityId);
         }
     }
 }

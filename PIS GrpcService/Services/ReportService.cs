@@ -110,7 +110,7 @@ public class ReportService : GrpcReportService.GrpcReportServiceBase
             Number = 1,
             Name = "Отчет по стоимости закрытых заявок за период по населенному пункту",
             Description = $"За период с {startDate.Date} по {endDate.Date} в организации {localityName} " +
-              $"было закрыто контрактов на сумму: {totalCostApp}"
+              $"было закрыто заявок на сумму: {totalCostApp}"
         };
     }
 }
