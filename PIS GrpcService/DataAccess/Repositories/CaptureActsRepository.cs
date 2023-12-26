@@ -75,7 +75,7 @@ public class CaptureActsRepository
 
     public int GetContractsSum(DateTime startDate, DateTime endDate, string orgName)
     {
-        var allActs = context.Acts.Include(c => c.Applications).Include(c => c.Locality).Include(c => c.Performer).Include(c => c.Contract).ToList();
+        var allActs = context.Acts.Include(c => c.Applications).Include(c => c.Locality).Include(c => c.Performer).Include(c => c.Contract).ThenInclude(l => l.LocalityCosts).ThenInclude(l => l.Locality).ToList();
 
         var actsByOrg = allActs.Where(act => act.IsInOrganization(orgName)).ToList();
 
