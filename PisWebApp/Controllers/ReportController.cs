@@ -38,7 +38,7 @@ namespace PisWebApp.Controllers
         {
             var report = await _grpcClient.MakeClosedContractsReportAsync(
                 new ReportRequest { 
-                    StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), OrganizationName = orgName });
+                    StartDate = Timestamp.FromDateTime(startDate), EndDate = Timestamp.FromDateTime(endDate), OrganizationName = orgName });
 
             return View("Details", report);
         }

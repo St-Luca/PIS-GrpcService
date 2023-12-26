@@ -129,7 +129,11 @@
         var endDate = document.getElementById("endDate1").value;
         var localityId1 = document.getElementById("locality1").value;
 
-        window.location.href = '/ReportGenerator/GenerateAppsPersentReport?startDate=' + startDate + ' &endDate=' + endDate + '&localityId=' + localityId1;
+        var startDateUtc = encodeURIComponent(new Date(startDateValue).toISOString());
+        var endDateUtc = encodeURIComponent(new Date(endDateValue).toISOString());
+
+
+        window.location.href = '/ReportGenerator/GenerateAppsPersentReport?startDate=' + startDateUtc + ' &endDate=' + endDateUtc + '&localityId=' + + encodeURIComponent(localityId1);
 
         $('#dateModal1').modal('hide');
     }
