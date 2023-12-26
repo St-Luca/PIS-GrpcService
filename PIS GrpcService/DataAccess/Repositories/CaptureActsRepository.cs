@@ -89,7 +89,7 @@ public class CaptureActsRepository
 
                 if (costInCity != null)
                 {
-                    totalSum += costInCity.Cost;
+                    totalSum += costInCity.Cost * act.Amount;
                 }
             }
 
@@ -99,7 +99,7 @@ public class CaptureActsRepository
 
     public int GetAppsTotalCost(DateTime startDate, DateTime endDate, int localityId)
     {
-        var allActs = context.Acts.Include(c => c.Applications).Include(c => c.Locality).Include(c => c.Performer).Include(c => c.Contract).ToList();
+        var allActs = context.Acts.Include(c => c.Applications).Include(c => c.Locality).Include(c => c.Performer).Include(c => c.Contract).ThenInclude(l => l.LocalityCosts).ThenInclude(l => l.Locality).ToList();
 
         var closedActs = allActs.Where(act => act.IsInPeriodAndLocality(startDate, endDate, localityId)).ToList();
 

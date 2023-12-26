@@ -23,8 +23,8 @@ public class Application
     public Organization Organization { get; set; } = null!;
 
 
-    public bool IsInPeriodAndLocality(DateTime startDate, DateTime endDate, int localityName)
+    public bool IsInPeriodAndLocality(DateTime startDate, DateTime endDate, int localityId)
     {
-        return Date >= startDate && Date <= endDate && Locality.GetId() == localityName;
+        return Date >= startDate && Date <= endDate && Locality.GetId() == localityId;
     }
 }

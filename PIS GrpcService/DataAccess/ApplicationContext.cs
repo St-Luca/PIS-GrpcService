@@ -78,8 +78,11 @@ public class ApplicationContext : DbContext
 
         LocalityCost locCost1 = new LocalityCost { IdContract = 1, IdLocality = 1, Cost = 15000 };
         LocalityCost locCost2 = new LocalityCost { IdContract = 1, IdLocality = 2, Cost = 11000 };
-        LocalityCost locCost3 = new LocalityCost { IdContract = 2, IdLocality = 3, Cost = 10000 };
-        modelBuilder.Entity<LocalityCost>().HasData(locCost1, locCost2, locCost3);
+        LocalityCost locCost3 = new LocalityCost { IdContract = 1, IdLocality = 3, Cost = 10000 };
+        LocalityCost locCost4 = new LocalityCost { IdContract = 2, IdLocality = 2, Cost = 10000 };
+        LocalityCost locCost5 = new LocalityCost { IdContract = 2, IdLocality = 3, Cost = 12000 };
+        LocalityCost locCost6 = new LocalityCost { IdContract = 2, IdLocality = 4, Cost = 13000 };
+        modelBuilder.Entity<LocalityCost>().HasData(locCost1, locCost2, locCost3, locCost4, locCost5, locCost6);
 
         Animal animal1 = new Animal { Id = 1, Category = "Собака", Sex = "Кобель", Breed = "Овчарка", Size = "Большая", Coat = "Густая", Color = "Коричневая", Ears = "Коричневая", Tail = "Короткий", IdCaptureAct = 1, Mark = "134", IdentChip = "192"};
         Animal animal2 = new Animal { Id = 2, Category = "Кошка", Sex = "Самка", Breed = "Сиамская", Size = "Большая", Coat = "Густая", Color = "Коричневая", Ears = "Коричневая", Tail = "Короткий", IdCaptureAct = 1, Mark = "132", IdentChip = "222" };        

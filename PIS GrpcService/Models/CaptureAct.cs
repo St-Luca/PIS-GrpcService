@@ -25,9 +25,9 @@ public class CaptureAct
     public List<Application> Applications { get; set; }
     public List<Animal> Animals { get; set; }
 
-    public bool IsInPeriodAndLocality(DateTime startDate, DateTime endDate, int localityName)
+    public bool IsInPeriodAndLocality(DateTime startDate, DateTime endDate, int localityId)
     {
-        return ActDate >= startDate && ActDate <= endDate && Locality.GetId() == localityName;
+        return ((ActDate >= startDate) && (ActDate <= endDate) && (Locality.GetId() == localityId));
     }
 
     public bool IsInOrganization(string orgName)

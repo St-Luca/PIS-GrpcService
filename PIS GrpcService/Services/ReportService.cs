@@ -43,45 +43,6 @@ public class ReportService : GrpcReportService.GrpcReportServiceBase
         var totalCostApp = actsRepository.GetAppsTotalCost(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.TypeId);
 
         return GenerateClosedAppsReport(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.OrganizationName, totalCostApp);
-        /* var allActs = actsRepository.GetAll();
-         //var allActs = _dbContext.Acts
-         //    .Include(a => a.Applications)
-         //    .ThenInclude(app => app.Act.Contract.LocalityCosts);
-
-         var allDoneActs = allActs
-             .Where(a => a.ActDate >= reportRequest.StartDate.ToDateTime() &&
-                         a.ActDate <= reportRequest.EndDate.ToDateTime() &&
-                         a.Locality.Id == reportRequest.TypeId)
-             .ToList();
-
-         int totalCost = 0;
-
-         foreach (var act in allDoneActs)
-         {
-             foreach (var application in act.Applications)
-             {
-                 var contract = application.Act?.Contract;
-                 var locality = application.Act?.Locality;
-
-                 if (contract != null && locality != null)
-                 {
-                     var localityCost = contract.LocalityCosts.FirstOrDefault(lc => lc.IdLocality == locality.Id);
-                     if (localityCost != null)
-                     {
-                         // Добавляем стоимость заявки к общей сумме
-                         totalCost += localityCost.Cost;
-                     }
-                 }
-             }
-         }
-
-         return new GrpcReport
-         {
-             Number = 1,
-             Name = "Отчет по стоимости закрытых заявок в населенном пункте за период",
-             Description = $"За период с {reportRequest.StartDate.ToDateTime().Date} по {reportRequest.EndDate.ToDateTime().Date} в нас. пункте {reportRequest.TypeId} " +
-                 $"было закрыто заявок на сумму: {totalCost}"
-         };*/
     }
 
 
@@ -109,7 +70,7 @@ public class ReportService : GrpcReportService.GrpcReportServiceBase
         {
             Number = 1,
             Name = "Отчет по стоимости закрытых заявок за период по населенному пункту",
-            Description = $"За период с {startDate.Date} по {endDate.Date} в организации {localityName} " +
+            Description = $"За период с {startDate.Date} по {endDate.Date} в населенном пункте {localityName} " +
               $"было закрыто заявок на сумму: {totalCostApp}"
         };
     }
