@@ -13,4 +13,15 @@ public class Organization
     public string OrgAttribute { get; set; } = string.Empty;
     public List<Application> Applications { get; set; }
     public List<Contract> Contracts { get; set; }
+    public List<CaptureAct> Acts { get; set; }
+
+    public int GetId()
+    {
+        return Id;
+    }
+
+    public string GetName()
+    {
+        return OrgName;
+    }
 }

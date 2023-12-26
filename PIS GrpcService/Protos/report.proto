@@ -6,7 +6,7 @@ option csharp_namespace = "PIS_GrpcService.PIS_GrpcService";
 service GrpcReportService {
   rpc GenerateAppsPercentReport(ReportRequest) returns (GrpcReport);
   rpc GenerateClosedAppsReport(ReportRequest) returns (GrpcReport);
-  rpc GenerateClosedContractsSumReport(ReportRequest) returns (GrpcReport);
+  rpc MakeClosedContractsReport(ReportRequest) returns (GrpcReport);
 }
 
 message GrpcReport {
@@ -19,5 +19,6 @@ message ReportRequest{
 	google.protobuf.Timestamp StartDate = 1;
 	google.protobuf.Timestamp EndDate = 2;
 	int32 TypeId = 3;
+	string OrganizationName = 4;
 }
 

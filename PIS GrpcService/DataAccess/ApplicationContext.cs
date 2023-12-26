@@ -20,7 +20,6 @@ public class ApplicationContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
         modelBuilder.Entity<LocalityCost>()
         .HasKey(lc => new { lc.IdContract, lc.IdLocality });
 
@@ -40,6 +39,11 @@ public class ApplicationContext : DbContext
                     .HasForeignKey(d => d.IdOrganization);
 
         modelBuilder.Entity<Organization>()
+                    .HasMany(p => p.Acts)
+                    .WithOne(d => d.Performer)
+                    .HasForeignKey(d => d.IdOrganization);
+
+        modelBuilder.Entity<Organization>()
                     .HasMany(p => p.Contracts)
                     .WithOne(d => d.Performer)
                     .HasForeignKey(d => d.IdOrganization);
@@ -54,10 +58,10 @@ public class ApplicationContext : DbContext
                    .WithOne(d => d.Act)
                    .HasForeignKey(d => d.IdCaptureAct);
 
-        //modelBuilder.Entity<CaptureAct>()
-        //           .HasMany(p => p.CaptureActs)  связь между актом и контрактом
-        //           .WithOne(d => d.Contract)
-        //           .HasForeignKey(d => d.IdContract);
+        modelBuilder.Entity<CaptureAct>()
+                   .HasMany(p => p.Animals)  
+                   .WithOne(d => d.Act)
+                   .HasForeignKey(d => d.IdCaptureAct);
 
 
         Organization o1 = new Organization { Id = 1, OrgName = "Smartway", INN = "111", KPP = "ss" };
@@ -81,8 +85,8 @@ public class ApplicationContext : DbContext
         Animal animal2 = new Animal { Id = 2, Category = "Кошка", Sex = "Самка", Breed = "Сиамская", Size = "Большая", Coat = "Густая", Color = "Коричневая", Ears = "Коричневая", Tail = "Короткий", IdCaptureAct = 1, Mark = "132", IdentChip = "222" };        
         modelBuilder.Entity<Animal>().HasData(animal1, animal2);
 
-        Contract contract = new Contract { Id = 1, ConclusionDate = DateTime.UtcNow, EffectiveDate = DateTime.UtcNow, Amount = 12000, IdOrganization = o1.Id };
-        Contract contract2 = new Contract { Id = 2, ConclusionDate = new DateTime(2023, 01, 01).ToUniversalTime(), EffectiveDate = DateTime.UtcNow, Amount = 10000, IdOrganization = o1.Id };
+        Contract contract = new Contract { Id = 1, ConclusionDate = new DateTime(2023, 12, 01).ToUniversalTime(), EffectiveDate = new DateTime(2024, 12, 31).ToUniversalTime(), Amount = 12000, IdOrganization = o1.Id };
+        Contract contract2 = new Contract { Id = 2, ConclusionDate = new DateTime(2023, 01, 01).ToUniversalTime(), EffectiveDate = new DateTime(2023, 12, 31).ToUniversalTime(), Amount = 10000, IdOrganization = o1.Id };
         modelBuilder.Entity<Contract>().HasData(contract, contract2);
 
         CaptureAct act1 = new CaptureAct { Id = 1, ActDate = DateTime.UtcNow, IdOrganization = o1.Id, Amount = 10, IdCapturedAnimal = animal1.Id, IdContract = contract.Id, IdLocality = loc1.Id};        

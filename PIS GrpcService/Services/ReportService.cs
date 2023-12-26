@@ -40,90 +40,77 @@ public class ReportService : GrpcReportService.GrpcReportServiceBase
 
     public override async Task<GrpcReport> GenerateClosedAppsReport(ReportRequest reportRequest, ServerCallContext context)
     {
-        var allActs = actsRepository.GetAll();
-        //var allActs = _dbContext.Acts
-        //    .Include(a => a.Applications)
-        //    .ThenInclude(app => app.Act.Contract.LocalityCosts);
+        var totalCostApp = actsRepository.GetAppsTotalCost(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.TypeId);
 
-        var allDoneActs = allActs
-            .Where(a => a.ActDate >= reportRequest.StartDate.ToDateTime() &&
-                        a.ActDate <= reportRequest.EndDate.ToDateTime() &&
-                        a.Locality.Id == reportRequest.TypeId)
-            .ToList();
+        return GenerateClosedAppsReport(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.OrganizationName, totalCostApp);
+        /* var allActs = actsRepository.GetAll();
+         //var allActs = _dbContext.Acts
+         //    .Include(a => a.Applications)
+         //    .ThenInclude(app => app.Act.Contract.LocalityCosts);
 
-        int totalCost = 0;
+         var allDoneActs = allActs
+             .Where(a => a.ActDate >= reportRequest.StartDate.ToDateTime() &&
+                         a.ActDate <= reportRequest.EndDate.ToDateTime() &&
+                         a.Locality.Id == reportRequest.TypeId)
+             .ToList();
 
-        foreach (var act in allDoneActs)
-        {
-            foreach (var application in act.Applications)
-            {
-                var contract = application.Act?.Contract;
-                var locality = application.Act?.Locality;
+         int totalCost = 0;
 
-                if (contract != null && locality != null)
-                {
-                    var localityCost = contract.LocalityCosts.FirstOrDefault(lc => lc.IdLocality == locality.Id);
-                    if (localityCost != null)
-                    {
-                        // Добавляем стоимость заявки к общей сумме
-                        totalCost += localityCost.Cost;
-                    }
-                }
-            }
-        }
+         foreach (var act in allDoneActs)
+         {
+             foreach (var application in act.Applications)
+             {
+                 var contract = application.Act?.Contract;
+                 var locality = application.Act?.Locality;
 
-        return new GrpcReport
-        {
-            Number = 1,
-            Name = "Отчет по стоимости закрытых заявок в населенном пункте за период",
-            Description = $"За период с {reportRequest.StartDate.ToDateTime().Date} по {reportRequest.EndDate.ToDateTime().Date} в нас. пункте {reportRequest.TypeId} " +
-                $"было закрыто заявок на сумму: {totalCost}"
-        };
+                 if (contract != null && locality != null)
+                 {
+                     var localityCost = contract.LocalityCosts.FirstOrDefault(lc => lc.IdLocality == locality.Id);
+                     if (localityCost != null)
+                     {
+                         // Добавляем стоимость заявки к общей сумме
+                         totalCost += localityCost.Cost;
+                     }
+                 }
+             }
+         }
+
+         return new GrpcReport
+         {
+             Number = 1,
+             Name = "Отчет по стоимости закрытых заявок в населенном пункте за период",
+             Description = $"За период с {reportRequest.StartDate.ToDateTime().Date} по {reportRequest.EndDate.ToDateTime().Date} в нас. пункте {reportRequest.TypeId} " +
+                 $"было закрыто заявок на сумму: {totalCost}"
+         };*/
     }
 
 
-    public override async Task<GrpcReport> GenerateClosedContractsSumReport(ReportRequest reportRequest, ServerCallContext context)
+    public override async Task<GrpcReport> MakeClosedContractsReport(ReportRequest reportRequest, ServerCallContext context)
     {
-        //var sum = actsRepository.GetContractsSum(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.TypeId);
+        var sum = actsRepository.GetContractsSum(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.OrganizationName);
 
-        var contracts = contractsRepository.GetAll();
-        var acts = actsRepository.GetAll();
-        var localityCosts = localityCostsRepository.GetAll();
-        //var contracts = new ContractService.GetAllAsync();
-        //var contracts = _dbContext.Contracts;      
+        return MakeClosedContractsReport(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.OrganizationName, sum);
+    }
 
-        var allDoneContracts = contracts.Where(a => a.EffectiveDate >= reportRequest.StartDate.ToDateTime() &&
-        a.EffectiveDate <= reportRequest.EndDate.ToDateTime() && a.Performer.Id == reportRequest.TypeId).ToList();
-
-        var actsOfAllDoneContracts = acts.Where(a => allDoneContracts.Select(c => c.Id).Contains(a.IdContract)).ToList();
-
-        var sum = 0;
-
-        foreach (var act in actsOfAllDoneContracts)
-        {
-            var locality = act.Locality;
-            var localityCost = localityCosts.FirstOrDefault(lc => lc.IdLocality == locality.Id && lc.IdContract == act.IdContract);
-
-            if (localityCost != null)
-            {
-                sum += localityCost.Cost;
-            }
-        }
-
-
+    public GrpcReport MakeClosedContractsReport(DateTime startDate, DateTime endDate, string orgName, int sum)
+    {
         return new GrpcReport
         {
             Number = 1,
             Name = "Отчет по стоимости закрытых контрактов за период по организации",
-            Description = $"За период с {reportRequest.StartDate.ToDateTime().Date} по {reportRequest.EndDate.ToDateTime().Date} в нас. пункте {reportRequest.TypeId} " +
+            Description = $"За период с {startDate.Date} по {endDate.Date} в организации {orgName} " +
               $"было закрыто контрактов на сумму: {sum}"
         };
-        //var allDoneApps = _dbContext.Applications.Select(o => o.Map()).ToList(); //apprep.GetAllDoneApps
-        //var response = _dbContext.Organizations.Select(o => o.Map()).ToList();
+    }
 
-        //var result = new OrganizationArray();
-        //result.List.AddRange(response);
-
-        //return Task.FromResult(result);
+    public GrpcReport GenerateClosedAppsReport(DateTime startDate, DateTime endDate, string localityName, int totalCostApp)
+    {
+        return new GrpcReport
+        {
+            Number = 1,
+            Name = "Отчет по стоимости закрытых заявок за период по населенному пункту",
+            Description = $"За период с {startDate.Date} по {endDate.Date} в организации {localityName} " +
+              $"было закрыто контрактов на сумму: {totalCostApp}"
+        };
     }
 }

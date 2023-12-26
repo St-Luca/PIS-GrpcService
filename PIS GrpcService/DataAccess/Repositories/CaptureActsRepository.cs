@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.Models;
+using PIS_GrpcService.PIS_GrpcService;
 
 namespace PIS_GrpcService.DataAccess.Repositories;
 
@@ -72,8 +73,43 @@ public class CaptureActsRepository
         return apps.Where(app => app.IsInPeriodAndLocality(startDate, endDate, localityName) && app.IdAct == actId).ToList();
     }
 
-    public int TotalSum()
+    public int GetContractsSum(DateTime startDate, DateTime endDate, string orgName)
     {
-        return 0;
+        var allActs = context.Acts.Include(c => c.Applications).Include(c => c.Locality).Include(c => c.Performer).Include(c => c.Contract).ToList();
+
+        var closedActs = allActs.Where(act => act.IsInPeriodAndOrganization(startDate, endDate, orgName)).ToList();
+
+        var totalSum = 0;
+
+        foreach (var act in closedActs)
+        {
+            if(act.Contract.EffectiveDate >= startDate && act.Contract.EffectiveDate <= endDate)
+            {
+                var costInCity = act.Contract.GetCostContract(act.Locality);
+                totalSum += costInCity.Cost;
+            }
+
+        }
+        return totalSum;
+    }
+
+    public int GetAppsTotalCost(DateTime startDate, DateTime endDate, int localityId)
+    {
+        var allActs = context.Acts.Include(c => c.Applications).Include(c => c.Locality).Include(c => c.Performer).Include(c => c.Contract).ToList();
+
+        var closedActs = allActs.Where(act => act.IsInPeriodAndLocality(startDate, endDate, localityId)).ToList();
+
+        var totalCost = 0;
+
+        foreach (var act in closedActs)
+        {
+            foreach (var app in act.Applications.Where(app => app.IsInPeriodAndLocality(startDate, endDate, act.Locality.Id)))
+            {
+                var costInCity = act.GetCostClosedApp(act.Locality);
+                totalCost += costInCity.Cost;
+            } 
+        }
+
+        return totalCost;
     }
 }

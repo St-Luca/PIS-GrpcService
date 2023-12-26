@@ -82,11 +82,11 @@
             <div class="modal-body">
                 <form id="dateForm">
                     <div class="form-group">
-                        <label for="locality">Выберите организацию</label>
-                        <select class="form-control" id="locality">
-                            @foreach (var locality in Model.List.Select(item => item.Performer.OrgName).Distinct())
+                        <label for="organization">Выберите организацию</label>
+                        <select class="form-control" id="organization">
+                            @foreach (var organization in Model.List.Select(item => item.Performer.OrgName).Distinct())
                             {
-                                <option value="@locality">@locality</option>
+                                <option value="@organization">@organization</option>
                             }
                         </select>
                     </div>
@@ -118,9 +118,9 @@
 
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        var localityName = document.getElementById("locality").value;
+        var orgId = document.getElementById("organization").value;
 
-        window.location.href = '/Report/GenerateClosedContractsSumReport?startDate=' + startDate + ' &endDate=' + endDate + '&orgName=' + localityName;
+        window.location.href = '/ReportGenerator/MakeClosedContractsReport?startDate=' + startDate + ' &endDate=' + endDate + '&orgName=' + orgId;
 
         $('#dateModal').modal('hide');
     }
