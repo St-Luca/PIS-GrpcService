@@ -125,7 +125,9 @@
     function submitDates1() {
 
         var startDate = document.getElementById("startDate").value;
+
         var endDate = document.getElementById("endDate").value;
+
         var orgId = document.getElementById("organization").value;
 
         window.location.href = '/ReportGenerator/MakeClosedContractsReport?startDate=' + startDate + ' &endDate=' + endDate + '&orgName=' + orgId;

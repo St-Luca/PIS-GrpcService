@@ -16,9 +16,16 @@ namespace PisWebApp.Controllers
         [Route("ReportGenerator/GenerateAppsPersentReport")]
         public async Task<IActionResult> GenerateAppsPersentReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] int localityId)
         {
+            startDate = startDate.AddHours(5);
+            endDate = endDate.AddHours(5);
+
             var report = await _grpcClient.GenerateAppsPercentReportAsync(
-                new ReportRequest { 
-                    StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), TypeId = localityId });
+                new ReportRequest 
+                { 
+                    StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), 
+                    EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), 
+                    TypeId = localityId 
+                });
 
             return View("Details", report);
         }
@@ -26,9 +33,16 @@ namespace PisWebApp.Controllers
         [Route("ReportGenerator/GenerateClosedAppsReport")]
         public async Task<IActionResult> GenerateClosedAppsReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] int localityId)
         {
+            startDate = startDate.AddHours(5);
+            endDate = endDate.AddHours(5);
+
             var report = await _grpcClient.GenerateClosedAppsReportAsync(
-                new ReportRequest { 
-                    StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), TypeId = localityId });
+                new ReportRequest 
+                {
+                    StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()),
+                    EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()),
+                    TypeId = localityId 
+                });
 
             return View("Details", report);
         }
@@ -36,9 +50,16 @@ namespace PisWebApp.Controllers
         [Route("ReportGenerator/MakeClosedContractsReport")]
         public async Task<IActionResult> MakeClosedContractsReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string orgName)
         {
+            startDate = startDate.AddHours(5);
+            endDate = endDate.AddHours(5);
+
             var report = await _grpcClient.MakeClosedContractsReportAsync(
-                new ReportRequest { 
-                    StartDate = Timestamp.FromDateTime(startDate), EndDate = Timestamp.FromDateTime(endDate), OrganizationName = orgName });
+                new ReportRequest
+                {
+                    StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()),
+                    EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()),
+                    OrganizationName = orgName
+                });
 
             return View("Details", report);
         }
