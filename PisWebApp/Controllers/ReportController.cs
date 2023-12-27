@@ -14,7 +14,7 @@ namespace PisWebApp.Controllers
         }
     
         [Route("ReportGenerator/GenerateAppsPersentReport")]
-        public async Task<IActionResult> GenerateAppsPersentReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] int localityId)
+        public async Task<IActionResult> GenerateAppsPersentReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string localityName)
         {
             startDate = startDate.AddHours(5);
             endDate = endDate.AddHours(5);
@@ -24,14 +24,14 @@ namespace PisWebApp.Controllers
                 { 
                     StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()), 
                     EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()), 
-                    TypeId = localityId 
+                    TypeName = localityName 
                 });
 
             return View("Details", report);
         }
 
         [Route("ReportGenerator/GenerateClosedAppsReport")]
-        public async Task<IActionResult> GenerateClosedAppsReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] int localityId)
+        public async Task<IActionResult> GenerateClosedAppsReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string localityName)
         {
             startDate = startDate.AddHours(5);
             endDate = endDate.AddHours(5);
@@ -41,7 +41,7 @@ namespace PisWebApp.Controllers
                 {
                     StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()),
                     EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()),
-                    TypeId = localityId 
+                    TypeName = localityName
                 });
 
             return View("Details", report);
@@ -58,7 +58,7 @@ namespace PisWebApp.Controllers
                 {
                     StartDate = Timestamp.FromDateTime(startDate.ToUniversalTime()),
                     EndDate = Timestamp.FromDateTime(endDate.ToUniversalTime()),
-                    OrganizationName = orgName
+                    TypeName = orgName
                 });
 
             return View("Details", report);

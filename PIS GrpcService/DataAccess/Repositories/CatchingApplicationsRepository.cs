@@ -44,14 +44,14 @@ public class CatchingApplicationsRepository
             .Include(l => l.Organization).ToList();
     }
 
-    public int GetAllAppsInPeriodCount(DateTime startDate, DateTime endDate, int localityName)
+    public int GetAllAppsInPeriodCount(DateTime startDate, DateTime endDate, string localityName)
     {
         var allApps = GetAppsInPeriod(startDate, endDate, localityName);
 
         return allApps.Count;
     }
 
-    public List<Application> GetAppsInPeriod(DateTime startDate, DateTime endDate, int localityName)
+    public List<Application> GetAppsInPeriod(DateTime startDate, DateTime endDate, string localityName)
     {
         var apps = context.Applications.Include(a => a.Locality).ToList();
 

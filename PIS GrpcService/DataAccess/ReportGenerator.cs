@@ -18,7 +18,7 @@ public class ReportGenerator
         this.applicationsRepository = applicationsRepository;
     }
 
-    public GrpcReport GenerateAppsPercentReport(DateTime startDate, DateTime endDate, int localityName)
+    public GrpcReport GenerateAppsPercentReport(DateTime startDate, DateTime endDate, string localityName)
     {
         var allAppsCount = applicationsRepository.GetAllAppsInPeriodCount(startDate, endDate, localityName);
         var doneAppsCount = actsRepository.GetDoneAppsInPeriodCount(startDate, endDate, localityName);
@@ -26,7 +26,7 @@ public class ReportGenerator
         return GenerateAppsPercentReport(startDate, endDate, allAppsCount, doneAppsCount, localityName);
     }
 
-    public GrpcReport GenerateAppsPercentReport(DateTime startDate, DateTime endDate, int allAppsCount, int doneAppsCount, int localityName)
+    public GrpcReport GenerateAppsPercentReport(DateTime startDate, DateTime endDate, int allAppsCount, int doneAppsCount, string localityName)
     {
         decimal percentage = 0;
 
@@ -39,7 +39,7 @@ public class ReportGenerator
         {
             Number = 1,
             Name = "Отчет по проценту выполненных заявок в населенном пункте",
-            Description = $"За период с {startDate.Date} по {endDate.Date} в нас. пункте {localityName} " +
+            Description = $"За период с {startDate.ToShortDateString()} по {endDate.Date.ToShortDateString()} в нас. пункте {localityName} " +
               $"было зарегистрировано {allAppsCount} заявок, выполнено - {doneAppsCount}. Процент выполнения составил: {percentage}"
         };
     }

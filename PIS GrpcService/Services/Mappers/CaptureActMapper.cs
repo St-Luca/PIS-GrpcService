@@ -12,6 +12,12 @@ public static class CaptureActMapper
 
     public static GrpcCaptureAct MapToGrpc(this CaptureAct dbCaptureAct)
     {
+        var array = new AnimalArray();
+        if (dbCaptureAct.Animals != null)
+        {
+            array = dbCaptureAct.Animals.MapToGrpc();
+        }
+
         return new GrpcCaptureAct
         {
             Id = dbCaptureAct.Id,
@@ -20,7 +26,7 @@ public static class CaptureActMapper
             Performer = dbCaptureAct.Performer.MapToGrpc(),
             Locality = dbCaptureAct.Locality.MapToGrpc(),
             Applications = dbCaptureAct.Applications.MapToGrpc(),
-            Animals = new AnimalArray()//dbCaptureAct.Animals.Map()
+            Animals = array
         };
     }
 
@@ -34,7 +40,7 @@ public static class CaptureActMapper
             Performer = dbCaptureAct.Performer.MapFromGrpc(),
             Locality = dbCaptureAct.Locality.MapFromGrpc(),
             Applications = dbCaptureAct.Applications.MapFromGrpc(dbCaptureAct.Performer.MapFromGrpc(), dbCaptureAct.Locality.MapFromGrpc()),
-            Animals = new List<Animal>()//dbCaptureAct.Animals.Map()
+            Animals = dbCaptureAct.Animals.MapFromGrpc()
         };
     }
 }

@@ -43,7 +43,7 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
             .ToList();
 
         var applications = applicationsRepository.GetAll()
-            .Where(app => acts.Select(act => act.Id).Contains(app.IdAct))
+            .Where(app => acts.Select(act => act.Id).Contains(((int)app.IdAct)))
             .ToList();
 
         /*var organizationIds = acts.Select(app => app.IdOrganization).ToList();

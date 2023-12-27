@@ -10,7 +10,7 @@ public class Application
     public string? AnimalDescription { get; set; } = string.Empty;
     public string? Urgency { get; set; } = string.Empty;
     public int IdLocality { get; set; }
-    public int IdAct { get; set; }
+    public int? IdAct { get; set; }
     public int IdOrganization { get; set; }
 
     [ForeignKey("IdLocality")]
@@ -23,8 +23,8 @@ public class Application
     public Organization Organization { get; set; } = null!;
 
 
-    public bool IsInPeriodAndLocality(DateTime startDate, DateTime endDate, int localityId)
+    public bool IsInPeriodAndLocality(DateTime startDate, DateTime endDate, string localityId)
     {
-        return Date >= startDate && Date <= endDate && Locality.GetId() == localityId;
+        return Date >= startDate && Date <= endDate && Locality.GetName() == localityId;
     }
 }

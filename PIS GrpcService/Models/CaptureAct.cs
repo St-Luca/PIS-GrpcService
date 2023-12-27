@@ -25,14 +25,14 @@ public class CaptureAct
     public List<Application> Applications { get; set; }
     public List<Animal> Animals { get; set; }
 
-    public bool IsInPeriodAndLocality(DateTime startDate, DateTime endDate, int localityId)
+    public bool IsInPeriodAndLocality(DateTime startDate, DateTime endDate, string localityName)
     {
-        return ((ActDate >= startDate) && (ActDate <= endDate) && (Locality.GetId() == localityId));
+        return ((ActDate >= startDate) && (ActDate <= endDate) && (Locality.GetName() == localityName));
     }
 
     public bool IsInOrganization(string orgName)
     {
-        return Performer.OrgName == orgName;
+        return Performer.GetName() == orgName;
     }
 
     public LocalityCost GetCostClosedApp(int localityId)

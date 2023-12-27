@@ -15,7 +15,7 @@ namespace PIS_GrpcService
             var builder = WebApplication.CreateBuilder(args);
 
             string connection = builder.Configuration.GetConnectionString("DefaultConnection");
-            // добавляем контекст ApplicationContext в качестве сервиса в приложение
+            
             builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connection));
 
             builder.Services.AddScoped<OrganizationsRepository>();
@@ -25,7 +25,6 @@ namespace PIS_GrpcService
             builder.Services.AddScoped<LocalitiesRepository>();
             builder.Services.AddScoped<LocalityCostsRepository>();
             builder.Services.AddScoped<MunicipalContractsRepository>();
-           // builder.Services.AddScoped<ReportGenerator>();
 
             // Add services to the container.
             builder.Services.AddGrpc();
@@ -48,3 +47,5 @@ namespace PIS_GrpcService
         }
     }
 }
+
+

@@ -1,6 +1,8 @@
 ﻿syntax = "proto3";
 
 import "Protos/organization.proto";
+import "Protos/LocalityCost.proto";
+
 option csharp_namespace = "PIS_GrpcService.PIS_GrpcService";
 
 service GrpcLocalityService {
@@ -14,6 +16,7 @@ service GrpcLocalityService {
 message GrpcLocality {
    int32 Id = 1;
    string Name = 2;
+   LocalityCostArray LocalityCosts = 3;
 
 }
 

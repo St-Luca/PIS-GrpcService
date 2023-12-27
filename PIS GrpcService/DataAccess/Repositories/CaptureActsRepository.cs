@@ -49,18 +49,18 @@ public class CaptureActsRepository
             .Include(a => a.Locality).ToList();
     }
 
-    public int GetDoneAppsInPeriodCount(DateTime startDate, DateTime endDate, int localityName)
+    public int GetDoneAppsInPeriodCount(DateTime startDate, DateTime endDate, string localityName)
     {
         var doneAppsCount = GetDoneAppsInPeriod(startDate, endDate, localityName).Count;
         
         return doneAppsCount;
     }
 
-    public List<Application> GetDoneAppsInPeriod(DateTime startDate, DateTime endDate, int localityName)
+    public List<Application> GetDoneAppsInPeriod(DateTime startDate, DateTime endDate, string localityName)
     {
         var allDoneApps = new List<Application>();
 
-        var allActs = context.Acts.Include(c => c.Applications).Include(c => c.Locality).ToList();
+        var allActs = context.Acts.Include(c => c.Applications).ThenInclude(a => a.Locality).Include(c => c.Locality).ToList();
 
         var doneActs = allActs.Where(act => act.IsInPeriodAndLocality(startDate, endDate, localityName)).ToList();
 
@@ -74,7 +74,7 @@ public class CaptureActsRepository
         return allDoneApps;
     }
 
-    public List<Application> GetDoneAppsInPeriod(DateTime startDate, DateTime endDate, int localityName, int actId)
+    public List<Application> GetDoneAppsInPeriod(DateTime startDate, DateTime endDate, string localityName, int actId)
     {
         var apps = context.Applications.Include(l => l.Act).Include(l => l.Locality).Include(l => l.Organization).ToList();
 
@@ -105,17 +105,17 @@ public class CaptureActsRepository
         return totalSum;
     }
 
-    public int GetAppsTotalCost(DateTime startDate, DateTime endDate, int localityId)
+    public int GetAppsTotalCost(DateTime startDate, DateTime endDate, string localityName)
     {
-        var allActs = context.Acts.Include(c => c.Applications).Include(c => c.Locality).Include(c => c.Performer).Include(c => c.Contract).ThenInclude(l => l.LocalityCosts).ThenInclude(l => l.Locality).ToList();
+        var allActs = context.Acts.Include(c => c.Applications).ThenInclude(a => a.Locality).Include(c => c.Locality).Include(c => c.Performer).Include(c => c.Contract).ThenInclude(l => l.LocalityCosts).ThenInclude(l => l.Locality).ToList();
 
-        var closedActs = allActs.Where(act => act.IsInPeriodAndLocality(startDate, endDate, localityId)).ToList();
+        var closedActs = allActs.Where(act => act.IsInPeriodAndLocality(startDate, endDate, localityName)).ToList();
 
         var totalCost = 0;
 
         foreach (var act in closedActs)
         {
-            foreach (var app in act.Applications.Where(app => app.IsInPeriodAndLocality(startDate, endDate, act.Locality.Id)))
+            foreach (var app in act.Applications.Where(app => app.IsInPeriodAndLocality(startDate, endDate, localityName)))
             {
                 var costInCity = act.GetCostClosedApp(act.IdLocality);
                 totalCost += costInCity.Cost;

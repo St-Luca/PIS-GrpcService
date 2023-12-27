@@ -29,7 +29,7 @@ public static class ApplicationMapper
             AnimalDescription = dbApplication.AnimalDescription,
             Urgency = dbApplication.Urgency,
             IdLocality = dbApplication.Locality.Id,
-            //Act = dbApplication.Act.Map(),
+            Locality = dbApplication.Locality.MapToGrpc(),
             IdOrganization = dbApplication.Organization.Id
         };
     }
@@ -44,7 +44,6 @@ public static class ApplicationMapper
             AnimalDescription = dbApplication.AnimalDescription,
             Urgency = dbApplication.Urgency,
             Locality = loc,
-            //Act = dbApplication.Act.Map(),
             Organization = org
         };
     }

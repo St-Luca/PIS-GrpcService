@@ -1,13 +1,24 @@
 ﻿using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
+using System.Diagnostics.Contracts;
 
 namespace PIS_GrpcService.Services.Mappers;
 
 public static class AnimalMapper
 {
-    public static List<GrpcAnimal> MapToGrpc(this List<Animal> animals)
+    public static AnimalArray MapToGrpc(this List<Animal> localities)
     {
-        return animals.Select(x => x.MapToGrpc()).ToList();
+        var locs = localities.Select(x => x.MapToGrpc()).ToList();
+        var res = new AnimalArray();
+        res.List.AddRange(locs);
+        return res;
+    }
+
+    public static List<Animal> MapFromGrpc(this AnimalArray animalArray)
+    {
+        var animals = animalArray.List.ToList();
+
+        return animals.Select(x => x.MapFromGrpc()).ToList();
     }
 
     public static GrpcAnimal MapToGrpc(this Animal dbAnimal)

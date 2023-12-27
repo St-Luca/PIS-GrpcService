@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.List[0].Amount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.List[0].Performer)
+                @Html.DisplayNameFor(model => model.List[0].Performer.OrgName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.List[0].LocalityCosts)
@@ -57,7 +57,7 @@
                     @Html.DisplayFor(modelItem => item.Amount)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Performer)
+                    @Html.DisplayFor(modelItem => item.Performer.OrgName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LocalityCosts)

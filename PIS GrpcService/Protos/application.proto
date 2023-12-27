@@ -22,8 +22,10 @@ message GrpcApplication {
 	 string AnimalDescription = 4;
 	 string Urgency = 5;
 	 int32 IdLocality = 6;
-	 int32 IdAct = 7;
-	 int32 IdOrganization = 8;
+	 GrpcLocality Locality = 7;
+	 int32 IdAct = 8;
+	 int32 IdOrganization = 9;
+	 GrpcOrganization Organization = 10;
 }
 
 message ApplicationArray {

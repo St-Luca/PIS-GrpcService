@@ -18,7 +18,7 @@ message GrpcReport {
 message ReportRequest{
 	google.protobuf.Timestamp StartDate = 1;
 	google.protobuf.Timestamp EndDate = 2;
-	int32 TypeId = 3;
+	string TypeName = 3;
 	string OrganizationName = 4;
 }
 

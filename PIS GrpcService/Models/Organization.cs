@@ -15,11 +15,6 @@ public class Organization
     public List<Contract> Contracts { get; set; }
     public List<CaptureAct> Acts { get; set; }
 
-    public int GetId()
-    {
-        return Id;
-    }
-
     public string GetName()
     {
         return OrgName;

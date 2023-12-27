@@ -30,10 +30,10 @@
                 @Html.DisplayNameFor(model => model.List[0].Urgency)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.List[0].IdLocality)
+                @Html.DisplayNameFor(model => model.List[0].Locality.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.List[0].IdOrganization)
+                @Html.DisplayNameFor(model => model.List[0].Organization.OrgName)
             </th>
         </tr>
     </thead>
@@ -61,10 +61,10 @@
                     @Html.DisplayFor(modelItem => item.Urgency)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IdLocality)
+                    @Html.DisplayFor(modelItem => item.Locality.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IdOrganization)
+                    @Html.DisplayFor(modelItem => item.Organization.OrgName)
                 </td>
                 <td style="text-align: center;">
                     <a asp-action="Add" style="text-decoration: none;" title="Создать">Создать</a> |
@@ -97,7 +97,7 @@
                     <div class="form-group">
                         <label for="locality">Выберите населенный пункт</label>
                         <select class="form-control" id="locality1">
-                            @foreach (var locality in Model.List.Select(item => item.IdLocality).Distinct())
+                            @foreach (var locality in Model.List.Select(item => item.Locality.Name).Distinct())
                             {
                                 <option value="@locality">@locality</option>
                             }
@@ -133,9 +133,9 @@
 
         var endDate = document.getElementById("endDate1").value;
 
-        var localityId1 = document.getElementById("locality1").value;
+        var localityName = document.getElementById("locality1").value;
 
-        window.location.href = '/ReportGenerator/GenerateAppsPersentReport?startDate=' + startDate + ' &endDate=' + endDate + '&localityId=' + localityId1;
+        window.location.href = '/ReportGenerator/GenerateAppsPersentReport?startDate=' + startDate + ' &endDate=' + endDate + '&localityName=' + localityName;
 
         $('#dateModal1').modal('hide');
     }
@@ -156,7 +156,7 @@
                     <div class="form-group">
                         <label for="locality">Выберите населенный пункт</label>
                         <select class="form-control" id="locality2">
-                            @foreach (var locality in Model.List.Select(item => item.IdLocality).Distinct())
+                            @foreach (var locality in Model.List.Select(item => item.Locality.Name).Distinct())
                             {
                                 <option value="@locality">@locality</option>
                             }
@@ -192,9 +192,9 @@
 
         var endDate = document.getElementById("endDate2").value;
 
-        var localityId2 = document.getElementById("locality2").value;
+        var localityName = document.getElementById("locality2").value;
 
-        window.location.href = '/ReportGenerator/GenerateClosedAppsReport?startDate=' + startDate + ' &endDate=' + endDate + '&localityId=' + localityId2;
+        window.location.href = '/ReportGenerator/GenerateClosedAppsReport?startDate=' + startDate + ' &endDate=' + endDate + '&localityName=' + localityName;
 
         $('#dateModal2').modal('hide');
     }

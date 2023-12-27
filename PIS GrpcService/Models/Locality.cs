@@ -12,9 +12,4 @@ public class Locality
     {
         return Name;
     }
-
-    public int GetId()
-    {
-        return Id;
-    }
 }
