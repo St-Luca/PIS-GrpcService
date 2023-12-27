@@ -26,14 +26,14 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<LocalityCost>()
         .HasKey(lc => new { lc.IdContract, lc.IdLocality });
 
-        modelBuilder.Entity<LocalityCost>()
-            .HasOne(lc => lc.Contract)
-            .WithMany(c => c.LocalityCosts)
+        modelBuilder.Entity<Contract>()
+            .HasMany(lc => lc.LocalityCosts)
+            .WithOne(c => c.Contract)
             .HasForeignKey(lc => lc.IdContract);
 
-        modelBuilder.Entity<LocalityCost>()
-            .HasOne(lc => lc.Locality)
-            .WithMany(l => l.LocalityCosts)
+        modelBuilder.Entity<Locality>()
+            .HasMany(lc => lc.LocalityCosts)
+            .WithOne(c => c.Locality)
             .HasForeignKey(lc => lc.IdLocality);
 
         modelBuilder.Entity<Organization>()

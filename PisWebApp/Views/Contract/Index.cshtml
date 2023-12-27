@@ -60,7 +60,11 @@
                     @Html.DisplayFor(modelItem => item.Performer.OrgName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LocalityCosts)
+                    @foreach (var cost in item.LocalityCosts.List)
+                    {
+                        @Html.DisplayFor(modelItem => cost.Cost)
+                        <br>
+                    }
                 </td>
                 <td style="text-align: center;">
                     <a asp-action="Add" style="text-decoration: none;" title="Создать">Создать</a> |

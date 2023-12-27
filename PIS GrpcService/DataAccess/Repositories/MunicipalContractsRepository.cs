@@ -39,6 +39,6 @@ public class MunicipalContractsRepository
 
     public List<Contract> GetAll()
     {
-        return context.Contracts.Include(a => a.Performer).Include(a => a.LocalityCosts).ToList();
+        return context.Contracts.Include(a => a.Performer).Include(a => a.LocalityCosts).ThenInclude(lc => lc.Locality).ToList();
     }
 }
