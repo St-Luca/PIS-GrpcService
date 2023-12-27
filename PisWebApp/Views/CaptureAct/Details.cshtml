@@ -17,9 +17,15 @@
         <dt class="col-sm-2">
             @{
                 DateTime date11 = Model.ActDate.ToDateTime(); // Преобразование из формата gRPC в DateTime
-                string date1 = date11.ToShortDateString();
+                string date = date11.ToShortDateString();
             }
-            @Html.DisplayNameFor(model => date1)
+            @Html.DisplayNameFor(model => model.ActDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => date)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Animals)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Animals)
@@ -28,10 +34,20 @@
             @Html.DisplayNameFor(model => model.Amount)
         </dt>
         <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Performer)
+        </dt>
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Performer)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Locality)
+        </dt>              
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Locality)
+        </dd>
     </dl>
 </div>
 <div>

@@ -50,7 +50,13 @@
             @Html.DisplayNameFor(model => model.LocalityCosts)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LocalityCosts)
+            @foreach (var item in Model.LocalityCosts.List)
+            {
+                @Html.DisplayFor(modelItem => item.Cost)
+                <hr>
+                <br>
+            }
+
     </dl>
 </div>
 <div>
