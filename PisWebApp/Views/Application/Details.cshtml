@@ -18,7 +18,11 @@
             @Html.DisplayNameFor(model => model.Date)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Date)
+            @{
+                DateTime date11 = Model.Date.ToDateTime(); // Преобразование из формата gRPC в DateTime
+                string date1 = date11.ToShortDateString();
+            }
+            @Html.DisplayFor(model => date1)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ApplicantCategory)

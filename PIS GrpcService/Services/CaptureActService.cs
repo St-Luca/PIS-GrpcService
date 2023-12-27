@@ -5,6 +5,7 @@ using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.Services.Mappers;
+using System.Diagnostics.Contracts;
 
 namespace PIS_GrpcService.PIS_GrpcService.Services;
 
@@ -34,12 +35,18 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
     public async override Task<CaptureActArray> GetAll(Empty e, ServerCallContext context)
     {
         var acts = repository.GetAll();
-        //var acts = await _dbContext.Acts
-        //    .Include(a => a.Animals)
-        //    .Include(a => a.Applications)
-        //    .ToListAsync();
 
-        var organizationIds = acts.Select(app => app.IdOrganization).ToList();
+        var contractIds = acts.Select(app => app.IdContract).ToList();
+
+        var contracts = contractsRepository.GetAll()
+            .Where(contract => contractIds.Contains(contract.Id))
+            .ToList();
+
+        var applications = applicationsRepository.GetAll()
+            .Where(app => acts.Select(act => act.Id).Contains(app.IdAct))
+            .ToList();
+
+        /*var organizationIds = acts.Select(app => app.IdOrganization).ToList();
         var localityIds = acts.Select(app => app.IdLocality).ToList();
         var contractIds = acts.Select(app => app.IdContract).ToList();
 
@@ -57,24 +64,21 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
 
         var applications = applicationsRepository.GetAll()
             .Where(app => acts.Select(act => act.Id).Contains(app.IdAct))
-            .ToList();
+            .ToList();*/
 
         var result = new CaptureActArray();
 
         foreach (var act in acts)
         {
-            act.Performer = organizations.First(d => d.Id == act.IdOrganization);
-            act.Locality = localities.First(d => d.Id == act.IdLocality);
+            /*act.Performer = organizations.First(d => d.Id == act.IdOrganization);
             act.Contract = contracts.First(c => c.Id == act.IdContract);
-            act.Applications = applications.Where(a => a.IdAct == act.Id).ToList();
+            act.Applications = applications.Where(a => a.IdAct == act.Id).ToList();*/
 
-            // Включаем список заявок (Applications) для каждого акта (Act)
-            //var applications = await _dbContext.Applications
-            //.Include(a => a.Locality)
-            //.ToListAsync();
 
             //act.Applications = applications;
 
+            act.Contract = contracts.First(c => c.Id == act.IdContract);
+            act.Applications = applications.Where(a => a.IdAct == act.Id).ToList();
 
             result.List.Add(act.MapToGrpc());
         }

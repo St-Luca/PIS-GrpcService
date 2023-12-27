@@ -27,7 +27,11 @@ public class CaptureActsRepository
 
     public CaptureAct Get(int id)
     {
-        return context.Acts.Single(o => o.Id == id);
+        return context.Acts
+            .Include(a => a.Applications).ThenInclude(app => app.Locality)
+            .Include(a => a.Contract).ThenInclude(contract => contract.LocalityCosts)
+            .Include(a => a.Performer)
+            .Include(a => a.Locality).Single(o => o.Id == id);
     }
 
     public void Edit(CaptureAct organization)
@@ -38,7 +42,11 @@ public class CaptureActsRepository
 
     public List<CaptureAct> GetAll()
     {
-        return context.Acts.Include(a => a.Animals).Include(a => a.Applications).Include(a => a.Contract).Include(a => a.Performer).ToList();
+        return context.Acts
+            .Include(a => a.Applications).ThenInclude(app => app.Locality)
+            .Include(a => a.Contract).ThenInclude(contract => contract.LocalityCosts)
+            .Include(a => a.Performer)
+            .Include(a => a.Locality).ToList();
     }
 
     public int GetDoneAppsInPeriodCount(DateTime startDate, DateTime endDate, int localityName)
@@ -68,7 +76,7 @@ public class CaptureActsRepository
 
     public List<Application> GetDoneAppsInPeriod(DateTime startDate, DateTime endDate, int localityName, int actId)
     {
-        var apps = context.Applications.Include(a => a.Locality).ToList();
+        var apps = context.Applications.Include(l => l.Act).Include(l => l.Locality).Include(l => l.Organization).ToList();
 
         return apps.Where(app => app.IsInPeriodAndLocality(startDate, endDate, localityName) && app.IdAct == actId).ToList();
     }

@@ -32,18 +32,18 @@ public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceB
     public async override Task<ApplicationArray> GetAll(Empty e, ServerCallContext context)
     {
         var applications = repository.GetAll();
-        var localityIds = applications.Select(app => app.IdLocality).ToList();
+        /*var localityIds = applications.Select(app => app.IdLocality).ToList();
         var organizationIds = applications.Select(app => app.IdOrganization).ToList();
 
         var localities = localitiesRepository.GetAll().Where(loc => localityIds.Contains(loc.Id)).ToList();
-        var organizations = organizationsRepository.GetAll().Where(org => organizationIds.Contains(org.Id)).ToList();
+        var organizations = organizationsRepository.GetAll().Where(org => organizationIds.Contains(org.Id)).ToList();*/
 
         var result = new ApplicationArray();
 
         foreach (var app in applications)
         {
-            app.Locality = localities.First(d => d.Id == app.IdLocality);
-            app.Organization = organizations.First(d => d.Id == app.IdOrganization);
+            //app.Locality = localities.First(d => d.Id == app.IdLocality);
+            //app.Organization = organizations.First(d => d.Id == app.IdOrganization);
             result.List.Add(app.MapToGrpc());
         }
 
@@ -53,11 +53,11 @@ public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceB
     public async override Task<GrpcApplication?> Get(IdRequest id, ServerCallContext context)
     {
         var response = repository.Get(id.Id);
-        var locality = localitiesRepository.Get(response.IdLocality);
+        /*var locality = localitiesRepository.Get(response.IdLocality);
         var organization = organizationsRepository.Get(response.IdOrganization);
 
         response.Locality = locality;
-        response.Organization = organization;
+        response.Organization = organization;*/
         
         return response.MapToGrpc();
     }

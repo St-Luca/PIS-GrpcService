@@ -27,17 +27,17 @@ public class ContractService : GrpcContractService.GrpcContractServiceBase
             //.Include(c => c.LocalityCosts) // Загрузка связанных LocalityCosts для каждого контракта
             //.ToListAsync();
 
-        var organizationIds = contracts.Select(app => app.IdOrganization).ToList();
-        var organizations = organizationsRepository.GetAll()
+        //var organizationIds = contracts.Select(app => app.IdOrganization).ToList();
+        /*var organizations = organizationsRepository.GetAll()
             .Where(org => organizationIds.Contains(org.Id))
-            .ToList();
+            .ToList();*/
 
         var result = new ContractsArray();
 
         foreach (var contract in contracts)
         {
-            contract.Performer = organizations.First(d => d.Id == contract.IdOrganization);
-            contract.LocalityCosts = localityCostsRepository.GetAll().Where(lc => lc.IdContract == contract.Id).ToList();
+            //contract.Performer = organizations.First(d => d.Id == contract.IdOrganization);
+            //contract.LocalityCosts = localityCostsRepository.GetAll().Where(lc => lc.IdContract == contract.Id).ToList();
 
             result.List.Add(contract.MapToGrpc());
         }

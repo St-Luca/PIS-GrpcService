@@ -1,4 +1,5 @@
-﻿using PIS_GrpcService.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PIS_GrpcService.Models;
 
 namespace PIS_GrpcService.DataAccess.Repositories;
 
@@ -25,7 +26,7 @@ public class AnimalsRepository
 
     public Animal Get(int id)
     {
-        return context.Animals.Single(o => o.Id == id);
+        return context.Animals.Include(l => l.Act).Single(o => o.Id == id);
     }
 
     public void Edit(Animal organization)
@@ -36,6 +37,6 @@ public class AnimalsRepository
 
     public List<Animal> GetAll()
     {
-        return context.Animals.ToList();
+        return context.Animals.Include(l => l.Act).ToList();
     }
 }

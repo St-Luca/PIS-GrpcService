@@ -18,14 +18,37 @@
             @Html.DisplayNameFor(model => model.ConclusionDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EffectiveDate)
+            @{
+                DateTime date11 = Model.ConclusionDate.ToDateTime(); // Преобразование из формата gRPC в DateTime
+                string date1 = date11.ToShortDateString();
+            }
+            @Html.DisplayFor(model => date1)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EffectiveDate)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                DateTime date22 = Model.EffectiveDate.ToDateTime(); // Преобразование из формата gRPC в DateTime
+                string date2 = date22.ToShortDateString();
+            }
+            @Html.DisplayFor(model => date2)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Amount)
         </dt>
         <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Performer)
+        </dt>
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Performer)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocalityCosts)
+        </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LocalityCosts)
     </dl>

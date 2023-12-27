@@ -45,7 +45,11 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Date)
+                    @{
+                        DateTime date11 = item.Date.ToDateTime(); // Преобразование из формата gRPC в DateTime
+                        string date1 = date11.ToShortDateString();
+                    }
+                    @Html.DisplayFor(modelItem => date1)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ApplicantCategory)
@@ -126,14 +130,14 @@
     function submitDates1() {
 
         var startDate = document.getElementById("startDate1").value;
+        startDate.setHours(startDate.getHours() + 5);
+
         var endDate = document.getElementById("endDate1").value;
+        endDate.setHours(endDate.getHours() + 5);
+
         var localityId1 = document.getElementById("locality1").value;
 
-        var startDateUtc = encodeURIComponent(new Date(startDateValue).toISOString());
-        var endDateUtc = encodeURIComponent(new Date(endDateValue).toISOString());
-
-
-        window.location.href = '/ReportGenerator/GenerateAppsPersentReport?startDate=' + startDateUtc + ' &endDate=' + endDateUtc + '&localityId=' + + encodeURIComponent(localityId1);
+        window.location.href = '/ReportGenerator/GenerateAppsPersentReport?startDate=' + startDate + ' &endDate=' + endDate + '&localityId=' + localityId1;
 
         $('#dateModal1').modal('hide');
     }
@@ -187,7 +191,11 @@
     function submitDates2() {
 
         var startDate = document.getElementById("startDate2").value;
+        startDate.setHours(startDate.getHours() + 5);
+
         var endDate = document.getElementById("endDate2").value;
+        endDate.setHours(endDate.getHours() + 5);
+
         var localityId2 = document.getElementById("locality2").value;
 
         window.location.href = '/ReportGenerator/GenerateClosedAppsReport?startDate=' + startDate + ' &endDate=' + endDate + '&localityId=' + localityId2;

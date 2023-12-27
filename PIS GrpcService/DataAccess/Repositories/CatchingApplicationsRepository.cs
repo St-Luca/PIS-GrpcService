@@ -26,7 +26,9 @@ public class CatchingApplicationsRepository
 
     public Application Get(int id)
     {
-        return context.Applications.Single(o => o.Id == id);
+        return context.Applications.Include(l => l.Act)
+            .Include(l => l.Locality).ThenInclude(a => a.LocalityCosts)
+            .Include(l => l.Organization).Single(o => o.Id == id);
     }
 
     public void Edit(Application organization)
@@ -37,7 +39,9 @@ public class CatchingApplicationsRepository
 
     public List<Application> GetAll()
     {
-        return context.Applications.ToList();
+        return context.Applications.Include(l => l.Act)
+            .Include(l => l.Locality).ThenInclude(a => a.LocalityCosts)
+            .Include(l => l.Organization).ToList();
     }
 
     public int GetAllAppsInPeriodCount(DateTime startDate, DateTime endDate, int localityName)

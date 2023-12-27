@@ -88,20 +88,20 @@ public class ApplicationContext : DbContext
         Animal animal2 = new Animal { Id = 2, Category = "Кошка", Sex = "Самка", Breed = "Сиамская", Size = "Большая", Coat = "Густая", Color = "Коричневая", Ears = "Коричневая", Tail = "Короткий", IdCaptureAct = 1, Mark = "132", IdentChip = "222" };        
         modelBuilder.Entity<Animal>().HasData(animal1, animal2);
 
-        Contract contract = new Contract { Id = 1, ConclusionDate = new DateTime(2023, 12, 01).ToUniversalTime(), EffectiveDate = new DateTime(2024, 12, 31).ToUniversalTime(), Amount = 12000, IdOrganization = o1.Id };
-        Contract contract2 = new Contract { Id = 2, ConclusionDate = new DateTime(2023, 01, 01).ToUniversalTime(), EffectiveDate = new DateTime(2023, 12, 31).ToUniversalTime(), Amount = 10000, IdOrganization = o1.Id };
+        Contract contract = new Contract { Id = 1, ConclusionDate = new DateTime(2023, 12, 01, 5, 0, 0).ToUniversalTime(), EffectiveDate = new DateTime(2024, 12, 31, 5, 0, 0).ToUniversalTime(), Amount = 12000, IdOrganization = o1.Id };
+        Contract contract2 = new Contract { Id = 2, ConclusionDate = new DateTime(2023, 01, 01, 5, 0, 0).ToUniversalTime(), EffectiveDate = new DateTime(2023, 12, 31, 5, 0, 0).ToUniversalTime(), Amount = 10000, IdOrganization = o1.Id };
         modelBuilder.Entity<Contract>().HasData(contract, contract2);
 
         CaptureAct act1 = new CaptureAct { Id = 1, ActDate = DateTime.UtcNow, IdOrganization = o1.Id, Amount = 10, IdCapturedAnimal = animal1.Id, IdContract = contract.Id, IdLocality = loc1.Id};        
-        CaptureAct act2 = new CaptureAct { Id = 2, ActDate = new DateTime(2023, 10, 01).ToUniversalTime(), IdOrganization = o2.Id, Amount = 15, IdCapturedAnimal = animal1.Id, IdContract = contract.Id, IdLocality = loc3.Id };
-        CaptureAct act3 = new CaptureAct { Id = 3, ActDate = new DateTime(2023, 10, 03).ToUniversalTime(), IdOrganization = o3.Id, Amount = 20, IdCapturedAnimal = animal2.Id, IdContract = contract2.Id, IdLocality = loc4.Id };
+        CaptureAct act2 = new CaptureAct { Id = 2, ActDate = new DateTime(2023, 10, 01, 5, 0, 0).ToUniversalTime(), IdOrganization = o2.Id, Amount = 15, IdCapturedAnimal = animal1.Id, IdContract = contract.Id, IdLocality = loc3.Id };
+        CaptureAct act3 = new CaptureAct { Id = 3, ActDate = new DateTime(2023, 10, 03, 5, 0, 0).ToUniversalTime(), IdOrganization = o3.Id, Amount = 20, IdCapturedAnimal = animal2.Id, IdContract = contract2.Id, IdLocality = loc4.Id };
         modelBuilder.Entity<CaptureAct>().HasData(act1, act2, act3);
 
         Application app1 = new Application
         {
             Id = 1,
             AnimalDescription = "Gtc",
-            Date = new DateTime(2023,01,01).ToUniversalTime(),
+            Date = new DateTime(2023,01,01,5,0,0).ToUniversalTime(),
             ApplicantCategory = "app cat",
             IdLocality = loc1.Id,
             IdOrganization = o1.Id,
@@ -113,7 +113,7 @@ public class ApplicationContext : DbContext
         {
             Id = 2,
             AnimalDescription = "Animal2",
-            Date = new DateTime(2023, 10, 01).ToUniversalTime(),
+            Date = new DateTime(2023, 10, 01, 5, 0, 0).ToUniversalTime(),
             ApplicantCategory = "app cat",
             IdLocality = loc2.Id,
             IdOrganization = o1.Id,
@@ -125,7 +125,7 @@ public class ApplicationContext : DbContext
         {
             Id = 3,
             AnimalDescription = "Animal3",
-            Date = new DateTime(2023, 12, 01).ToUniversalTime(),
+            Date = new DateTime(2023, 12, 01, 5, 0, 0).ToUniversalTime(),
             ApplicantCategory = "app cat",
             IdLocality = loc3.Id,
             IdOrganization = o1.Id,

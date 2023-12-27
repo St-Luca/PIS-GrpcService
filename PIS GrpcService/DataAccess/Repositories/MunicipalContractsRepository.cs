@@ -1,4 +1,5 @@
-﻿using PIS_GrpcService.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PIS_GrpcService.Models;
 using System.Diagnostics.Contracts;
 using Contract = PIS_GrpcService.Models.Contract;
 
@@ -27,7 +28,7 @@ public class MunicipalContractsRepository
 
     public Contract Get(int id)
     {
-        return context.Contracts.Single(o => o.Id == id);
+        return context.Contracts.Include(a => a.Performer).Include(a => a.LocalityCosts).Single(o => o.Id == id);
     }
 
     public void Edit(Contract contract)
@@ -38,6 +39,6 @@ public class MunicipalContractsRepository
 
     public List<Contract> GetAll()
     {
-        return context.Contracts.ToList();
+        return context.Contracts.Include(a => a.Performer).Include(a => a.LocalityCosts).ToList();
     }
 }
