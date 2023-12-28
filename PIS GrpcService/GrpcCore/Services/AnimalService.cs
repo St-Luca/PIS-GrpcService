@@ -4,10 +4,9 @@ using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
-using PIS_GrpcService.PIS_GrpcService.Services;
 using PIS_GrpcService.Services.Mappers;
 
-namespace PIS_GrpcService.Services;
+namespace PIS_GrpcService.GrpcCore.Services;
 
 public class AnimalService : GrpcAnimalService.GrpcAnimalServiceBase
 {

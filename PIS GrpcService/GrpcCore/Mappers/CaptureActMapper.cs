@@ -21,7 +21,7 @@ public static class CaptureActMapper
         return new GrpcCaptureAct
         {
             Id = dbCaptureAct.Id,
-            ActDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime((DateTime)dbCaptureAct.ActDate),
+            ActDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime((DateTime)dbCaptureAct.Date),
             Amount = dbCaptureAct.Amount,
             Performer = dbCaptureAct.Performer.MapToGrpc(),
             Locality = dbCaptureAct.Locality.MapToGrpc(),
@@ -35,7 +35,7 @@ public static class CaptureActMapper
         return new CaptureAct
         {
             Id = dbCaptureAct.Id,
-            ActDate = dbCaptureAct.ActDate.ToDateTime(),
+            Date = dbCaptureAct.ActDate.ToDateTime(),
             Amount = dbCaptureAct.Amount,
             Performer = dbCaptureAct.Performer.MapFromGrpc(),
             Locality = dbCaptureAct.Locality.MapFromGrpc(),

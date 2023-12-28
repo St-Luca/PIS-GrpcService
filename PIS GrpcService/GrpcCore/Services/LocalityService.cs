@@ -1,18 +1,15 @@
 ﻿using Grpc.Core;
-using Microsoft.EntityFrameworkCore;
-using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.DataAccess.Repositories;
+using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.Services.Mappers;
 
-namespace PIS_GrpcService.PIS_GrpcService.Services;
+namespace PIS_GrpcService.GrpcCore.Services;
 
 public class LocalityService : GrpcLocalityService.GrpcLocalityServiceBase
 {
     private readonly LocalitiesRepository repository;
-    private readonly ILogger<LocalityService> _logger;
-    public LocalityService(ILogger<LocalityService> logger, LocalitiesRepository localities)
+    public LocalityService(LocalitiesRepository localities)
     {
-        _logger = logger;
         repository = localities;
     }
 

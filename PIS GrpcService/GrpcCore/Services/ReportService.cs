@@ -1,34 +1,21 @@
 ﻿using Grpc.Core;
-using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.PIS_GrpcService;
-using PIS_GrpcService.PIS_GrpcService.Services;
-using Google.Protobuf.WellKnownTypes;
-using PIS_GrpcService.Services.Mappers;
 using PIS_GrpcService.DataAccess.Repositories;
 
-namespace PIS_GrpcService.Services;
+namespace PIS_GrpcService.GrpcCore.Services;
 
 public class ReportService : GrpcReportService.GrpcReportServiceBase
 {
 
     private readonly CatchingApplicationsRepository applicationsRepository;
     private readonly CaptureActsRepository actsRepository;
-    private readonly MunicipalContractsRepository contractsRepository;
-    private readonly LocalityCostsRepository localityCostsRepository;
 
-
-    private readonly ILogger<ReportService> _logger;
-    public ReportService(ILogger<ReportService> logger, CatchingApplicationsRepository catchingApplicationsRepository, 
-        CaptureActsRepository captureActsRepository, 
-        MunicipalContractsRepository contractsRepository, 
-        LocalityCostsRepository localityCostsRepository)
+    public ReportService(CatchingApplicationsRepository catchingApplicationsRepository,
+        CaptureActsRepository captureActsRepository)
     {
-        _logger = logger;
         applicationsRepository = catchingApplicationsRepository;
         actsRepository = captureActsRepository;
-        this.contractsRepository = contractsRepository;
-        this.localityCostsRepository = localityCostsRepository;
     }
 
     public override async Task<GrpcReport> GenerateAppsPercentReport(ReportRequest reportRequest, ServerCallContext context)

@@ -33,6 +33,7 @@ public static class AnimalMapper
             Coat = dbAnimal.Coat,
             Color = dbAnimal.Color,
             Ears = dbAnimal.Ears,
+            Tail = dbAnimal.Tail,
             IdCapturedAct = dbAnimal.IdCaptureAct,
             Mark = dbAnimal.Mark,
             IdentChip = dbAnimal.IdentChip
@@ -52,6 +53,7 @@ public static class AnimalMapper
             Coat = dbAnimal.Coat,
             Color = dbAnimal.Color,
             Ears = dbAnimal.Ears,
+            Tail = dbAnimal.Tail,
             IdCaptureAct = dbAnimal.IdCapturedAct,
             Mark = dbAnimal.Mark,
             IdentChip = dbAnimal.IdentChip

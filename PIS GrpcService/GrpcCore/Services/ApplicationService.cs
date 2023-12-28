@@ -1,32 +1,21 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Grpc.Core;
+﻿using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
-using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
-using PIS_GrpcService.PIS_GrpcService.Services;
 using PIS_GrpcService.Services.Mappers;
-using System.Net.Sockets;
 using Empty = PIS_GrpcService.PIS_GrpcService.Empty;
 
-namespace PIS_GrpcService.Services;
+namespace PIS_GrpcService.GrpcCore.Services;
+
 
 public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceBase
 {
     private readonly CatchingApplicationsRepository repository;
-    private readonly LocalitiesRepository localitiesRepository;
-    private readonly OrganizationsRepository organizationsRepository;
-    private readonly ILogger<ApplicationService> _logger;
 
-    public ApplicationService(ILogger<ApplicationService> logger, CatchingApplicationsRepository applicationsRepository, 
-        LocalitiesRepository localities, 
-        OrganizationsRepository organizations)
+    public ApplicationService(CatchingApplicationsRepository applicationsRepository)
     {
-        _logger = logger;
         repository = applicationsRepository;
-        localitiesRepository = localities;
-        organizationsRepository = organizations;
     }
 
     public async override Task<ApplicationArray> GetAll(Empty e, ServerCallContext context)
@@ -46,18 +35,15 @@ public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceB
     public async override Task<GrpcApplication?> Get(IdRequest id, ServerCallContext context)
     {
         var response = repository.Get(id.Id);
-        
+
         return response.MapToGrpc();
     }
 
     public override Task<Empty> Edit(GrpcApplication application, ServerCallContext context)
     {
-        var loc = new Locality { Id = application.Id };
-        var org = new Organization { Id = application.Id };
-        
         try
         {
-            repository.Edit(application.MapFromGrpc(loc, org));
+            repository.Edit(application.MapFromGrpc());
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -89,10 +75,7 @@ public class ApplicationService : GrpcApplicationService.GrpcApplicationServiceB
 
     public async override Task<Empty> Add(GrpcApplication application, ServerCallContext context)
     {
-        var loc = new Locality();
-        var org = new Organization();
-
-        var entityApplication = application?.MapFromGrpc(loc, org);
+        var entityApplication = application?.MapFromGrpc();
 
         if (entityApplication != null)
         {

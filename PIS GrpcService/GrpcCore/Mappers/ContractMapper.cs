@@ -7,11 +7,6 @@ namespace PIS_GrpcService.Services.Mappers;
 
 public static class ContractMapper
 {
-    public static List<GrpcContract> MapToGrpc(this List<Contract> contracts)
-    {
-        return contracts.Select(x => x.MapToGrpc()).ToList();
-    }
-
     public static GrpcContract MapToGrpc(this Contract dbContract)
     {
         return new GrpcContract

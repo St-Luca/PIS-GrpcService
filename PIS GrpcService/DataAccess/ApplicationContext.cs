@@ -61,11 +61,6 @@ public class ApplicationContext : DbContext
                    .WithOne(d => d.Act)
                    .HasForeignKey(d => d.IdCaptureAct);
 
-        modelBuilder.Entity<CaptureAct>()
-                   .HasMany(p => p.Animals)  
-                   .WithOne(d => d.Act)
-                   .HasForeignKey(d => d.IdCaptureAct);
-
 
         Organization o1 = new Organization { Id = 1, OrgName = "Smartway", INN = "111", KPP = "ss" };
         Organization o2 = new Organization { Id = 2, OrgName = "TumGU", INN = "222", KPP = "wtf" };
@@ -86,10 +81,10 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<Contract>().HasData(contract, contract2);
 
 
-        CaptureAct act1 = new CaptureAct { Id = 1, ActDate = new DateTime(2023, 01, 01, 5, 0, 0).ToUniversalTime(), IdOrganization = o1.Id, Amount = 10, IdContract = contract.Id, IdLocality = loc1.Id };
-        CaptureAct act2 = new CaptureAct { Id = 2, ActDate = new DateTime(2023, 01, 10, 5, 0, 0).ToUniversalTime(), IdOrganization = o2.Id, Amount = 15, IdContract = contract.Id, IdLocality = loc3.Id };
-        CaptureAct act3 = new CaptureAct { Id = 3, ActDate = new DateTime(2023, 10, 03, 5, 0, 0).ToUniversalTime(), IdOrganization = o3.Id, Amount = 20, IdContract = contract2.Id, IdLocality = loc4.Id };
-        CaptureAct act4 = new CaptureAct { Id = 1000, ActDate = new DateTime(2025, 10, 03, 5, 0, 0).ToUniversalTime(), IdOrganization = o3.Id, Amount = 20, IdContract = contract2.Id, IdLocality = loc4.Id };
+        CaptureAct act1 = new CaptureAct { Id = 1, Date = new DateTime(2023, 01, 01, 5, 0, 0).ToUniversalTime(), IdOrganization = o1.Id, Amount = 10, IdContract = contract.Id, IdLocality = loc1.Id };
+        CaptureAct act2 = new CaptureAct { Id = 2, Date = new DateTime(2023, 01, 10, 5, 0, 0).ToUniversalTime(), IdOrganization = o2.Id, Amount = 15, IdContract = contract.Id, IdLocality = loc3.Id };
+        CaptureAct act3 = new CaptureAct { Id = 3, Date = new DateTime(2023, 10, 03, 5, 0, 0).ToUniversalTime(), IdOrganization = o3.Id, Amount = 20, IdContract = contract2.Id, IdLocality = loc4.Id };
+        CaptureAct act4 = new CaptureAct { Id = 1000, Date = new DateTime(2025, 10, 03, 5, 0, 0).ToUniversalTime(), IdOrganization = o3.Id, Amount = 20, IdContract = contract2.Id, IdLocality = loc4.Id };
 
         modelBuilder.Entity<CaptureAct>().HasData(act1, act2, act3, act4);
 

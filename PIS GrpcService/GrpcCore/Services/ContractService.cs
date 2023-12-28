@@ -3,9 +3,11 @@ using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.DataAccess.Repositories;
+using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.Services.Mappers;
+using Empty = PIS_GrpcService.PIS_GrpcService.Empty;
 
-namespace PIS_GrpcService.PIS_GrpcService.Services;
+namespace PIS_GrpcService.GrpcCore.Services;
 
 public class ContractService : GrpcContractService.GrpcContractServiceBase
 {
@@ -24,21 +26,11 @@ public class ContractService : GrpcContractService.GrpcContractServiceBase
     public async override Task<ContractsArray> GetAll(Empty e, ServerCallContext context)
     {
         var contracts = repository.GetAll();
-            //.Include(c => c.LocalityCosts) // Загрузка связанных LocalityCosts для каждого контракта
-            //.ToListAsync();
-
-        //var organizationIds = contracts.Select(app => app.IdOrganization).ToList();
-        /*var organizations = organizationsRepository.GetAll()
-            .Where(org => organizationIds.Contains(org.Id))
-            .ToList();*/
 
         var result = new ContractsArray();
 
         foreach (var contract in contracts)
         {
-            //contract.Performer = organizations.First(d => d.Id == contract.IdOrganization);
-            //contract.LocalityCosts = localityCostsRepository.GetAll().Where(lc => lc.IdContract == contract.Id).ToList();
-
             result.List.Add(contract.MapToGrpc());
         }
 

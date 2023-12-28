@@ -1,7 +1,5 @@
 ﻿using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.PIS_GrpcService;
-using PIS_GrpcService.PIS_GrpcService.Services;
-using System.Data;
 
 namespace PIS_GrpcService.DataAccess;
 

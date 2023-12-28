@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PIS_GrpcService.Models;
-using System.Diagnostics.Contracts;
 using Contract = PIS_GrpcService.Models.Contract;
 
 namespace PIS_GrpcService.DataAccess.Repositories;

@@ -4,30 +4,24 @@ using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.Models;
+using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.Services.Mappers;
-using System.Diagnostics.Contracts;
+using Empty = PIS_GrpcService.PIS_GrpcService.Empty;
 
-namespace PIS_GrpcService.PIS_GrpcService.Services;
+namespace PIS_GrpcService.GrpcCore.Services;
 
 public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
 {
     private readonly CaptureActsRepository repository;
-    private readonly LocalitiesRepository localitiesRepository;
-    private readonly OrganizationsRepository organizationsRepository;
     private readonly MunicipalContractsRepository contractsRepository;
     private readonly CatchingApplicationsRepository applicationsRepository;
-    private readonly ILogger<CaptureActService> _logger;
-    public CaptureActService(ILogger<CaptureActService> logger, 
-        CaptureActsRepository actRepository, 
-        LocalitiesRepository localitiesRepository,
-        OrganizationsRepository organizationsRepository,
+
+    public CaptureActService(ILogger<CaptureActService> logger,
+        CaptureActsRepository actRepository,
         MunicipalContractsRepository contractsRepository,
         CatchingApplicationsRepository applicationsRepository)
     {
-        _logger = logger;
         repository = actRepository;
-        this.localitiesRepository = localitiesRepository;
-        this.organizationsRepository = organizationsRepository;
         this.contractsRepository = contractsRepository;
         this.applicationsRepository = applicationsRepository;
     }
@@ -43,7 +37,7 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
             .ToList();
 
         var applications = applicationsRepository.GetAll()
-            .Where(app => acts.Select(act => act.Id).Contains(((int)app.IdAct)))
+            .Where(app => acts.Select(act => act.Id).Contains((int)app.IdAct))
             .ToList();
 
         /*var organizationIds = acts.Select(app => app.IdOrganization).ToList();

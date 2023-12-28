@@ -1,23 +1,21 @@
 ﻿using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
-using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.DataAccess.Repositories;
+using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.Services.Mappers;
 
-namespace PIS_GrpcService.PIS_GrpcService.Services;
+namespace PIS_GrpcService.GrpcCore.Services;
 
 public class OrganizationService : GrpcOrganizationService.GrpcOrganizationServiceBase
 {
     private readonly OrganizationsRepository repository;
-    private readonly ILogger<OrganizationService> _logger;
-    public OrganizationService(ILogger<OrganizationService> logger, OrganizationsRepository organizationsRepository)
+    public OrganizationService(OrganizationsRepository organizationsRepository)
     {
-        _logger = logger;
         repository = organizationsRepository;
     }
 
     public override Task<OrganizationArray> GetAll(Empty e, ServerCallContext context)
-    { 
+    {
         var response = repository.GetAll().Select(o => o.MapToGrpc()).ToList();
 
         var result = new OrganizationArray();

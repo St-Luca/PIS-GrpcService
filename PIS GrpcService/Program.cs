@@ -1,10 +1,7 @@
 using PIS_GrpcService.DataAccess;
-using PIS_GrpcService.Services;
-//using PisWebApp.Services;
 using Microsoft.EntityFrameworkCore;
-using PIS_GrpcService.PIS_GrpcService.Services;
-using PIS_GrpcService.Models;
 using PIS_GrpcService.DataAccess.Repositories;
+using PIS_GrpcService.GrpcCore.Services;
 
 namespace PIS_GrpcService
 {
