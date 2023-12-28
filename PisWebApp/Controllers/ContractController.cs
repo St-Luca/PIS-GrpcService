@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using PIS_GrpcService;
 using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
-using System.Diagnostics.Contracts;
 using static PIS_GrpcService.PIS_GrpcService.GrpcContractService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcOrganizationService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcLocalityService;
@@ -18,9 +17,9 @@ namespace PisWebApp.Controllers
         private readonly GrpcContractServiceClient _grpcClient;
         private readonly GrpcOrganizationServiceClient _organizationClient;
         private readonly GrpcLocalityServiceClient _localityCleint;
-        private readonly GrpcLocalityServiceClient _localityCostCleint;
+        private readonly GrpcLocalityCostServiceClient _localityCostCleint;
 
-        public ContractController(GrpcContractServiceClient grpcClient, GrpcOrganizationServiceClient grpcOrganizationServiceClient, GrpcLocalityServiceClient grpcLocalityServiceClient, GrpcLocalityServiceClient localityCostCleint)
+        public ContractController(GrpcContractServiceClient grpcClient, GrpcOrganizationServiceClient grpcOrganizationServiceClient, GrpcLocalityServiceClient grpcLocalityServiceClient, GrpcLocalityCostServiceClient localityCostCleint)
         {
             _grpcClient = grpcClient;
             _organizationClient = grpcOrganizationServiceClient;
@@ -40,9 +39,6 @@ namespace PisWebApp.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var contract = await _grpcClient.GetAsync(new IdRequest { Id = id });
-            //var organizations = await _organizationClient.GetAllAsync(new Empty());
-            //var localities = await _localityCleint.GetAllAsync(new Empty());
-            //var locCost = await _localityCostCleint.GetAllAsync(new Empty());
 
             return View(contract);
         }

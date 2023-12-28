@@ -11,11 +11,9 @@ namespace PIS_GrpcService.GrpcCore.Services;
 public class AnimalService : GrpcAnimalService.GrpcAnimalServiceBase
 {
     private readonly AnimalsRepository repository;
-    private readonly ILogger<AnimalService> _logger;
 
-    public AnimalService(ILogger<AnimalService> logger, AnimalsRepository animalsRepository)
+    public AnimalService(AnimalsRepository animalsRepository)
     {
-        _logger = logger;
         repository = animalsRepository;
     }
 

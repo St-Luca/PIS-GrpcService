@@ -1,13 +1,7 @@
 ﻿using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PIS_GrpcService;
-using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcOrganizationService;
-//using PIS_GrpcService.PisWebApp;
-//using static PIS_GrpcService.Organizationer;
-//using static PIS_GrpcService.PisWebApp.Organizationer;
 
 namespace PisWebApp.Controllers
 {

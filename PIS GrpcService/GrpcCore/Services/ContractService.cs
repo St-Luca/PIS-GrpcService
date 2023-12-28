@@ -1,7 +1,5 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Grpc.Core;
+﻿using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
-using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.DataAccess.Repositories;
 using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.Services.Mappers;
@@ -12,15 +10,9 @@ namespace PIS_GrpcService.GrpcCore.Services;
 public class ContractService : GrpcContractService.GrpcContractServiceBase
 {
     private readonly MunicipalContractsRepository repository;
-    private readonly LocalityCostsRepository localityCostsRepository;
-    private readonly OrganizationsRepository organizationsRepository;
-    private readonly ILogger<ContractService> _logger;
-    public ContractService(ILogger<ContractService> logger, MunicipalContractsRepository contractsRepository, LocalityCostsRepository localityCosts, OrganizationsRepository organizations)
+    public ContractService(MunicipalContractsRepository contractsRepository)
     {
-        _logger = logger;
         repository = contractsRepository;
-        localityCostsRepository = localityCosts;
-        organizationsRepository = organizations;
     }
 
     public async override Task<ContractsArray> GetAll(Empty e, ServerCallContext context)

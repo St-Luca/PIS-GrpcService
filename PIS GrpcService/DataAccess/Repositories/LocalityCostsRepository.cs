@@ -1,4 +1,5 @@
-﻿using PIS_GrpcService.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PIS_GrpcService.Models;
 
 namespace PIS_GrpcService.DataAccess.Repositories;
 
@@ -10,13 +11,13 @@ public class LocalityCostsRepository
     {
         context = dbContext;
     }
-    public LocalityCost Get(int id) /////////////
+    public LocalityCost Get(int id) 
     {
-        return context.LocalityCosts.Single(o => o.IdContract == id);
+        return context.LocalityCosts.Include(lc => lc.Locality).Include(lc => lc.Contract).Single(o => o.IdContract == id);
     }
 
     public List<LocalityCost> GetAll()
     {
-        return context.LocalityCosts.ToList();
+        return context.LocalityCosts.Include(lc => lc.Locality).Include(lc => lc.Contract).ToList();
     }
 }

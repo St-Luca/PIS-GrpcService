@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using PIS_GrpcService.Models;
-using System.Diagnostics.Contracts;
 using Contract = PIS_GrpcService.Models.Contract;
 
 namespace PIS_GrpcService.DataAccess;
@@ -122,7 +120,7 @@ public class ApplicationContext : DbContext
             Date = new DateTime(2023, 01, 01, 5, 0, 0).ToUniversalTime(),
             ApplicantCategory = "Физ. лицо",
             IdLocality = loc1.Id,
-            IdOrganization = o1.Id,
+            IdOrganization = o3.Id,
             IdAct = act4.Id,
             Urgency = "Срочно"
         };
@@ -146,7 +144,7 @@ public class ApplicationContext : DbContext
             Date = new DateTime(2023, 12, 01, 5, 0, 0).ToUniversalTime(),
             ApplicantCategory = "Физ. лицо",
             IdLocality = loc3.Id,
-            IdOrganization = o1.Id,
+            IdOrganization = o2.Id,
             IdAct = act2.Id,
             Urgency = "Совсем не срочно"
         };

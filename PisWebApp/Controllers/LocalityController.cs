@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PIS_GrpcService.PIS_GrpcService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcLocalityService;
 

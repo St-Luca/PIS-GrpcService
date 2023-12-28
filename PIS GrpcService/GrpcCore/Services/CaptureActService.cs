@@ -1,9 +1,6 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Grpc.Core;
+﻿using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
-using PIS_GrpcService.DataAccess;
 using PIS_GrpcService.DataAccess.Repositories;
-using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
 using PIS_GrpcService.Services.Mappers;
 using Empty = PIS_GrpcService.PIS_GrpcService.Empty;
@@ -16,7 +13,7 @@ public class CaptureActService : GrpcCaptureActService.GrpcCaptureActServiceBase
     private readonly MunicipalContractsRepository contractsRepository;
     private readonly CatchingApplicationsRepository applicationsRepository;
 
-    public CaptureActService(ILogger<CaptureActService> logger,
+    public CaptureActService(
         CaptureActsRepository actRepository,
         MunicipalContractsRepository contractsRepository,
         CatchingApplicationsRepository applicationsRepository)

@@ -1,8 +1,5 @@
 ﻿using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PIS_GrpcService;
-using PIS_GrpcService.Models;
 using PIS_GrpcService.PIS_GrpcService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcCaptureActService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcOrganizationService;
