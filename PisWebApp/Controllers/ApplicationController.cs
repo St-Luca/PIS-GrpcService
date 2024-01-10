@@ -8,6 +8,7 @@ using static PIS_GrpcService.PIS_GrpcService.GrpcApplicationService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcOrganizationService;
 using static PIS_GrpcService.PIS_GrpcService.GrpcLocalityService;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using static PIS_GrpcService.PIS_GrpcService.GrpcCaptureActService;
 
 namespace PisWebApp.Controllers
 {
@@ -16,12 +17,17 @@ namespace PisWebApp.Controllers
         private readonly GrpcApplicationServiceClient _grpcClient;
         private readonly GrpcOrganizationServiceClient _grpcOrganizationClient;
         private readonly GrpcLocalityServiceClient _grpcLocalityClient;
+        private readonly GrpcCaptureActServiceClient _grpcActServiceClient;
 
-        public ApplicationController(GrpcApplicationServiceClient grpcClient, GrpcOrganizationServiceClient grpcOrganizationServiceClient, GrpcLocalityServiceClient grpcLocalityServiceClient)
+        public ApplicationController(GrpcApplicationServiceClient grpcClient, 
+            GrpcOrganizationServiceClient grpcOrganizationServiceClient, 
+            GrpcLocalityServiceClient grpcLocalityServiceClient,
+            GrpcCaptureActServiceClient grpcCaptureActServiceClient)
         {
             _grpcClient = grpcClient;
             _grpcOrganizationClient = grpcOrganizationServiceClient;
             _grpcLocalityClient = grpcLocalityServiceClient;
+            _grpcActServiceClient = grpcCaptureActServiceClient;
         }
 
         // GET: ApplicationController
@@ -45,9 +51,14 @@ namespace PisWebApp.Controllers
         {
             var organizations = await _grpcOrganizationClient.GetAllAsync(new Empty());
             var localities = await _grpcLocalityClient.GetAllAsync(new Empty());
+            var apps = await _grpcClient.GetAllAsync(new Empty());
 
-            ViewBag.orgId = new SelectList(organizations.List, "Id", "Id");
-            ViewBag.locId = new SelectList(localities.List, "Id", "Id");
+            var orgList = organizations.List.Select(x => x.Id).ToList();
+            var locList = localities.List.Select(x => x.Id).ToList();
+
+            ViewBag.LocId = new SelectList(localities.List, "Id", "Name");
+            ViewBag.OrgId = new SelectList(organizations.List, "Id", "OrgName");
+            ViewBag.AppId = apps.List.Max(a => a.Id) + 1;
 
             return View();
         }
@@ -55,12 +66,16 @@ namespace PisWebApp.Controllers
         // POST: ApplicationController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(GrpcApplication application)
+        public async Task<IActionResult> Add([FromForm] GrpcApplication application, [FromForm] DateTime Date)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(Date.AddHours(5).ToUniversalTime());
+                    application.Date = date;
+                    application.Locality = _grpcLocalityClient.Get(new IdRequest { Id = application.IdLocality});
+                    application.Organization = _grpcOrganizationClient.Get(new IdRequest { Id = application.IdOrganization });
                     // Отправляем данные новой организации через gRPC клиент
                     var response = await _grpcClient.AddAsync(application);
 
@@ -97,7 +112,7 @@ namespace PisWebApp.Controllers
         public async Task<IActionResult> Edit(GrpcApplication application)
         {
             await _grpcClient.EditAsync(application);
-            await _grpcClient.GetAsync(new IdRequest { Id = application.Id });
+           // await _grpcClient.GetAsync(new IdRequest { Id = application.Id });
 
             return RedirectToAction("Index", "Application");
         }
@@ -108,21 +123,6 @@ namespace PisWebApp.Controllers
             await _grpcClient.DeleteAsync(new IdRequest { Id = id });
 
             return RedirectToAction("Index", "Application");
-        }
-
-        // POST: ApplicationController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

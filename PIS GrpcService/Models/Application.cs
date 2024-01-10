@@ -17,7 +17,7 @@ public class Application
     public Locality Locality { get; set; } = null!;
 
     [ForeignKey("IdAct")]
-    public CaptureAct Act { get; set; } = null!;
+    public CaptureAct? Act { get; set; } = null!;
 
     [ForeignKey("IdOrganization")]
     public Organization Organization { get; set; } = null!;

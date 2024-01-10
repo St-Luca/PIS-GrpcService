@@ -14,8 +14,8 @@ public class CatchingApplicationsRepository
 
     public void Add(Application organization)
     {
-        context.Applications.Add(organization);
-        context.SaveChanges();
+        context.Applications.AddAsync(organization);
+        context.SaveChangesAsync();
     }
 
     public void Delete(int id)

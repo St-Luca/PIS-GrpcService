@@ -11,6 +11,7 @@ public class ApplicationContext : DbContext
     {
         Database.EnsureCreated();
     }
+
     public DbSet<Locality> Localities { get; set; } = default!;
     public DbSet<LocalityCost> LocalityCosts { get; set; } = default!;
     public DbSet<Organization> Organizations { get; set; } = default!;
@@ -61,7 +62,7 @@ public class ApplicationContext : DbContext
 
 
         Organization o1 = new Organization { Id = 1, OrgName = "Smartway", INN = "111", KPP = "ss" };
-        Organization o2 = new Organization { Id = 2, OrgName = "TumGU", INN = "222", KPP = "wtf" };
+        Organization o2 = new Organization { Id = 2, OrgName = "TumGU", INN = "222", KPP = "kpp" };
         Organization o3 = new Organization { Id = 3, OrgName = "TIU", INN = "21231", KPP = "12313131" };
         modelBuilder.Entity<Organization>().HasData(o1, o2, o3);
 
@@ -121,7 +122,6 @@ public class ApplicationContext : DbContext
             ApplicantCategory = "Физ. лицо",
             IdLocality = loc1.Id,
             IdOrganization = o3.Id,
-            IdAct = act4.Id,
             Urgency = "Срочно"
         };
 

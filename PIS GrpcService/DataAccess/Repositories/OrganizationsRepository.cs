@@ -7,7 +7,7 @@ public class OrganizationsRepository
 {
     private ApplicationContext context;
 
-    public OrganizationsRepository(ApplicationContext dbContext) 
+    public OrganizationsRepository(ApplicationContext dbContext)
     {
         context = dbContext;
     }
@@ -29,8 +29,8 @@ public class OrganizationsRepository
         return context.Organizations.Include(o => o.Acts).Include(o => o.Applications).Include(o => o.Contracts).Single(o => o.Id == id);
     }
 
-    public void Edit(Organization organization) 
-    { 
+    public void Edit(Organization organization)
+    {
         context.Organizations.Update(organization);
         context.SaveChanges();
     }

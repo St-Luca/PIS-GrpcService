@@ -16,7 +16,6 @@
     <PackageReference Include="Google.Protobuf" Version="3.25.1" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.59.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.23">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -34,7 +33,7 @@
     <Protobuf Include="Protos\application.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\LocalityCost.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\locality.proto" GrpcServices="Client" />
-  <Protobuf Include="Protos\organization.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\organization.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\CaptureAct.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\Contract.proto" GrpcServices="Client" />
   <Protobuf Include="Protos\report.proto" GrpcServices="Client" />

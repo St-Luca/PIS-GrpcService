@@ -7,7 +7,6 @@ namespace PIS_GrpcService.GrpcCore.Services;
 
 public class ReportService : GrpcReportService.GrpcReportServiceBase
 {
-
     private readonly CatchingApplicationsRepository applicationsRepository;
     private readonly CaptureActsRepository actsRepository;
 
@@ -20,9 +19,10 @@ public class ReportService : GrpcReportService.GrpcReportServiceBase
 
     public override async Task<GrpcReport> GenerateAppsPercentReport(ReportRequest reportRequest, ServerCallContext context)
     {
-        var reportGenerator = new ReportGenerator(actsRepository, applicationsRepository);
+        var allAppsCount = applicationsRepository.GetAllAppsInPeriodCount(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.TypeName);
+        var doneAppsCount = actsRepository.GetDoneAppsInPeriodCount(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.TypeName);
 
-        return reportGenerator.GenerateAppsPercentReport(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.TypeName);
+        return GenerateAppsPercentReport(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), allAppsCount, doneAppsCount, reportRequest.TypeName);
     }
 
     public override async Task<GrpcReport> GenerateClosedAppsReport(ReportRequest reportRequest, ServerCallContext context)
@@ -38,6 +38,24 @@ public class ReportService : GrpcReportService.GrpcReportServiceBase
         var sum = actsRepository.GetContractsSum(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.TypeName);
 
         return MakeClosedContractsReport(reportRequest.StartDate.ToDateTime(), reportRequest.EndDate.ToDateTime(), reportRequest.TypeName, sum);
+    }
+
+    public GrpcReport GenerateAppsPercentReport(DateTime startDate, DateTime endDate, int allAppsCount, int doneAppsCount, string localityName)
+    {
+        decimal percentage = 0;
+
+        if (allAppsCount != 0)
+        {
+            percentage = ((decimal)doneAppsCount / allAppsCount) * 100;
+        }
+
+        return new GrpcReport
+        {
+            Number = 1,
+            Name = "Отчет по проценту выполненных заявок в населенном пункте",
+            Description = $"За период с {startDate.ToShortDateString()} по {endDate.Date.ToShortDateString()} в нас. пункте {localityName} " +
+              $"было зарегистрировано {allAppsCount} заявок, выполнено - {doneAppsCount}. Процент выполнения составил: {percentage}"
+        };
     }
 
     public GrpcReport MakeClosedContractsReport(DateTime startDate, DateTime endDate, string orgName, int sum)

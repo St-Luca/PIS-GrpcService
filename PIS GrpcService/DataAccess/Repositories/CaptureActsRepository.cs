@@ -60,13 +60,13 @@ public class CaptureActsRepository
     {
         var allDoneApps = new List<Application>();
 
-        var allActs = context.Acts.Include(c => c.Applications).ThenInclude(a => a.Locality).Include(c => c.Locality).ToList();
+        var allActs = GetAll();
 
         var doneActs = allActs.Where(act => act.IsInPeriodAndLocality(startDate, endDate, localityName)).ToList();
 
         foreach (var act in doneActs)
         {
-            var doneAppsOfAct = GetDoneAppsInPeriod(startDate, endDate, localityName, act.Id);
+            var doneAppsOfAct = GetDoneAppsInPeriod(startDate, endDate, localityName, act);
 
             allDoneApps = allDoneApps.Concat(doneAppsOfAct).ToList();
         }
@@ -74,11 +74,9 @@ public class CaptureActsRepository
         return allDoneApps;
     }
 
-    public List<Application> GetDoneAppsInPeriod(DateTime startDate, DateTime endDate, string localityName, int actId)
+    public List<Application> GetDoneAppsInPeriod(DateTime startDate, DateTime endDate, string localityName, CaptureAct act)
     {
-        var apps = context.Applications.Include(l => l.Act).Include(l => l.Locality).Include(l => l.Organization).ToList();
-
-        return apps.Where(app => app.IsInPeriodAndLocality(startDate, endDate, localityName) && app.IdAct == actId).ToList();
+        return act.Applications.Where(app => app.IsInPeriodAndLocality(startDate, endDate, localityName)).ToList();
     }
 
     public int GetContractsSum(DateTime startDate, DateTime endDate, string orgName)
