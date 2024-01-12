@@ -46,15 +46,9 @@ public class CatchingApplicationsRepository
 
     public int GetAllAppsInPeriodCount(DateTime startDate, DateTime endDate, string localityName)
     {
-        var allApps = GetAppsInPeriod(startDate, endDate, localityName);
+        var apps = context.Applications.Include(a => a.Locality).ToList();
+        var allApps = apps.Where(app => app.IsInPeriodAndLocality(startDate, endDate, localityName)).ToList();
 
         return allApps.Count;
-    }
-
-    public List<Application> GetAppsInPeriod(DateTime startDate, DateTime endDate, string localityName)
-    {
-        var apps = context.Applications.Include(a => a.Locality).ToList();
-
-        return apps.Where(app => app.IsInPeriodAndLocality(startDate, endDate, localityName)).ToList();
     }
 }

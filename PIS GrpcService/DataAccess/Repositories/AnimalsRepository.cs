@@ -12,9 +12,9 @@ public class AnimalsRepository
         context = dbContext;
     }
 
-    public void Add(Animal organization)
+    public void Add(Animal animal)
     {
-        context.Animals.Add(organization);
+        context.Animals.Add(animal);
         context.SaveChanges();
     }
 
